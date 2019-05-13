@@ -13,8 +13,8 @@ public:
   I2CBase(int aAdress, int aRegister);
   ~I2CBase();
 
-  int I2CBase::GetData(int *aData[]);
-  int I2CBase::SetData(int aData[]);
+  void I2CBase::SetData(int aData[]);
+  int  I2CBase::GetData(int *aData[]);
   
 private:
   int mAdress;
