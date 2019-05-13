@@ -10,13 +10,13 @@
 
 class I2CBase {
 public:
-	I2CBase();
-	~I2CBase();
+  I2CBase();
+  ~I2CBase();
 
-	void I2CBase::GetData(int aAdress, int aRegister, int *aData[]);
+  int I2CBase::GetData(int aAdress, int aRegister, int *aData[]);
 
 private:
-	bool I2CBase::HasData(int aAdress, int aRegister, int aBytes);
-	int  I2CBase::Dec2Bcd(int aValue);
-	int  I2CBase::Dec2Bcd(int aValue);
+  bool I2CBase::HasData(int aAdress, int aRegister, int aBytes);
+  int  I2CBase::Dec2Bcd(int aValue);
+  int  I2CBase::Dec2Bcd(int aValue);
 };
