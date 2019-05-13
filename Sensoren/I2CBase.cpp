@@ -9,10 +9,16 @@ I2CBase::I2CBase(int aAdress, int aRegister) {
 I2CBase::~I2CBase() {}
 
 //Public
-int I2CBase::SetData(int aData[]) {
+void I2CBase::SetData(int aData[]) {
   int lSize = sizeof(aData) / sizeof(int);
+  int lI;
   
-  Wire.beginTransmission(mAdress)
+  Wire.beginTransmission(mAdress);
+  Wire.write(mREgister);
+  for (lI = 0; lI < lSize; lI++) {
+    Wire.Write(Dec2Bcd(aData[lI]));
+  }
+  Wire.endTransmission();
 }
 
 // 0 = alles OK
