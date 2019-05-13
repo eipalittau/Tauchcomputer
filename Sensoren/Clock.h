@@ -18,6 +18,7 @@ public:
   
   Clock();
   ~Clock();
-
+  
+  void Clock::SetData(struct DataStruct aData);
   void Clock::GetData(struct DataStruct *aData);
 };
