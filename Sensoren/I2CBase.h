@@ -4,8 +4,19 @@
   #include <Arduino.h>
   #include <Wire.h>
   #include "config.h"
-
+  
   #define TIMEOUT 100
-
-  void GetData(uint8_t aAdress, uint8_t aRegister, int aBytes);
 #endif
+
+class I2CBase {
+public:
+	I2CBase();
+	~I2CBase();
+
+	void I2CBase::GetData(int aAdress, int aRegister, int *aData[]);
+
+private:
+	bool I2CBase::HasData(int aAdress, int aRegister, int aBytes);
+	int  I2CBase::Dec2Bcd(int aValue);
+	int  I2CBase::Dec2Bcd(int aValue);
+};
