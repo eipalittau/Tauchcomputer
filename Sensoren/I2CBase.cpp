@@ -42,10 +42,10 @@ bool I2CBase::HasData(int aAdress, int aRegister, int aBytes) {
   return false;
 }
 
-int I2CBase::Dec2Bcd(const int aValue) {
+int I2CBase::Dec2Bcd(int aValue) {
   return (aValue * 1.6) + (aValue % 10);
 }
 
-int I2CBase::Dec2Bcd(const int aValue) {
+int I2CBase::Dec2Bcd(int aValue) {
   return (aValue / 160) + (aValue % 16);
 }
