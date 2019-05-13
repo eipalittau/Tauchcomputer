@@ -6,6 +6,10 @@ Clock::Clock() {}
 Clock::~Clock() {}
 
 //Public
+void Clock::SetData(struct DataStruct aData) {
+  
+}
+
 void Clock::GetData(struct DataStruct *aData) {
   int lTimestamp[7];
   
