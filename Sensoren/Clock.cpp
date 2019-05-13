@@ -2,7 +2,7 @@
 
 //Constructor / Destructor
 Clock::Clock() {
-  mBase = new I2CBase(0x00, 7);
+  mBase = new I2CBase(0x68, 0x00);
 }
 
 Clock::~Clock() {}
@@ -13,13 +13,13 @@ void Clock::SetData(struct DataStruct aData) {
   
   lTimestamp[6] -= 2000;
   
-  I2CBase.SetData(lTimestamp);
+  mBase.SetData(lTimestamp);
 }
 
 void Clock::GetData(struct DataStruct *aData) {
   int lTimestamp[7];
   
-  if (I2CBase.GetData(lTimestamp) == 0) {  
+  if (mBase.GetData(lTimestamp) == 0) {  
     aData->Second = lTimestamp[0];
     aData->Minute = lTimestamp[1];
     aData->Hour = lTimestamp[2];
@@ -27,6 +27,5 @@ void Clock::GetData(struct DataStruct *aData) {
     aData->Day = lTimestamp[4];
     aData->Month = lTimestamp[5];
     aData->Year = lTimestamp[6] + 2000;
-
   }
 }
