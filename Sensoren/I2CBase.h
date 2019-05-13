@@ -14,7 +14,8 @@ public:
   ~I2CBase();
 
   int I2CBase::GetData(int aAdress, int aRegister, int *aData[]);
-
+  int I2CBase::SetData(int aAdress, int aRegister, int aData[]);
+  
 private:
   bool I2CBase::HasData(int aAdress, int aRegister, int aBytes);
   int  I2CBase::Dec2Bcd(int aValue);
