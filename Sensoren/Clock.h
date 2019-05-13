@@ -21,4 +21,7 @@ public:
   
   void Clock::SetData(struct DataStruct aData);
   void Clock::GetData(struct DataStruct *aData);
+  
+private:
+  I2CBase mBase;
 };
