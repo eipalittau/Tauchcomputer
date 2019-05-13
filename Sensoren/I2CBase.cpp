@@ -1,18 +1,27 @@
 #include "I2CBase.h"
 
 //Constructor / Destructor
-I2CBase::I2CBase() {}
+I2CBase::I2CBase(int aAdress, int aRegister) {
+  mAdress = aAdress;
+  mRegister = aRegister;
+}
 
 I2CBase::~I2CBase() {}
 
 //Public
+int I2CBase::SetData(int aData[]) {
+  int lSize = sizeof(aData) / sizeof(int);
+  
+  Wire.beginTransmission(mAdress)
+}
+
 // 0 = alles OK
 // 1 = Keine Daten
-int I2CBase::GetData(int aAdress, int aRegister, int *aData[]) {
+int I2CBase::GetData(int *aData[]) {
   int lSize = sizeof(aData) / sizeof(int);
   int lI;
 
-  if (HasData(aAdress, aRegister, lSize)) {
+  if (HasData(lSize)) {
     for (lI = 0; lI < lSize; lI++) {
       aData[lI] = Bcd2Dec(Wire.read());
     }
@@ -24,15 +33,15 @@ int I2CBase::GetData(int aAdress, int aRegister, int *aData[]) {
 }
 
 //Private
-bool I2CBase::HasData(int aAdress, int aRegister, int aBytes) {
-  Wire.beginTransmission(aAdress);
-  Wire.write(aRegister);
+bool I2CBase::HasData(int aBytes) {
+  Wire.beginTransmission(mAdress);
+  Wire.write(mRegister);
   Wire.endTransmission();
 
   int lStart = millis();
 
   while (millis() - lStart < TIMEOUT) {
-    if (Wire.requestFrom(aAdress, aBytes) == aBytes) {
+    if (Wire.requestFrom(mAdress, aBytes) == aBytes) {
       return true;
     }
 
