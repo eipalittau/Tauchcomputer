@@ -1,10 +1,9 @@
-#ifndef __clock_h_
-  #define __clock_h_
+#ifndef CLOCK_H
+  #define CLOCK_H
   
   #include <I2CBase.h>
-#endif
 
-class Clock {
+class Clock: private I2CBase {
 public:
   struct DataStruct {
     int Second;
@@ -16,12 +15,10 @@ public:
     String Weekday;
   };
   
-  Clock();
+  Clock():I2CBase(int aAdress, int aRegister);
   ~Clock();
   
   void Clock::SetData(struct DataStruct aData);
   void Clock::GetData(struct DataStruct *aData);
-  
-private:
-  I2CBase mBase;
 };
+#endif
