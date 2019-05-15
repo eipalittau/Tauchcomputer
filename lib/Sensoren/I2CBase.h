@@ -1,12 +1,11 @@
-#ifndef __i2cbase_h_
-  #define __i2cbase_h_
+#ifndef I2CBASE_H
+  #define I2CBASE_H
   
   #include <Arduino.h>
   #include <Wire.h>
   #include "config.h"
   
   #define TIMEOUT 100
-#endif
 
 class I2CBase {
 public:
@@ -24,3 +23,4 @@ private:
   int  I2CBase::Dec2Bcd(int aValue);
   int  I2CBase::Dec2Bcd(int aValue);
 };
+#endif
