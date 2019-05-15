@@ -1,9 +1,7 @@
 #include "Clock.h"
 
 //Constructor / Destructor
-Clock::Clock() {
-  mBase = new I2CBase(0x68, 0x00);
-}
+Clock::Clock() : I2CBase(0x68, 0x00) {}
 
 Clock::~Clock() {}
 
