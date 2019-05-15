@@ -8,7 +8,7 @@
   #define TIMEOUT 100
 
 class I2CBase {
-public:
+protected:
   I2CBase(int aAdress, int aRegister);
   ~I2CBase();
 
