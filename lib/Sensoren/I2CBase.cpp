@@ -1,5 +1,4 @@
 #include "I2CBase.h"
-using namespace ETC.Sensor;
 
 //Constructor / Destructor
 I2CBase::I2CBase(int aAdress, int aRegister) {
