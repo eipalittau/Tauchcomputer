@@ -11,7 +11,7 @@ void Clock::SetData(struct DataStruct aData) {
   
   lTimestamp[6] -= 2000;
   
-  mBase.SetData(lTimestamp);
+  I2CBase.SetData(lTimestamp);
 }
 
 void Clock::GetData(struct DataStruct *aData) {
