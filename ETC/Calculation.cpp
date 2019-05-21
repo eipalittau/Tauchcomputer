@@ -73,9 +73,9 @@ unsigned short Calculation::MaxOTU(unsigned char aDay) {
 }
 
 bool Calculation::IsBetween100(unsigned char aValue) {
-	return (aValue >= 1 && aValue <= 100);
+	return Essentials::IsBetween(1, 100, aValue);
 }
 
 bool Calculation::IsBetween7(unsigned char aValue) {
-	return (aValue >= 1 && aValue <= 7);
+	return Essentials::IsBetween(1, 7, aValue);
 }
