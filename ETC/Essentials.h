@@ -2,6 +2,8 @@
 #ifndef _ESSENTIALS_h
 #define _ESSENTIALS_h
 
+#include <math.h>
+
 class Essentials {
 	public:
 		static bool IsBetween(int aLower, int aUpper, int aNumber);
