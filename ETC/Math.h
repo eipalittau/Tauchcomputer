@@ -4,7 +4,7 @@
 class Math {
 	public:
 		static int IsBetween(int aLower, int aUpper, int aNumber);
-		static int Constrain(int aLower, int aUpper, int aNumber);
+		static bool Constrain(int aLower, int aUpper, int aNumber);
 	
 	private:
 		Math();
