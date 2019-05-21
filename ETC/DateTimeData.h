@@ -32,9 +32,9 @@ class DateTimeData {
 		int _Year = 0;
 		int _Weekday = 0;
 
-		int IsBetween60(int aNumber);
-		int IsBetween31(int aNumber);
-		int IsBetween24(int aNumber);
-		int IsBetween12(int aNumber);
-		int IsBetween7(int aNumber);
+		int Constrain60(int aNumber);
+		int Constrain31(int aNumber);
+		int Constrain24(int aNumber);
+		int Constrain12(int aNumber);
+		int Constrain7(int aNumber);
 #endif
