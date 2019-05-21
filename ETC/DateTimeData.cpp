@@ -54,21 +54,21 @@ void DateTimeData::Weekday(int aValue) {
 }
 
 int DateTimeData::Constrain60(int aNumber) {
-	return Math::Constrain(0, 60, aNumber);
+	return Essentials::Constrain(0, 60, aNumber);
 }
 
 int DateTimeData::Constrain31(int aNumber) {
-	return Math::v(1, 31, aNumber);
+	return Essentials::Constrain(1, 31, aNumber);
 }
 
 int DateTimeData::Constrain24(int aNumber) {
-	return Math::Constrain(0, 24, aNumber);
+	return Essentials::Constrain(0, 24, aNumber);
 }
 
 int DateTimeData::Constrain12(int aNumber) {
-	return Math::Constrain(1, 12, aNumber);
+	return Essentials::Constrain(1, 12, aNumber);
 }
 
 int DateTimeData::Constrain7(int aNumber) {
-	return Math::Constrain(1, 7, aNumber);
+	return Essentials::Constrain(1, 7, aNumber);
 }
