@@ -1,3 +1,6 @@
+#ifndef _CALCULATION_h
+#define _CALCULATION_h
+
 #include <math.h>
 
 class Calculation {
@@ -22,3 +25,4 @@ private:
 	bool IsBetween100(unsigned char aValue);
 	bool IsBetween7(unsigned char aValue);
 };
+#endif
