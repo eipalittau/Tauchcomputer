@@ -8,35 +8,35 @@ int DateTimeData::Second() {
 	return _Second;
 }
 void DateTimeData::Second(int aValue) {
-	_Second = IsBetween60(aValue);
+	_Second = Constrain60(aValue);
 }
 
 int DateTimeData::Minute() {
 	return _Minute;
 }
 void DateTimeData::Minute(int aValue) {
-	_Minute = IsBetween60(aValue);
+	_Minute = Constrain60(aValue);
 }
 
 int DateTimeData::Hour() {
 	return _Hour;
 }
 void DateTimeData::Hour(int aValue) {
-	_Hour = IsBetween24(aValue);
+	_Hour = Constrain24(aValue);
 }
 
 int DateTimeData::Day() {
 	return _Day;
 }
 void DateTimeData::Day(int aValue) {
-	_Day = IsBetween31(aValue);
+	_Day = Constrain31(aValue);
 }
 
 int DateTimeData::Month() {
 	return _Month;
 }
 void DateTimeData::Month(int aValue) {
-	_Month = IsBetween12(aValue);
+	_Month = Constrain12(aValue);
 }
 
 int DateTimeData::Year() {
@@ -50,25 +50,25 @@ int DateTimeData::Weekday() {
 	return _Weekday;
 }
 void DateTimeData::Weekday(int aValue) {
-	_Weekday = IsBetween7(aValue);
+	_Weekday = Constrain7(aValue);
 }
 
-int DateTimeData::IsBetween60(int aNumber) {
-	return Math::IsBetween(0, 60, aNumber);
+int DateTimeData::Constrain60(int aNumber) {
+	return Math::Constrain(0, 60, aNumber);
 }
 
-int DateTimeData::IsBetween31(int aNumber) {
-	return Math::IsBetween(1, 31, aNumber);
+int DateTimeData::Constrain31(int aNumber) {
+	return Math::v(1, 31, aNumber);
 }
 
-int DateTimeData::IsBetween24(int aNumber) {
-	return Math::IsBetween(0, 24, aNumber);
+int DateTimeData::Constrain24(int aNumber) {
+	return Math::Constrain(0, 24, aNumber);
 }
 
-int DateTimeData::IsBetween12(int aNumber) {
-	return Math::IsBetween(1, 12, aNumber);
+int DateTimeData::Constrain12(int aNumber) {
+	return Math::Constrain(1, 12, aNumber);
 }
 
-int DateTimeData::IsBetween7(int aNumber) {
-	return Math::IsBetween(1, 7, aNumber);
+int DateTimeData::Constrain7(int aNumber) {
+	return Math::Constrain(1, 7, aNumber);
 }
