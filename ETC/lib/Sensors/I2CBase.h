@@ -4,23 +4,17 @@
 #include <Arduino.h>
 #include <Wire.h>
 
-
 class I2CBase {
-	public:
-		I2CBase(int aAdress, int aRegister);
-		~I2CBase();
+public:
+	I2CBase(unsigned char mI2CAdress, unsigned char aRegister);
+	~I2CBase();
 
-		void SetData(int aData[]);
-		int  GetData(int *aData[]);
+	void SetData(unsigned char aData[]);
+	signed char GetData(unsigned char aData[]);
 
-	private:
-		const int TIMEOUT = 100;
-
-		int mAdress;
-		int mRegister;
-
-		bool HasData(int aBytes);
-		int  Dec2Bcd(int aValue);
-		int  Bcd2Dec(int aValue);
+private:
+	bool HasData(unsigned short int aSize);
+	unsigned char Dec2Bcd(unsigned char aValue);
+	unsigned char Bcd2Dec(unsigned char aValue);
 };
 #endif

@@ -1,19 +1,24 @@
 #include "I2CBase.h"
 
+const unsigned char TIMEOUT = 100;
+
+unsigned char mI2CAdress;
+unsigned char mRegister;
+
 //Constructor / Destructor
-I2CBase::I2CBase(int aAdress, int aRegister) {
-	mAdress = aAdress;
+I2CBase::I2CBase(unsigned char aI2CAdress, unsigned char aRegister) {
+	mI2CAdress = aI2CAdress;
 	mRegister = aRegister;
 }
 
 I2CBase::~I2CBase() {}
 
 //Protected
-void I2CBase::SetData(int aData[]) {
-	int lSize = sizeof(aData) / sizeof(int);
+void I2CBase::SetData(unsigned char aData[]) {
+	int lSize = sizeof(aData) / sizeof(unsigned char);
 	int lI;
 
-	Wire.beginTransmission(mAdress);
+	Wire.beginTransmission(mI2CAdress);
 	Wire.write(mRegister);
 	for (lI = 0; lI < lSize; lI++) {
 		Wire.write(Dec2Bcd(aData[lI]));
@@ -23,31 +28,32 @@ void I2CBase::SetData(int aData[]) {
 
 // 0 = alles OK
 // 1 = Keine Daten
-int I2CBase::GetData(int *aData[]) {
-	int lSize = sizeof(aData) / sizeof(int);
-	int lI;
+signed char I2CBase::GetData(unsigned char aData[]) {
+	unsigned short int lSize = sizeof(aData) / sizeof(unsigned char);
+	unsigned short int lI;
 
 	if (HasData(lSize)) {
 		for (lI = 0; lI < lSize; lI++) {
-			*aData[lI] = Bcd2Dec(Wire.read());
+			aData[lI] = Bcd2Dec(Wire.read());
 		}
 
 		return 0;
-	} else {
+	}
+	else {
 		return 1;
 	}
 }
 
 //Private
-bool I2CBase::HasData(int aBytes) {
-	Wire.beginTransmission(mAdress);
+bool I2CBase::HasData(unsigned short int aSize) {
+	Wire.beginTransmission(mI2CAdress);
 	Wire.write(mRegister);
 	Wire.endTransmission();
 
-	int lStart = millis();
+	unsigned long lStart = millis();
 
 	while (millis() - lStart < TIMEOUT) {
-		if (Wire.requestFrom(mAdress, aBytes) == aBytes) {
+		if (Wire.requestFrom(mI2CAdress, aSize) == aSize) {
 			return true;
 		}
 
@@ -57,10 +63,10 @@ bool I2CBase::HasData(int aBytes) {
 	return false;
 }
 
-int I2CBase::Dec2Bcd(int aValue) {
+unsigned char I2CBase::Dec2Bcd(unsigned char aValue) {
 	return (aValue * 1.6) + (aValue % 10);
 }
 
-int I2CBase::Bcd2Dec(int aValue) {
+unsigned char I2CBase::Bcd2Dec(unsigned char aValue) {
 	return (aValue / 160) + (aValue % 16);
 }

@@ -5,11 +5,11 @@
 #include "DateTimeData.h"
 
 class Clock : public I2CBase {
-	public:
-		Clock();
-		~Clock();
+public:
+	Clock();
+	~Clock();
 
-		void SetData(DateTimeData aData);
-		DateTimeData GetData();
+	void SetData(DateTimeData aData);
+	DateTimeData GetData();
 };
 #endif
