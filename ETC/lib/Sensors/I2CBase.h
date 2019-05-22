@@ -11,10 +11,10 @@ public:
 
 	void SetData(unsigned char aData[]);
 	signed char GetData(unsigned char aData[]);
+	unsigned char Dec2Hex(unsigned char aValue);
+	unsigned char Hex2Dec(unsigned char aValue);
 
 private:
 	bool HasData(unsigned short int aSize);
-	unsigned char Dec2Bcd(unsigned char aValue);
-	unsigned char Bcd2Dec(unsigned char aValue);
 };
 #endif

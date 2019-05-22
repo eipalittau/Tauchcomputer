@@ -21,7 +21,7 @@ void I2CBase::SetData(unsigned char aData[]) {
 	Wire.beginTransmission(mI2CAdress);
 	Wire.write(mRegister);
 	for (lI = 0; lI < lSize; lI++) {
-		Wire.write(Dec2Bcd(aData[lI]));
+		Wire.write(aData[lI]);
 	}
 	Wire.endTransmission();
 }
@@ -34,7 +34,7 @@ signed char I2CBase::GetData(unsigned char aData[]) {
 
 	if (HasData(lSize)) {
 		for (lI = 0; lI < lSize; lI++) {
-			aData[lI] = Bcd2Dec(Wire.read());
+			aData[lI] = Wire.read();
 		}
 
 		return 0;
@@ -42,6 +42,14 @@ signed char I2CBase::GetData(unsigned char aData[]) {
 	else {
 		return 1;
 	}
+}
+
+unsigned char I2CBase::Dec2Hex(unsigned char aValue) {
+	return (aValue * 1.6) + (aValue % 10);
+}
+
+unsigned char I2CBase::Hex2Dec(unsigned char aValue) {
+	return (aValue / 160) + (aValue % 16);
 }
 
 //Private
@@ -61,12 +69,4 @@ bool I2CBase::HasData(unsigned short int aSize) {
 	}
 
 	return false;
-}
-
-unsigned char I2CBase::Dec2Bcd(unsigned char aValue) {
-	return (aValue * 1.6) + (aValue % 10);
-}
-
-unsigned char I2CBase::Bcd2Dec(unsigned char aValue) {
-	return (aValue / 160) + (aValue % 16);
 }
