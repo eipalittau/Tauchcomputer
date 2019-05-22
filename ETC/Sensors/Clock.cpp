@@ -18,7 +18,7 @@ DateTimeData Clock::GetData() {
 	int lTimestamp[7];
 	DateTimeData *lResult = new DateTimeData();
 
-	//if (I2CBase::GetData(&lTimestamp) == 0) {
+	if (I2CBase::GetData(&lTimestamp, 0) == 0) {
 		//lResult->Second(lTimestamp[0]);
 		//*lResult->Minute = lTimestamp[1];
 		//*lResult->Hour = lTimestamp[2];
@@ -26,5 +26,5 @@ DateTimeData Clock::GetData() {
 		//lResult->Day = lTimestamp[4];
 		//lResult->Month = lTimestamp[5];
 		//lResult->Year = lTimestamp[6] + 2000;
-	//}
+	}
 }
