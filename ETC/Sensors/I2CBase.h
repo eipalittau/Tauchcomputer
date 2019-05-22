@@ -19,7 +19,7 @@ class I2CBase {
 		int mAdress;
 		int mRegister;
 
-		bool HasData(int aBytes);
+		bool HasData(int aBytes, int aDelay);
 		int  Dec2Bcd(int aValue);
 		int  Bcd2Dec(int aValue);
 };
