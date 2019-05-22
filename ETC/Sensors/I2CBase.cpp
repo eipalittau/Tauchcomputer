@@ -23,11 +23,11 @@ void I2CBase::SetData(int aData[]) {
 
 // 0 = alles OK
 // 1 = Keine Daten
-int I2CBase::GetData(int *aData[]) {
+int I2CBase::GetData(int *aData[], int aDelay) {
 	int lSize = sizeof(aData) / sizeof(int);
 	int lI;
 
-	if (HasData(lSize)) {
+	if (HasData(lSize, aDelay)) {
 		for (lI = 0; lI < lSize; lI++) {
 			*aData[lI] = Bcd2Dec(Wire.read());
 		}
@@ -37,13 +37,16 @@ int I2CBase::GetData(int *aData[]) {
 		return 1;
 	}
 }
-
 //Private
-bool I2CBase::HasData(int aBytes) {
+bool I2CBase::HasData(int aBytes, int aDelay) {
 	Wire.beginTransmission(mAdress);
 	Wire.write(mRegister);
 	Wire.endTransmission();
 
+	if (aDelay > 0) {
+		delay(aDelay);
+	}
+	
 	int lStart = millis();
 
 	while (millis() - lStart < TIMEOUT) {
