@@ -1,10 +1,10 @@
 #ifndef _CLOCK_h
 #define _CLOCK_h
 
-#include <I2CBase.h>
-#include <DateTimeData.h>
+#include "I2CBase.h"
+#include "DateTimeData.h"
 
-class Clock : private I2CBase {
+class Clock : public I2CBase {
 	public:
 		Clock();
 		~Clock();

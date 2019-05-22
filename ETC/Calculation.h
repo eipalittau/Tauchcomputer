@@ -1,6 +1,7 @@
 #ifndef _CALCULATION_h
 #define _CALCULATION_h
 
+#include "Essentials.h"
 #include <math.h>
 
 class Calculation {

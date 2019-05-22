@@ -9,5 +9,5 @@ bool Essentials::IsBetween(int aLower, int aUpper, int aNumber) {
 }
 
 int Essentials::Constrain(int aLower, int aUpper, int aNumber) {
-	return min(aUpper, max(aLower, aNumber));
+	return fmin(aUpper, fmax(aLower, aNumber));
 }

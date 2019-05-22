@@ -38,7 +38,7 @@ float Calculation::END(unsigned char aO2Proportion, unsigned char aN2Proportion,
 	if (!IsBetween100(lGasProportion)) {
 		return -1;
 	}
-	
+
 	return aTotalPressur * lGasProportion;
 }
 
