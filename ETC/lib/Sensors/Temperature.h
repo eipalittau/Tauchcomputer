@@ -2,12 +2,16 @@
 #define _TEMPERATURE_h
 
 #include <OneWire.h>
+#include "Constants.h"
 
 class Temperature {
 public:
 	Temperature();
 	~Temperature();
 
-	TemperatureData GetData();
+	float GetData();
+
+private:
+	bool SendCommand(unsigned char aValue);
 };
 #endif

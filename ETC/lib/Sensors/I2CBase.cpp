@@ -1,7 +1,5 @@
 #include "I2CBase.h"
 
-const unsigned char TIMEOUT = 100;
-
 unsigned char mI2CAdress;
 unsigned char mRegister;
 
@@ -60,7 +58,7 @@ bool I2CBase::HasData(unsigned short int aSize) {
 
 	unsigned long lStart = millis();
 
-	while (millis() - lStart < TIMEOUT) {
+	while (millis() - lStart < Constants.TIMEOUT) {
 		if (Wire.requestFrom(mI2CAdress, aSize) == aSize) {
 			return true;
 		}
