@@ -1,10 +1,9 @@
 #ifndef _TEMPERATURE_h
 #define _TEMPERATURE_h
 
-#include "I2CBase.h"
-#include "TemperatureData.h"
+#include <OneWire.h>
 
-class Temperature : public I2CBase {
+class Temperature {
 public:
 	Temperature();
 	~Temperature();
