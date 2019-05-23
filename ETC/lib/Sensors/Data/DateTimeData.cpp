@@ -9,7 +9,7 @@ unsigned char DateTimeData::Second() {
 	return _Second;
 }
 void DateTimeData::Second(unsigned char aValue) {
-	_Second = Essentials::Constrain(1, 60, aValue);
+	_Second = Essentials::Constrain(0, 59, aValue);
 }
 
 unsigned char _Minute = 0;
@@ -17,7 +17,7 @@ unsigned char DateTimeData::Minute() {
 	return _Minute;
 }
 void DateTimeData::Minute(unsigned char aValue) {
-	_Minute = Essentials::Constrain(1, 60, aValue);
+	_Minute = Essentials::Constrain(0, 59, aValue);
 }
 
 unsigned char _Hour = 0;
@@ -25,7 +25,7 @@ unsigned char DateTimeData::Hour() {
 	return _Hour;
 }
 void DateTimeData::Hour(unsigned char aValue) {
-	_Hour = Essentials::Constrain(1, 24, aValue);
+	_Hour = Essentials::Constrain(0, 23, aValue);
 }
 
 unsigned char _Day = 1;
