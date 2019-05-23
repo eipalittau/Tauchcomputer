@@ -1,6 +1,6 @@
-# ETC (Eichmann Tauchcomputer)
+# ETC (Eichmann TauchComputer)
 
-## Material Computer
+## Material (Computer)
 ### Board
 - Arduino Uno
 
@@ -11,7 +11,9 @@
 
 ## Schaltplan 
 
-## Material Gasintegration
+
+
+## Material (Gasintegration)
 ### Board
 - Arduino Nano
 
