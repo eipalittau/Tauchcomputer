@@ -7,7 +7,7 @@
 
 class I2CBase {
 protected:
-	I2CBase(unsigned char mI2CAdress, unsigned char aRegister);
+	I2CBase(unsigned char aI2CAdress, unsigned char aRegister);
 	~I2CBase();
 	
 	void StartMeasurement();
