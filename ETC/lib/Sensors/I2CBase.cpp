@@ -12,6 +12,12 @@ I2CBase::I2CBase(unsigned char aI2CAdress, unsigned char aRegister) {
 I2CBase::~I2CBase() {}
 
 //Protected
+void I2CBase::StartMeasurement() {
+	Wire.beginTransmission(mI2CAdress);
+	Wire.write(mRegister);
+	Wire.endTransmission();
+}
+
 void I2CBase::SetData(unsigned char aData[]) {
 	int lSize = sizeof(aData) / sizeof(unsigned char);
 	int lI;
@@ -26,45 +32,30 @@ void I2CBase::SetData(unsigned char aData[]) {
 
 // 0 = alles OK
 // 1 = Keine Daten
-signed char I2CBase::GetData(unsigned char aData[]) {
-	unsigned short int lSize = sizeof(aData) / sizeof(unsigned char);
-	unsigned short int lI;
+unsigned char I2CBase::GetData(unsigned char aData[]) {
+	unsigned short lSize = sizeof(aData) / sizeof(unsigned char);
+	unsigned long lStart = millis();
 
-	if (HasData(lSize)) {
-		for (lI = 0; lI < lSize; lI++) {
-			aData[lI] = Wire.read();
+	while (millis() - lStart < Constants.TIMEOUT) {
+		if (Wire.requestFrom(mI2CAdress, lSize) == lSize) {
+			for (unsigned short lI = 0; lI < lSize; lI++) {
+				aData[lI] = Hex2Dec(Wire.read());
+			}
+			
+			return 0;
 		}
 
-		return 0;
+		delay(2);
 	}
-	else {
-		return 1;
-	}
+	
+	return 1;
 }
 
+//Private
 unsigned char I2CBase::Dec2Hex(unsigned char aValue) {
 	return (aValue * 1.6) + (aValue % 10);
 }
 
 unsigned char I2CBase::Hex2Dec(unsigned char aValue) {
 	return (aValue / 160) + (aValue % 16);
-}
-
-//Private
-bool I2CBase::HasData(unsigned short int aSize) {
-	Wire.beginTransmission(mI2CAdress);
-	Wire.write(mRegister);
-	Wire.endTransmission();
-
-	unsigned long lStart = millis();
-
-	while (millis() - lStart < Constants.TIMEOUT) {
-		if (Wire.requestFrom(mI2CAdress, aSize) == aSize) {
-			return true;
-		}
-
-		delay(2);
-	}
-
-	return false;
 }
