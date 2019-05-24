@@ -7,8 +7,8 @@
 class Sensor {
 public:
 	Sensor();
-  ~Sensor();
+	~Sensor();
   
-  void GetData();
+	void GetData();
 };
 #endif
