@@ -8,6 +8,10 @@ Clock::Clock() : I2CBase(104, 0) {}
 Clock::~Clock() {}
 
 //Public
+void Clock::StartMesurement() {
+	I2CBase::StartMesurement();
+}
+
 void Clock::SetData(DateTimeData aData) {
 	unsigned char lTimestamp[ARRAYSIZE] = { aData.Second(), aData.Minute(), aData.Hour(), aData.Weekday(), aData.Day(), aData.Month(), aData.Year() };
 
