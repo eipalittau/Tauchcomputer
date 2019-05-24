@@ -2,8 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\ETC",
-    "\\ETC\\Library",
+    "\\ETC\\lib",
+    "\\ETC\\lib\\Sensors",
+    "\\ETC\\lib\\Sensors\\Data",
     "\\ETC\\Sensors"
   ],
+  "SelectedNode": "\\ETC\\lib\\Sensors\\I2CBase.cpp",
   "PreviewInSolutionExplorer": false
 }
