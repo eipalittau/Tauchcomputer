@@ -4,14 +4,12 @@
 #include <OneWire.h>
 #include "Constants.h"
 
-class Temperature {
+class Temperature : protected WireBase {
 public:
 	Temperature();
 	~Temperature();
 
+	void StartMesurement();
 	float GetData();
-
-private:
-	bool SendCommand(unsigned char aValue);
 };
 #endif
