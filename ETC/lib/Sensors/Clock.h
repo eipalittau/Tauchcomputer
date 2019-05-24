@@ -9,6 +9,7 @@ public:
 	Clock();
 	~Clock();
 
+	void StartMesurement();
 	void SetData(DateTimeData aData);
 	DateTimeData GetData();
 };
