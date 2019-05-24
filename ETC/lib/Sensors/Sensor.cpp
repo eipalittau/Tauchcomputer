@@ -7,4 +7,9 @@ Sensor::~Sensor() {}
 
 //Public
 float Sensor::GetData() {
+  Clock lClock;
+  Temperature lTemperature;
+  
+  lClock.StartMesurement();
+  lTemperature.StartMesurement();
 }
