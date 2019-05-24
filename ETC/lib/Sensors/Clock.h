@@ -4,7 +4,7 @@
 #include "I2CBase.h"
 #include "DateTimeData.h"
 
-class Clock : public I2CBase {
+class Clock : protected I2CBase {
 public:
 	Clock();
 	~Clock();
