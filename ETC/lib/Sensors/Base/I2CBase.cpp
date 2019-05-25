@@ -12,10 +12,12 @@ I2CBase::I2CBase(unsigned char aI2CAdress, unsigned char aRegister) {
 I2CBase::~I2CBase() {}
 
 //Protected
-void I2CBase::StartMeasurement() {
+void I2CBase::StartMeasurement(unsigned char aSize) {
 	Wire.beginTransmission(mI2CAdress);
 	Wire.write(mRegister);
 	Wire.endTransmission();
+
+Wire.requestFrom(mI2CAdress, aSize);
 }
 
 void I2CBase::SetData(unsigned char aData[]) {
@@ -30,25 +32,14 @@ void I2CBase::SetData(unsigned char aData[]) {
 	Wire.endTransmission();
 }
 
-// 0 = alles OK
-// 1 = Keine Daten
-unsigned char I2CBase::GetData(unsigned char aData[]) {
-	unsigned short lSize = sizeof(aData) / sizeof(unsigned char);
-	unsigned long lStart = millis();
+String I2CBase::GetData() {
+String lData;
 
-	while (millis() - lStart < Constants.TIMEOUT) {
-		if (Wire.requestFrom(mI2CAdress, lSize) == lSize) {
-			for (unsigned short lI = 0; lI < lSize; lI++) {
-				aData[lI] = Hex2Dec(Wire.read());
-			}
-			
-			return 0;
-		}
-
-		delay(2);
+	while(Wire.available()) {
+		lData += Wire.read();
 	}
 	
-	return 1;
+	return lData;
 }
 
 //Private
