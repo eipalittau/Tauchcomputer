@@ -12,12 +12,12 @@ I2CBase::I2CBase(unsigned char aI2CAdress, unsigned char aRegister) {
 I2CBase::~I2CBase() {}
 
 //Protected
-void I2CBase::StartMeasurement(unsigned char aSize) {
+void I2CBase::StartMeasurement(unsigned char aDataSize) {
 	Wire.beginTransmission(mI2CAdress);
 	Wire.write(mRegister);
 	Wire.endTransmission();
 
-Wire.requestFrom(mI2CAdress, aSize);
+	Wire.requestFrom(mI2CAdress, aDataSize);
 }
 
 void I2CBase::SetData(unsigned char aData[]) {
@@ -33,10 +33,10 @@ void I2CBase::SetData(unsigned char aData[]) {
 }
 
 String I2CBase::GetData() {
-String lData;
+	String lData;
 
 	while(Wire.available()) {
-		lData += Wire.read();
+		lData += Hex2Dec(Wire.read()) + " ";
 	}
 	
 	return lData;
