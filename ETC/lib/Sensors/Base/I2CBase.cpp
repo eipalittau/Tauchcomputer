@@ -5,10 +5,9 @@ unsigned char mRegister;
 unsigned char mDataSize;
 
 //Constructor / Destructor
-I2CBase::I2CBase(unsigned char aI2CAdress, unsigned char aRegister, unsigned char aDataSize) {
+I2CBase::I2CBase(unsigned char aI2CAdress, unsigned char aRegister) {
 	mI2CAdress = aI2CAdress;
 	mRegister = aRegister;
-	mDataSize = aDataSize;
 }
 
 I2CBase::~I2CBase() {}
@@ -35,7 +34,9 @@ void I2CBase::SetData(unsigned char aData[]) {
 }
 
 void I2CBase::GetData(unsigned char aData[]) {
-	for (int lI = 0; lI < mDataSize; lI++) {
+	int lSize = sizeof(aData) / sizeof(unsigned char);
+	
+	for (int lI = 0; lI < lSize; lI++) {
 		if (Wire.available()) {
 			aData.[lI] = Hex2Dec(Wire.read());
 		} else {
