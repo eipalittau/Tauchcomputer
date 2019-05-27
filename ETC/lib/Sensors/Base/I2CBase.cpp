@@ -22,29 +22,30 @@ void I2CBase::StartMeasurement() {
 	Wire.requestFrom(mI2CAdress, mDataSize);
 }
 
-void I2CBase::SetData(unsigned char aData[]) {
+void I2CBase::SetData(vector<unsigned char> aData) {
 	int lSize = sizeof(aData) / sizeof(unsigned char);
 
 	Wire.beginTransmission(mI2CAdress);
 	Wire.write(mRegister);
+	
 	for (int lI = 0; lI < lSize; lI++) {
 		Wire.write(aData[lI]);
 	}
 	Wire.endTransmission();
 }
 
-unsigned char I2CBase::GetData() {
-	unsigned char *lData = new unsigned char[mDataSize];
+vector<unsigned char> I2CBase::GetData() {
+	vector<unsigned char> lData{};
 	
 	for (int lI = 0; lI < mDataSize; lI++) {
 		if (Wire.available()) {
-			lData[lI] = Hex2Dec(Wire.read());
+			lData.push_back(Hex2Dec(Wire.read()));
 		} else {
 			break;
 		}
 	}
-		
-	return "";
+	
+	return lData;
 }
 
 //Private
