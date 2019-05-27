@@ -1,6 +1,6 @@
-#include "WireBase.h"
+#include "Constants.h"
 
 //Constructor / Destructor
-WireBase::WireBase() {}
+Constants::Constants() {}
 
-WireBase::~WireBase() {}
+Constants::~Constants() {}
