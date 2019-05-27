@@ -13,9 +13,7 @@ void Clock::StartMesurement() {
 }
 
 void Clock::SetData(DateTimeData aData) {
-	unsigned char lTimestamp[ARRAYSIZE] = { aData.Second(), aData.Minute(), aData.Hour(), aData.Weekday(), aData.Day(), aData.Month(), aData.Year() };
-
-	lTimestamp[6] -= 2000;
+	unsigned char lTimestamp[ARRAYSIZE] = { aData.Second(), aData.Minute(), aData.Hour(), aData.Weekday(), aData.Day(), aData.Month(), aData.Year() - 2000 };
 
 	I2CBase::SetData(lTimestamp);
 }
