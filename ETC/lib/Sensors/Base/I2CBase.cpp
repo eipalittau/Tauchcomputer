@@ -2,44 +2,49 @@
 
 unsigned char mI2CAdress;
 unsigned char mRegister;
+unsigned char mDataSize;
 
 //Constructor / Destructor
-I2CBase::I2CBase(unsigned char aI2CAdress, unsigned char aRegister) {
+I2CBase::I2CBase(unsigned char aI2CAdress, unsigned char aRegister, unsigned char aDataSize) {
 	mI2CAdress = aI2CAdress;
 	mRegister = aRegister;
+	mDataSize = aDataSize;
 }
 
 I2CBase::~I2CBase() {}
 
 //Protected
-void I2CBase::StartMeasurement(unsigned char aDataSize) {
+void I2CBase::StartMeasurement() {
 	Wire.beginTransmission(mI2CAdress);
 	Wire.write(mRegister);
 	Wire.endTransmission();
 
-	Wire.requestFrom(mI2CAdress, aDataSize);
+	Wire.requestFrom(mI2CAdress, mDataSize);
 }
 
 void I2CBase::SetData(unsigned char aData[]) {
 	int lSize = sizeof(aData) / sizeof(unsigned char);
-	int lI;
 
 	Wire.beginTransmission(mI2CAdress);
 	Wire.write(mRegister);
-	for (lI = 0; lI < lSize; lI++) {
+	for (int lI = 0; lI < lSize; lI++) {
 		Wire.write(aData[lI]);
 	}
 	Wire.endTransmission();
 }
 
-String I2CBase::GetData() {
-	String lData;
-
-	while(Wire.available()) {
-		lData += Hex2Dec(Wire.read()) + " ";
-	}
+unsigned char I2CBase::GetData() {
+	unsigned char *lData = new unsigned char[mDataSize];
 	
-	return lData;
+	for (int lI = 0; lI < mDataSize; lI++) {
+		if (Wire.available()) {
+			lData[lI] = Hex2Dec(Wire.read());
+		} else {
+			break;
+		}
+	}
+		
+	return "";
 }
 
 //Private
