@@ -9,7 +9,9 @@ Sensor::~Sensor() {}
 float Sensor::GetData() {
   Clock lClock;
   Temperature lTemperature;
+  Pressure lPressure;
   
   lClock.StartMesurement();
   lTemperature.StartMesurement();
+  lPressure.StartMesurment();
 }
