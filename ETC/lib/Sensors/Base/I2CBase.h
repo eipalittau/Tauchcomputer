@@ -12,7 +12,7 @@ protected:
 	
 	void StartMeasurement();
 	void SetData(unsigned char aData[]);
-	unsigned char GetData(unsigned char aData[]);
+	void I2CBase::GetData(unsigned char aData[]);
 
 private:
 	unsigned char Dec2Hex(unsigned char aValue);
