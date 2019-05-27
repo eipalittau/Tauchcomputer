@@ -19,16 +19,16 @@ void Clock::SetData(DateTimeData aData) {
 }
 
 DateTimeData Clock::GetData() {
-	unsigned char lTimestamp[ARRAYSIZE];
+	unsigned char lData[ARRAYSIZE];
 	DateTimeData lResult;
 
-	if (I2CBase::GetData(lTimestamp) == 0) {
-		lResult.Second(lTimestamp[0]);
-		lResult.Minute(lTimestamp[1]);
-		lResult.Hour(lTimestamp[2]);
-		lResult.Weekday(lTimestamp[3]);
-		lResult.Day(lTimestamp[4]);
-		lResult.Month(lTimestamp[5]);
-		lResult.Year(lTimestamp[6] + 2000);
+	if (I2CBase::GetData(lData) == 0) {
+		lResult.Second(lData[0]);
+		lResult.Minute(lData[1]);
+		lResult.Hour(lData[2]);
+		lResult.Weekday(lData[3]);
+		lResult.Day(lData[4]);
+		lResult.Month(lData[5]);
+		lResult.Year(lData[6] + 2000);
 	}
 }
