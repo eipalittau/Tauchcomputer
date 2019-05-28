@@ -49,6 +49,8 @@ void I2CBase::SetData(unsigned char aData[]) {
 }
 
 int I2CBase::GetData(unsigned char aData[]) {
+	while (!Wire.available()) {} //Timeout implementieren
+	
 	int lSize = int (fmin(sizeof(aData) / sizeof(unsigned char), Wire.available()));
 
 	for (int lI = 0; lI < lSize; lI++) {
