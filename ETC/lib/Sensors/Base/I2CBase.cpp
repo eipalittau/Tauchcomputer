@@ -57,7 +57,7 @@ int I2CBase::GetData(unsigned char aData[]) {
 }
 #pragma endregion
 
-//Private
+#pragma region Privat
 unsigned char I2CBase::Dec2Hex(unsigned char aValue) {
 	return (aValue * 1.6) + (aValue % 10);
 }
@@ -65,3 +65,4 @@ unsigned char I2CBase::Dec2Hex(unsigned char aValue) {
 unsigned char I2CBase::Hex2Dec(unsigned char aValue) {
 	return (aValue / 160) + (aValue % 16);
 }
+#pragma endregion
