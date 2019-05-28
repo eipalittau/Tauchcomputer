@@ -22,7 +22,7 @@ protected:
 	///2 = Address was sent and a NACK received. This is an issue, and the master should send a STOP condition.
 	///3: Data was sent and a NACK received. This means the slave has no more to send. The master can send a STOP condition, or a repeated START.
 	///4: Another twi error took place (eg, the master lost bus arbitration).</returns>
-	char StartMesurement(unsigned char aDataSize);
+	char StartMesurement(unsigned char &aDataSize);
 
 	void SetData(unsigned char aData[]);
 
