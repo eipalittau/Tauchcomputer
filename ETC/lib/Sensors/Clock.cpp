@@ -2,14 +2,17 @@
 
 const unsigned char ARRAYSIZE = 7;
 
-//Constructor / Destructor
-Clock::Clock() : I2CBase(104, 0) {}
+#pragma region Constructor / Destructor
+Clock::Clock() : I2CBase(0x68, 0x00) {}
 
 Clock::~Clock() {}
+#pragma endregion
 
-//Public
+#pragma region Public
 void Clock::StartMesurement() {
-	I2CBase::StartMesurement();
+	unsigned char lSize = ARRAYSIZE;
+
+	I2CBase::StartMesurement(lSize);
 }
 
 void Clock::SetData(DateTimeData aData) {
@@ -22,7 +25,7 @@ DateTimeData Clock::GetData() {
 	unsigned char lData[ARRAYSIZE];
 	DateTimeData lResult;
 
-	if (I2CBase::GetData(lData) == 0) {
+	if (I2CBase::GetData(lData) >= 7) {
 		lResult.Second(lData[0]);
 		lResult.Minute(lData[1]);
 		lResult.Hour(lData[2]);
@@ -31,4 +34,7 @@ DateTimeData Clock::GetData() {
 		lResult.Month(lData[5]);
 		lResult.Year(lData[6] + 2000);
 	}
+	
+	return lResult;
 }
+#pragma endregion
