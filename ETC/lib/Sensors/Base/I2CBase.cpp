@@ -21,15 +21,17 @@ I2CBase::~I2CBase() {}
 #pragma endregion
 
 #pragma region Protected
-char I2CBase::StartMesurement(unsigned char aDataSize) {
+char I2CBase::StartMesurement(unsigned char &aDataSize) {
 	Wire.beginTransmission(mI2CAdress);
 	Wire.write(mRegister);
 
 	char lResult = Wire.endTransmission();
 
 	if (lResult == 0) {
-		Wire.requestFrom(mI2CAdress, aDataSize, true);
+		aDataSize = Wire.requestFrom(mI2CAdress, aDataSize, true);
+		return 0;
 	} else {
+		aDataSize = 0;
 		return lResult;
 	}
 }
