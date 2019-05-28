@@ -29,11 +29,11 @@ char I2CBase::StartMesurement(unsigned char &aDataSize) {
 
 	if (lResult == 0) {
 		aDataSize = Wire.requestFrom(mI2CAdress, aDataSize, true);
-		return 0;
 	} else {
 		aDataSize = 0;
-		return lResult;
 	}
+
+	return lResult;
 }
 
 void I2CBase::SetData(unsigned char aData[]) {
