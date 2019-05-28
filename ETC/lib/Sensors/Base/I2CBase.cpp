@@ -1,37 +1,32 @@
 #include "I2CBase.h"
 
+#pragma region Variable declaration
 unsigned char mI2CAdress;
 unsigned char mRegister;
 static boolean mInitWire = true;
+#pragma endregion
 
-//Constructor / Destructor
+#pragma region Constructor / Destructor
 I2CBase::I2CBase(unsigned char aI2CAdress, unsigned char aRegister) {
 	mI2CAdress = aI2CAdress;
 	mRegister = aRegister;
-	
+
 	if (mInitWire) {
 		mInitWire = false;
 		Wire.begin();
 	}
-	
-	Wire.onReceive(OnReceiveData);
 }
 
 I2CBase::~I2CBase() {}
+#pragma endregion
 
-//Protected
-//0: Successful send.
-//1: Send buffer too large for the twi buffer. This should not happen, as the TWI buffer length set in twi.h is equivalent to the send buffer length set in Wire.h.
-//2: Address was sent and a NACK received. This is an issue, and the master should send a STOP condition.
-//3: Data was sent and a NACK received. This means the slave has no more to send. The master can send a STOP condition, or a repeated START.
-//4: Another twi error took place (eg, the master lost bus arbitration).
-char I2CBase::StartMeasurement(unsigned char aDataSize) {
-	char lResult;
-	
+#pragma region Protected
+char I2CBase::StartMesurement(unsigned char aDataSize) {
 	Wire.beginTransmission(mI2CAdress);
 	Wire.write(mRegister);
-	lResult = Wire.endTransmission();
-	
+
+	char lResult = Wire.endTransmission();
+
 	if (lResult == 0) {
 		Wire.requestFrom(mI2CAdress, aDataSize, true);
 	} else {
@@ -44,26 +39,23 @@ void I2CBase::SetData(unsigned char aData[]) {
 
 	Wire.beginTransmission(mI2CAdress);
 	Wire.write(mRegister);
-	
+
 	for (int lI = 0; lI < lSize; lI++) {
 		Wire.write(aData[lI]);
 	}
 	Wire.endTransmission();
 }
 
-unsigned char I2CBase::GetData(unsigned char aData[]) {
-	int lSize = sizeof(aData) / sizeof(unsigned char);
-	
+int I2CBase::GetData(unsigned char aData[]) {
+	int lSize = int (fmin(sizeof(aData) / sizeof(unsigned char), Wire.available()));
+
 	for (int lI = 0; lI < lSize; lI++) {
-		if (Wire.available()) {
-			aData.[lI] = Hex2Dec(Wire.read());
-		} else {
-			return 1;
-		}
+		aData[lI] = Hex2Dec(Wire.read());
 	}
 
-return 0;
+	return lSize;
 }
+#pragma endregion
 
 //Private
 unsigned char I2CBase::Dec2Hex(unsigned char aValue) {
