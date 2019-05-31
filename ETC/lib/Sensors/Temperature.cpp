@@ -1,7 +1,5 @@
 #include "Temperature.h"
 
-enum UnitMesurmentTemperature { C, F, K };
-
 //Constructor / Destructor
 Temperature::Temperature() : WireBase(2, 8) {}
 
