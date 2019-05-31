@@ -11,6 +11,8 @@ public:
 	Temperature();
 	~Temperature();
 
+	enum UnitMesurmentTemperature { C, F, K };
+
 	void StartMesurement();
 	float GetData(UnitMesurmentTemperature aUnitMesurment = C);
 };
