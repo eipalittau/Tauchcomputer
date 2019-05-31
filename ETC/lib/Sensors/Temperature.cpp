@@ -12,7 +12,7 @@ void Temperature::StartMesurement() {
 
 float Temperature::GetData(UnitMesurmentTemperature aUnitMesurment) {
 	unsigned short lData[9];
-	float lResult = FLT_MIN;
+	float lResult = FLOAT_MIN;
 
 	if (WireBase::GetData(0xBE, lData) == 0) {
 		lResult = (float)((lData[1] << 11) | (lData[0] << 3));
