@@ -3,12 +3,15 @@
 
 #include "Clock.h"
 #include "Temperature.h"
+#include "Pressure.h"
+#include "SensorData.h"
 
 class Sensor {
 public:
 	Sensor();
 	~Sensor();
-  
-	void GetData();
+
+	void StartMesurement(unsigned char aTick);
+	SensorData GetData(unsigned char aTick);
 };
 #endif
