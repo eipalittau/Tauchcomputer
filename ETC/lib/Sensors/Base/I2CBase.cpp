@@ -28,7 +28,7 @@ char I2CBase::StartMesurement(unsigned char &aDataSize) {
 	char lResult = Wire.endTransmission();
 
 	if (lResult == 0) {
-		aDataSize = Wire.requestFrom(mI2CAdress, aDataSize, true);
+		aDataSize = Wire.requestFrom(mI2CAdress, aDataSize);
 	} else {
 		aDataSize = 0;
 	}
@@ -49,7 +49,11 @@ void I2CBase::SetData(unsigned char aData[]) {
 }
 
 int I2CBase::GetData(unsigned char aData[]) {
-	while (!Wire.available()) {} //Timeout implementieren
+	unsigned long lStart = millis();
+
+	while (!Wire.available() && millis() - lStart < TIMEOUT) {
+		delay(2);
+	}
 	
 	int lSize = int (fmin(sizeof(aData) / sizeof(unsigned char), Wire.available()));
 
