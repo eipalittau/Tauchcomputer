@@ -7,7 +7,7 @@
 ### Sensoren
 - Real-Time-Clock DS3231
 - Drucksensor MS5837-30BA
-- Temperatursensor Dallas DS1820
+- Temperatursensor Dallas DS18B20
 
 ## Schaltplan 
 
