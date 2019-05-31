@@ -1,10 +1,14 @@
 #ifndef _CONSTANTS_h
 #define _CONSTANTS_h
 
+#include <float.h>
+
+extern const unsigned char TIMEOUT;
+extern const float FLOAT_MIN;
+
 class Constants {
 public:
-	static const unsigned char TIMEOUT = 100;
-
+	
 private:
 	Constants();
 	~Constants();
