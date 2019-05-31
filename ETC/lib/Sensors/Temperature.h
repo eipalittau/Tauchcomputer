@@ -4,7 +4,6 @@
 #include <OneWire.h>
 #include "WireBase.h"
 #include "Constants.h"
-#include <float.h>
 
 class Temperature : protected WireBase {
 public:
