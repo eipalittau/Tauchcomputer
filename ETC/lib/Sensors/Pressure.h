@@ -8,7 +8,14 @@ public:
 	Pressure();
 	~Pressure();
 
-	void StartMesurement();
-	float GetData();
+  void StartMesurement();
+  float GetData();
+
+private:
+  uint8_t ccr4();
+  bool init();
+  void read();
+  void calculate();
 };
+
 #endif
