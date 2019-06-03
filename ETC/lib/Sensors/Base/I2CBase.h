@@ -9,20 +9,29 @@ class I2CBase {
 protected:
 	///<summary>Constructor</summary>
 	///<param name="aI2CAdress">I2C Bus-Addresse</param>
-	///<param name="aRegister">Anzusprechendes Sensor-Register</param>
-	I2CBase(unsigned char aI2CAdress, unsigned char aRegister);
+	I2CBase(unsigned char aI2CAdress);
 
 	///<summyry>Destructor</summary>
 	~I2CBase();
-
+	
+	///<summary>Ruft ein Resgister an.</summary>
+	///<param name="aRegister">Anzusprechendes Sensor-Register</param>
+	///<returns>0 = Successful send.
+	///1 = Send buffer too large for the twi buffer.
+	///2 = Address was sent and a NACK received. This is an issue, and the master should send a STOP condition.
+	///3: Data was sent and a NACK received. This means the slave has no more to send. The master can send a STOP condition, or a repeated START.
+	///4: Another twi error took place (eg, the master lost bus arbitration).</returns>
+	char RequestRegister(unsigned char aRegister) {
+		
 	///<summary>Weisst den Sensor zur Datenerfassung an.</summary>
+	///<param name="aRegister">Anzusprechendes Sensor-Register</param>
 	///<param name="aDataSize">Anzahl Bytes die erwartet werden.</param>
 	///<returns>0 = Successful send.
 	///1 = Send buffer too large for the twi buffer.
 	///2 = Address was sent and a NACK received. This is an issue, and the master should send a STOP condition.
 	///3: Data was sent and a NACK received. This means the slave has no more to send. The master can send a STOP condition, or a repeated START.
 	///4: Another twi error took place (eg, the master lost bus arbitration).</returns>
-	char StartMesurement(unsigned char &aDataSize);
+	char StartMesurement(unsigned char aRegister, unsigned char &aDataSize) {
 
 	void SetData(unsigned char aData[]);
 
