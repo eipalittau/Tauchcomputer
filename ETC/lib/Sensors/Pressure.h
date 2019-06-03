@@ -8,7 +8,7 @@ public:
 	Pressure();
 	~Pressure();
 
-  void StartMesurement();
+  bool StartMesurement();
   float GetData();
 
 private:
