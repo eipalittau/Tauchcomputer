@@ -7,9 +7,8 @@ static boolean mInitWire = true;
 #pragma endregion
 
 #pragma region Constructor / Destructor
-I2CBase::I2CBase(unsigned char aI2CAdress, unsigned char aRegister) {
+I2CBase::I2CBase(unsigned char aI2CAdress) {
 	mI2CAdress = aI2CAdress;
-	mRegister = aRegister;
 
 	if (mInitWire) {
 		mInitWire = false;
@@ -21,12 +20,16 @@ I2CBase::~I2CBase() {}
 #pragma endregion
 
 #pragma region Protected
-char I2CBase::StartMesurement(unsigned char &aDataSize) {
+char I2CBase::RequestRegister(unsigned char aRegister) {
 	Wire.beginTransmission(mI2CAdress);
-	Wire.write(mRegister);
+	Wire.write(aRegister);
 
-	char lResult = Wire.endTransmission();
-
+	return Wire.endTransmission();
+}
+	
+char I2CBase::StartMesurement(unsigned char aRegister, unsigned char &aDataSize) {
+	char lResult = RequestRegister(aRegister)
+		
 	if (lResult == 0) {
 		aDataSize = Wire.requestFrom(mI2CAdress, aDataSize);
 	} else {
