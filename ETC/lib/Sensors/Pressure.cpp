@@ -1,69 +1,62 @@
 #include "Pressure.h"
 
-#define MS5837_ADDR               0x76  
-#define MS5837_RESET              0x1E
-#define MS5837_ADC_READ           0x00
-#define MS5837_PROM_READ          0xA0
-#define MS5837_CONVERT_D1_8192    0x4A
-#define MS5837_CONVERT_D2_8192 0x5A
+const unsigned char ARRAYSIZE = 7;
+
+//#define MS5837_ADDR               0x76  
+//#define MS5837_RESET              0x1E
+//#define MS5837_ADC_READ           0x00
+//#define MS5837_PROM_READ          0xA0
+//#define MS5837_CONVERT_D1_8192    0x4A
+//#define MS5837_CONVERT_D2_8192    0x5A
 
 //Constructor / Destructor
-Pressure::Pressure() : I2CBase(???, ???) {}
+Pressure::Pressure() : I2CBase(0x76) {}
 
 Pressure::~Pressure() {}
 
 //Public
-void Pressure::StartMesurement() {
-  init();
+bool Pressure::StartMesurement() {
+	char lResult = I2CBase::RequestRegister(0x1E);
+	
+	if (lResult == 0) {
+		unsigned char lData[ARRAYSIZE];
+		unsigned char lSize = ARRAYSIZE;
+		
+		delay(10);
+		
+		for (unsigned char lI = 0 ; lI < 7 ; lI++ ) {
+			if (I2CBase::StartMesurement(0xA0 + (lI * 2), lSize) == 0) {
+				if (lSize == ARRAYSIZE) {
+					if (I2CBase::GetData(lData) == ARRAYSIZE) {
+						C[i] = (lData[0] << 8) | lData[1];
+					}
+				}
+			}
+		}
+	}
+	
+	uint8_t crcRead = C[0] >> 12;
+	uint8_t crcCalculated = crc4(C);
+
+	return crcCalculated == crcRead;
 }
 
 float Pressure::GetData() {
   read();
 }
 
-
-bool Pressure::init() {
-	// Reset the MS5837, per datasheet
-	Wire.beginTransmission(MS5837_ADDR);
-	Wire.write(MS5837_RESET);
-	Wire.endTransmission();
-
-	// Wait for reset to complete
-	delay(10);
-
-	// Read calibration values and CRC
-	for ( uint8_t i = 0 ; i < 7 ; i++ ) {
-		Wire.beginTransmission(MS5837_ADDR);
-		Wire.write(MS5837_PROM_READ+i*2);
-		Wire.endTransmission();
-
-		Wire.requestFrom(MS5837_ADDR,2);
-		C[i] = (Wire.read() << 8) | Wire.read();
-	}
-
-	// Verify that data is correct with CRC
-	uint8_t crcRead = C[0] >> 12;
-	uint8_t crcCalculated = crc4(C);
-
-	if ( crcCalculated == crcRead ) {
-		return true; // Initialization success
-	}
-	return false; // CRC fail
-}
-
 void Pressure::read() {
+	unsigned char lSize = 3;
 	// Request D1 conversion
-	Wire.beginTransmission(MS5837_ADDR);
-	Wire.write(MS5837_CONVERT_D1_8192);
-	Wire.endTransmission();
-
-	delay(20); // Max conversion time per datasheet
+	char lResult = I2CBase::RequestRegister(0x4A);
 	
-	Wire.beginTransmission(MS5837_ADDR);
-	Wire.write(MS5837_ADC_READ);
-	Wire.endTransmission();
-
- 	Wire.requestFrom(MS5837_ADDR,3);
+	if (lResult == 0) {
+		delay(20); // Max conversion time per datasheet
+	
+		if (I2CBase::StartMesurement(0x00, lSize) == 0) {
+			I2CBase::GetData(unsigned char aData[])
+	}
+ 	
 	D1 = 0;
 	D1 = Wire.read();
 	D1 = (D1 << 8) | Wire.read();
