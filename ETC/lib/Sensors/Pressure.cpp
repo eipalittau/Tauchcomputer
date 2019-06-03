@@ -1,7 +1,5 @@
 #include "Pressure.h"
 
-const unsigned char ARRAYSIZE = 7;
-
 //#define MS5837_ADDR               0x76  
 //#define MS5837_RESET              0x1E
 //#define MS5837_ADC_READ           0x00
@@ -16,9 +14,9 @@ Pressure::~Pressure() {}
 
 //Public
 bool Pressure::StartMesurement() {
-	char lResult = I2CBase::RequestRegister(0x1E);
+	const unsigned char ARRAYSIZE = 2;
 	
-	if (lResult == 0) {
+	if (I2CBase::RequestRegister(0x1E) == 0) {
 		unsigned char lData[ARRAYSIZE];
 		unsigned char lSize = ARRAYSIZE;
 		
@@ -26,60 +24,50 @@ bool Pressure::StartMesurement() {
 		
 		for (unsigned char lI = 0 ; lI < 7 ; lI++ ) {
 			if (I2CBase::StartMesurement(0xA0 + (lI * 2), lSize) == 0) {
-				if (lSize == ARRAYSIZE) {
-					if (I2CBase::GetData(lData) == ARRAYSIZE) {
-						C[i] = (lData[0] << 8) | lData[1];
-					}
+				if (lSize == ARRAYSIZE && I2CBase::GetData(lData) == ARRAYSIZE) {
+					C[i] = (lData[0] << 8) | lData[1];
 				}
 			}
 		}
-	}
-	
-	uint8_t crcRead = C[0] >> 12;
-	uint8_t crcCalculated = crc4(C);
+		
+		uint8_t crcRead = C[0] >> 12;
+		uint8_t crcCalculated = crc4(C);
 
-	return crcCalculated == crcRead;
+		return crcCalculated == crcRead;
+	} else {
+		return false;
+	}
 }
 
 float Pressure::GetData() {
-  read();
-}
-
-void Pressure::read() {
-	unsigned char lSize = 3;
-	// Request D1 conversion
-	char lResult = I2CBase::RequestRegister(0x4A);
+	const unsigned char ARRAYSIZE = 3;
+	unsigned char lSize = ARRAYSIZE;
 	
-	if (lResult == 0) {
-		delay(20); // Max conversion time per datasheet
+	if (I2CBase::RequestRegister(0x4A) == 0) {
+		delay(20);
 	
 		if (I2CBase::StartMesurement(0x00, lSize) == 0) {
-			I2CBase::GetData(unsigned char aData[])
+			I2CBase::GetData(unsigned char aData[]);
+			D1 = 0;
+			D1 = aData[0];
+			D1 = (D1 << 8) | aData[1];
+			D1 = (D1 << 8) | aData[2];	
+		}
+
+		if (I2CBase::RequestRegister(0x5A == 0) {
+			delay(20);
+
+			if (I2CBase::StartMesurement(0x00, lSize) == 0) {
+				I2CBase::GetData(unsigned char aData[]);
+				D2 = 0;
+				D2 = aData[0];
+				D2 = (D2 << 8) | aData[1];
+				D2 = (D2 << 8) | aData[2];	
+			}
+			
+			calculate();
+		}
 	}
- 	
-	D1 = 0;
-	D1 = Wire.read();
-	D1 = (D1 << 8) | Wire.read();
-	D1 = (D1 << 8) | Wire.read();
-	
-	// Request D2 conversion
-	Wire.beginTransmission(MS5837_ADDR);
-	Wire.write(MS5837_CONVERT_D2_8192);
-	Wire.endTransmission();
-
-	delay(20); // Max conversion time per datasheet
-	
-	Wire.beginTransmission(MS5837_ADDR);
-	Wire.write(MS5837_ADC_READ);
-	Wire.endTransmission();
-
-	Wire.requestFrom(MS5837_ADDR,3);
-	D2 = 0;
-	D2 = Wire.read();
-	D2 = (D2 << 8) | Wire.read();
-	D2 = (D2 << 8) | Wire.read();
-
-	calculate();
 }
 
 void Pressure::calculate() {
