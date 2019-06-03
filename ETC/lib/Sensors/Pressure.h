@@ -8,12 +8,11 @@ public:
 	Pressure();
 	~Pressure();
 
-  bool StartMesurement();
-  float GetData();
+	bool StartMesurement();
+	float GetData();
 
 private:
   uint8_t ccr4();
-  bool init();
   void read();
   void calculate();
 };
