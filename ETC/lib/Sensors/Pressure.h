@@ -12,6 +12,7 @@ public:
 	float GetData();
 
 private:
+	bool ReadTemperature();
   uint8_t ccr4();
   void read();
   void calculate();
