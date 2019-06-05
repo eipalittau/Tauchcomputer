@@ -14,8 +14,7 @@ Sensor::~Sensor() {}
 //Public
 void Sensor::StartMesurement(unsigned char aTick) {
 	mClock.StartMesurement();
-	mPressure.StartMesurement();
-
+	
 	if (aTick % INTERVALL_5 == 0) {
 		mTemperature.StartMesurement();
 	}
