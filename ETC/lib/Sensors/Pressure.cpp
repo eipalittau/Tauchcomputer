@@ -7,6 +7,9 @@
 //#define MS5837_CONVERT_D1_8192    0x4A
 //#define MS5837_CONVERT_D2_8192    0x5A
 
+uint32_t D1, D2;
+int32_t P;
+
 //Constructor / Destructor
 Pressure::Pressure() : I2CBase(0x76) {}
 
@@ -14,6 +17,23 @@ Pressure::~Pressure() {}
 
 //Public
 bool Pressure::StartMesurement() {
+	
+}
+
+float Pressure::GetData() {
+	if (Pressure::ReadTemperature()) {		
+		D1 = Pressure::ReadPressure(0x4A);
+		D2 = Pressure::ReadPressure(0x5A);
+		
+		calculate();
+	} else {
+		return FLOAT_MIN;
+	}
+	
+
+}
+
+bool Pressure::ReadTemperature() {
 	const unsigned char ARRAYSIZE = 2;
 	
 	if (I2CBase::RequestRegister(0x1E) == 0) {
@@ -30,44 +50,28 @@ bool Pressure::StartMesurement() {
 			}
 		}
 		
-		uint8_t crcRead = C[0] >> 12;
-		uint8_t crcCalculated = crc4(C);
-
-		return crcCalculated == crcRead;
+		return crc4(C) == C[0] >> 12;
 	} else {
 		return false;
 	}
 }
 
-float Pressure::GetData() {
-	const unsigned char ARRAYSIZE = 3;
-	unsigned char lSize = ARRAYSIZE;
+uint32_t Pressure::ReadPressure(unsigned char aRegister) {
+	unsigned char lSize = 3;
+	uint32_t lResult = 0;
 	
-	if (I2CBase::RequestRegister(0x4A) == 0) {
+	if (I2CBase::RequestRegister(aRegister == 0) {
 		delay(20);
-	
+
 		if (I2CBase::StartMesurement(0x00, lSize) == 0) {
 			I2CBase::GetData(unsigned char aData[]);
-			D1 = 0;
-			D1 = aData[0];
-			D1 = (D1 << 8) | aData[1];
-			D1 = (D1 << 8) | aData[2];	
-		}
-
-		if (I2CBase::RequestRegister(0x5A == 0) {
-			delay(20);
-
-			if (I2CBase::StartMesurement(0x00, lSize) == 0) {
-				I2CBase::GetData(unsigned char aData[]);
-				D2 = 0;
-				D2 = aData[0];
-				D2 = (D2 << 8) | aData[1];
-				D2 = (D2 << 8) | aData[2];	
-			}
-			
-			calculate();
+			lResult = aData[0];
+			lResult = (lResult << 8) | aData[1];
+			lResult = (lResult << 8) | aData[2];	
 		}
 	}
+
+	return lResult;
 }
 
 void Pressure::calculate() {
@@ -132,17 +136,18 @@ void Pressure::calculate() {
 uint8_t Pressure::crc4(uint16_t n_prom[]) {
 	uint16_t n_rem = 0;
 
-	n_prom[0] = ((n_prom[0]) & 0x0FFF);
+	n_prom[0] = (n_prom[0] & 0x0FFF);
 	n_prom[7] = 0;
 
-	for ( uint8_t i = 0 ; i < 16; i++ ) {
-		if ( i%2 == 1 ) {
+	for (uint8_t i = 0 ; i < 16; i++) {
+		if (i%2 == 1) {
 			n_rem ^= (uint16_t)((n_prom[i>>1]) & 0x00FF);
 		} else {
 			n_rem ^= (uint16_t)(n_prom[i>>1] >> 8);
 		}
+		
 		for ( uint8_t n_bit = 8 ; n_bit > 0 ; n_bit-- ) {
-			if ( n_rem & 0x8000 ) {
+			if (n_rem & 0x8000) {
 				n_rem = (n_rem << 1) ^ 0x3000;
 			} else {
 				n_rem = (n_rem << 1);
