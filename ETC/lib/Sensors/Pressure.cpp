@@ -16,29 +16,23 @@ Pressure::Pressure() : I2CBase(0x76) {}
 Pressure::~Pressure() {}
 
 //Public
-bool Pressure::StartMesurement() {
-	
-}
-
 float Pressure::GetData() {
 	if (Pressure::ReadTemperature()) {		
 		D1 = Pressure::ReadPressure(0x4A);
 		D2 = Pressure::ReadPressure(0x5A);
 		
-		calculate();
+		Calculate();
 	} else {
 		return FLOAT_MIN;
 	}
-	
-
 }
 
 bool Pressure::ReadTemperature() {
 	const unsigned char ARRAYSIZE = 2;
 	
 	if (I2CBase::RequestRegister(0x1E) == 0) {
+unsigned char lSize = ARRAYSIZE;
 		unsigned char lData[ARRAYSIZE];
-		unsigned char lSize = ARRAYSIZE;
 		
 		delay(10);
 		
@@ -74,10 +68,7 @@ uint32_t Pressure::ReadPressure(unsigned char aRegister) {
 	return lResult;
 }
 
-void Pressure::calculate() {
-	// Given C1-C6 and D1, D2, calculated TEMP and P
-	// Do conversion first and then second order temp compensation
-	
+void Pressure::Calculate() {
 	int32_t dT = 0;
 	int64_t SENS = 0;
 	int64_t OFF = 0;
