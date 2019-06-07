@@ -31,7 +31,7 @@ bool Pressure::ReadTemperature() {
 	const unsigned char ARRAYSIZE = 2;
 	
 	if (I2CBase::RequestRegister(0x1E) == 0) {
-unsigned char lSize = ARRAYSIZE;
+		unsigned char lSize = ARRAYSIZE;
 		unsigned char lData[ARRAYSIZE];
 		
 		delay(10);
