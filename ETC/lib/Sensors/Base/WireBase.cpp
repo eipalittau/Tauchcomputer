@@ -50,7 +50,7 @@ unsigned char WireBase::GetData(unsigned char aCommand, unsigned short aData[]) 
 }
 #pragma endregion
 
-//Private
+#pragma region Private
 bool WireBase::SendCommand(unsigned char aValue) {
 	if (m1Wire->reset() == 0) {
 		return false;
@@ -61,3 +61,4 @@ bool WireBase::SendCommand(unsigned char aValue) {
 
 	return true;
 }
+#pragma endregion
