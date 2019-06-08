@@ -13,7 +13,7 @@ protected:
 
 	///<summyry>Destructor</summary>
 	~I2CBase();
-	
+
 	///<summary>Ruft ein Resgister an.</summary>
 	///<param name="aRegister">Anzusprechendes Sensor-Register</param>
 	///<returns>0 = Successful send.
@@ -21,8 +21,8 @@ protected:
 	///2 = Address was sent and a NACK received. This is an issue, and the master should send a STOP condition.
 	///3: Data was sent and a NACK received. This means the slave has no more to send. The master can send a STOP condition, or a repeated START.
 	///4: Another twi error took place (eg, the master lost bus arbitration).</returns>
-	char RequestRegister(unsigned char aRegister) {
-		
+	char RequestRegister(unsigned char aRegister);
+
 	///<summary>Weisst den Sensor zur Datenerfassung an.</summary>
 	///<param name="aRegister">Anzusprechendes Sensor-Register</param>
 	///<param name="aDataSize">Anzahl Bytes die erwartet werden.</param>
@@ -31,7 +31,7 @@ protected:
 	///2 = Address was sent and a NACK received. This is an issue, and the master should send a STOP condition.
 	///3: Data was sent and a NACK received. This means the slave has no more to send. The master can send a STOP condition, or a repeated START.
 	///4: Another twi error took place (eg, the master lost bus arbitration).</returns>
-	char StartMesurement(unsigned char aRegister, unsigned char &aDataSize) {
+	char StartMesurement(unsigned char aRegister, unsigned char &aDataSize);
 
 	void SetData(unsigned char aData[]);
 
@@ -46,5 +46,9 @@ private:
 
 	///<summary>Konvertiert den übergebenen hexadezimalen Wert in einen Dezimalen.</summary>
 	unsigned char Hex2Dec(unsigned char aValue);
+
+	unsigned char mI2CAdress;
+	unsigned char mRegister;
+	static boolean mInitWire;
 };
 #endif
