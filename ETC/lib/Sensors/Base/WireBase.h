@@ -27,5 +27,8 @@ protected:
 
 private:
 	bool SendCommand(unsigned char aValue);
+
+	OneWire* m1Wire;
+	uint8_t* mDeviceAddress;
 };
 #endif
