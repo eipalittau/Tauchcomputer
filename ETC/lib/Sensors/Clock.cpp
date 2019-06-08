@@ -3,7 +3,7 @@
 const unsigned char ARRAYSIZE = 7;
 
 #pragma region Constructor / Destructor
-Clock::Clock() : I2CBase(0x68, 0x00) {}
+Clock::Clock() : I2CBase(0x68) {}
 
 Clock::~Clock() {}
 #pragma endregion
@@ -12,7 +12,7 @@ Clock::~Clock() {}
 void Clock::StartMesurement() {
 	unsigned char lSize = ARRAYSIZE;
 
-	I2CBase::StartMesurement(lSize);
+	I2CBase::StartMesurement(0x00, lSize);
 }
 
 void Clock::SetData(DateTimeData aData) {
