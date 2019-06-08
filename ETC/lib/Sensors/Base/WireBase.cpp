@@ -1,8 +1,5 @@
 #include "WireBase.h"
 
-OneWire* m1Wire;
-uint8_t* mDeviceAddress;
-
 #pragma region Constructor / Destructor
 WireBase::WireBase(unsigned char aPinNumber, const unsigned char aDeviceAdressSize) {
 	assert(aPinNumber < 0 || aPinNumber > 13);
