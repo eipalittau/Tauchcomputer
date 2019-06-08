@@ -1,10 +1,6 @@
 #include "I2CBase.h"
 
-#pragma region Variable declaration
-unsigned char mI2CAdress;
-unsigned char mRegister;
 static boolean mInitWire = true;
-#pragma endregion
 
 #pragma region Constructor / Destructor
 I2CBase::I2CBase(unsigned char aI2CAdress) {
@@ -26,10 +22,10 @@ char I2CBase::RequestRegister(unsigned char aRegister) {
 
 	return Wire.endTransmission();
 }
-	
+
 char I2CBase::StartMesurement(unsigned char aRegister, unsigned char &aDataSize) {
-	char lResult = RequestRegister(aRegister)
-		
+	char lResult = RequestRegister(aRegister);
+
 	if (lResult == 0) {
 		aDataSize = Wire.requestFrom(mI2CAdress, aDataSize);
 	} else {
@@ -57,8 +53,8 @@ int I2CBase::GetData(unsigned char aData[]) {
 	while (!Wire.available() && millis() - lStart < TIMEOUT) {
 		delay(2);
 	}
-	
-	int lSize = int (fmin(sizeof(aData) / sizeof(unsigned char), Wire.available()));
+
+	int lSize = int(fmin(sizeof(aData) / sizeof(unsigned char), Wire.available()));
 
 	for (int lI = 0; lI < lSize; lI++) {
 		aData[lI] = Hex2Dec(Wire.read());
