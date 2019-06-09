@@ -5,11 +5,11 @@ Calculation::Calculation() {}
 Calculation::~Calculation() {}
 
 float Calculation::Pressure(unsigned short aDepth) {
-	return aDepth / (float)10 + 1;
+	return aDepth / 0.09985 + 1;
 }
 
 unsigned short Calculation::Depth(float aPressure) {
-	return (aPressure - 1) * 10;
+	return (aPressure - 1) * 10.0150;
 }
 
 float Calculation::PartialPressure(unsigned char aGasProportion, float aTotalPressur) {
