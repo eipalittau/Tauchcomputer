@@ -55,7 +55,7 @@ uint32_t Pressure::ReadPressure(unsigned char aRegister) {
 	unsigned char lSize = 3;
 	uint32_t lResult = 0;
 
-	if (I2CBase::RequestRegister(aRegister == 0)) {
+	if (I2CBase::RequestRegister(aRegister) == 0) {
 		delay(20);
 
 		if (I2CBase::StartMesurement(0x00, lSize) == 0) {
