@@ -10,3 +10,6 @@ Der durchschnittliche Salzgehalt der Meere liegt bei 3,5 %.
 
 Süsswasser
 0,999868 kg/l
+
+997 freshwater, 
+1029 for seawater
