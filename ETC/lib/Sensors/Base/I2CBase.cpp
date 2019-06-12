@@ -1,6 +1,6 @@
 #include "I2CBase.h"
 
-static boolean mInitWire = true;
+static bool mInitWire = true;
 
 #pragma region Constructor / Destructor
 I2CBase::I2CBase(unsigned char aI2CAdress) {
