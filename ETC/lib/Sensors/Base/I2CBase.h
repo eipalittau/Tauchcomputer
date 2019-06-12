@@ -49,6 +49,6 @@ private:
 
 	unsigned char mI2CAdress;
 	unsigned char mRegister;
-	static boolean mInitWire;
+	static bool mInitWire;
 };
 #endif
