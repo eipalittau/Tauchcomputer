@@ -13,6 +13,7 @@ public:
 
 private:
 	bool ReadTemperature();
+	void Reset();
   uint8_t ccr4();
   void read();
   void calculate();
