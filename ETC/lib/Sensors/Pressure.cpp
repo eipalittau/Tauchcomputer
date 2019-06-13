@@ -69,6 +69,10 @@ uint32_t Pressure::ReadPressure(unsigned char aRegister) {
 	return lResult;
 }
 
+void Pressure::Reset() {
+	return I2CBase::RequestRegister(0x1E);
+}
+
 void Pressure::Calculate() {
 	int32_t dT = 0;
 	int64_t SENS = 0;
