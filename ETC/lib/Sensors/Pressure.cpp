@@ -9,14 +9,25 @@
 
 uint32_t D1, D2;
 int32_t P;
+unsigned long mNextAction;
 
 //Constructor / Destructor
-Pressure::Pressure() : I2CBase(0x76) {}
+Pressure::Pressure() : I2CBase(0x76) {
+	I2CBase::RequestRegister(0x1E);
+
+	mNextAction = millis() + 10;
+}
 
 Pressure::~Pressure() {}
 
 //Public
+bool Pressure::Checksum() {
+	return Pressure::crc4(C) == (C[0] >> 12);
+}
+
 float Pressure::GetData() {
+	while mNextAction > millis() {}
+
 	if (Pressure::ReadTemperature()) {
 		D1 = Pressure::ReadPressure(0x4A);
 		D2 = Pressure::ReadPressure(0x5A);
@@ -27,27 +38,18 @@ float Pressure::GetData() {
 	}
 }
 
-bool Pressure::ReadTemperature() {
+void Pressure::ReadTemperature() {
 	const unsigned char ARRAYSIZE = 2;
 
-	if (I2CBase::RequestRegister(0x1E) == 0) {
-		unsigned char lSize = ARRAYSIZE;
-		unsigned char lData[ARRAYSIZE];
+	unsigned char lSize = ARRAYSIZE;
+	unsigned char lData[ARRAYSIZE];
 
-		delay(10);
-
-		for (unsigned char lI = 0; lI < 7; lI++) {
-			if (I2CBase::StartMesurement(0xA0 + (lI * 2), lSize) == 0) {
-				if (lSize == ARRAYSIZE && I2CBase::GetData(lData) == ARRAYSIZE) {
-					C[i] = (lData[0] << 8) | lData[1];
-				}
+	for (unsigned char lI = 0; lI < 7; lI++) {
+		if (I2CBase::StartMesurement(0xA0 + (lI * 2), lSize) == 0) {
+			if (lSize == ARRAYSIZE && I2CBase::GetData(lData) == ARRAYSIZE) {
+				C[i] = (lData[0] << 8) | lData[1];
 			}
 		}
-
-		return Pressure::crc4(C) == C[0] >> 12;
-	}
-	else {
-		return false;
 	}
 }
 
@@ -67,10 +69,6 @@ uint32_t Pressure::ReadPressure(unsigned char aRegister) {
 	}
 
 	return lResult;
-}
-
-void Pressure::Reset() {
-	return I2CBase::RequestRegister(0x1E);
 }
 
 void Pressure::Calculate() {
