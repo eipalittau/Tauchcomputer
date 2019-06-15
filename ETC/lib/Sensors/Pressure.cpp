@@ -10,7 +10,9 @@
 uint32_t D1, D2;
 int32_t P;
 unsigned long mNextAction;
+unsigned long mNextCrcCheck;
 unsigned char _CheckCrcIntervall;
+bool _IsCrcOk;
 
 //Constructor / Destructor
 Pressure::Pressure(unsigned char aCheckCrcIntervall) : I2CBase(0x76) {
@@ -25,7 +27,8 @@ Pressure::Pressure(unsigned char aCheckCrcIntervall) : I2CBase(0x76) {
 		while mNextAction <= millis() {}
 		
 		if (Pressure::ReadTemperature()) {
-			_IsCrcOk = Pressure::crc4(C) == (C[0] >> 12);
+			Pressure::CheckCrc();
+			
 		} else {
 			_IsCrcOk = false;
 		}
@@ -35,6 +38,11 @@ Pressure::Pressure(unsigned char aCheckCrcIntervall) : I2CBase(0x76) {
 Pressure::~Pressure() {}
 
 //Public
+void CheckCrc() {
+	_IsCrcOk = Pressure::crc4(C) == (C[0] >> 12);
+	mNextCrcCheck = millis() + (_CheckCrcIntervall * 1000);
+} 
+
 bool Pressure::IsCrcOk() {
 	return _IsCrcOk;
 } 
@@ -43,6 +51,9 @@ float Pressure::GetData() {
 	while mNextAction > millis() {}
 
 	if (Pressure::ReadTemperature()) {
+		if (mLastCrcCheck + (_CheckCrcIntervall * 1000) > millis() {
+			
+		} 
 		D1 = Pressure::ReadPressure(0x4A);
 		D2 = Pressure::ReadPressure(0x5A);
 
