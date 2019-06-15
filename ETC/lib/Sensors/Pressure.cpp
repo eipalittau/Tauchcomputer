@@ -35,14 +35,14 @@ Pressure::Pressure(unsigned char aCheckCrcIntervall) : I2CBase(0x76) {
 	}
 }
 
-Pressure::~Pressure() {}
-
-//Public
-
-void Wait4Action() {
-	while mNextAction > millis() {}
+Pressure::~Pressure() {
+	delete mNextAction;
+	delete mNetxtCrcCheck;
+	delete _IntervallCrcCheck;
+	delete _IsCrcOk;
 }
 
+//Public
 void CheckCrc() {
 	_IsCrcOk = Pressure::crc4(C) == (C[0] >> 12);
 	mNextCrcCheck = millis() + (_CheckCrcIntervall * 1000);
@@ -68,6 +68,7 @@ float Pressure::GetData() {
 
 		Pressure::Calculate();
 	} else {
+		_IsCrcOk = false;
 		return FLOAT_MIN;
 	}
 }
@@ -103,6 +104,10 @@ uint32_t Pressure::ReadPressure(unsigned char aRegister) {
 	}
 
 	return lResult;
+}
+
+void Wait4Action() {
+	while mNextAction > millis() {}
 }
 
 void Pressure::Calculate() {
