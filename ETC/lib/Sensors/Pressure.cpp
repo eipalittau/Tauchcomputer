@@ -14,35 +14,30 @@ unsigned char _CheckCrcIntervall;
 
 //Constructor / Destructor
 Pressure::Pressure(unsigned char aCheckCrcIntervall) : I2CBase(0x76) {
-	I2CBase::RequestRegister(0x1E);
-	delay(10);
-
-	if (Pressure::ReadTemperature()) {
-		// OK
+	I2CBase::RequestRegister(0x1E); //Reset
+	mNextAction = millis() + 10;
+	
+	_CheckCrcIntervall = aCheckCrcIntervall;
+	
+	if (aCheckCrcIntervall == 0) {
+		_IsCrcOk = false
 	} else {
-
-	}
-	if (aCheckCrcIntervall > 0) {
 		while mNextAction <= millis() {}
-
-		if (Pressure::ReadTemperature()) {
-			IsCrcOk = Pressure::crc4(C) == (C[0] >> 12)
-		} else {
-			Pressure::crc4(C) == (C[0] >> 12)
-		}
-	} else {
 		
+		if (Pressure::ReadTemperature()) {
+			_IsCrcOk = Pressure::crc4(C) == (C[0] >> 12);
+		} else {
+			_IsCrcOk = false;
+		}
 	}
-
-
 }
 
 Pressure::~Pressure() {}
 
 //Public
-bool Pressure::CheckCrc4() {
-	return Pressure::crc4(C) == (C[0] >> 12);
-}
+bool Pressure::IsCrcOk() {
+	return _IsCrcOk;
+} 
 
 float Pressure::GetData() {
 	while mNextAction > millis() {}
