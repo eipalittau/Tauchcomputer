@@ -10,74 +10,17 @@
 uint32_t D1, D2;
 int32_t P;
 unsigned long mNextAction;
-unsigned long mNextCrcCheck;
-unsigned char _IntervallCrcCheck;
 bool _IsCrcOk;
 
 //Constructor / Destructor
-Pressure::Pressure(unsigned char aCheckCrcIntervall) : I2CBase(0x76) {
-	I2CBase::RequestRegister(0x1E); //Reset
-	mNextAction = millis() + 10;
-	
-	_IntervallCrcCheck = aIntervallCrcCheck;
-	
-	if (aIntervallCrcCheck == 0) {
-		_IsCrcOk = false
-	} else {
-		Pressure::Wait4Action();
-		
-		if (Pressure::ReadTemperature()) {
-			mNextAction = millis() + 10;
-			Pressure::CheckCrc();
-		} else {
-			_IsCrcOk = false;
-		}
-	}
-}
-
-Pressure::~Pressure() {
-	delete mNextAction;
-	delete mNetxtCrcCheck;
-	delete _IntervallCrcCheck;
-	delete _IsCrcOk;
-}
-
-//Public
-void CheckCrc() {
-	_IsCrcOk = Pressure::crc4(C) == (C[0] >> 12);
-	mNextCrcCheck = millis() + (_CheckCrcIntervall * 1000);
-} 
-
-bool Pressure::IsCrcOk() {
-	return _IsCrcOk;
-} 
-
-float Pressure::GetData() {
-	Pressure::Wait4Action();
-
-	if (Pressure::ReadTemperature()) {
-		mNextAction = millis() + 10;
-
-		if (mNextCrcCheck <= millis() {
-			Pressure::CheckCrc();
-		}
-		Pressure::Wait4Action();
-
-		D1 = Pressure::ReadPressure(0x4A);
-		D2 = Pressure::ReadPressure(0x5A);
-
-		Pressure::Calculate();
-	} else {
-		_IsCrcOk = false;
-		return FLOAT_MIN;
-	}
-}
-
-void Pressure::ReadTemperature() {
+Pressure::Pressure() : I2CBase(0x76) {
 	const unsigned char ARRAYSIZE = 2;
 
 	unsigned char lSize = ARRAYSIZE;
 	unsigned char lData[ARRAYSIZE];
+
+	I2CBase::RequestRegister(0x1E); //Reset
+	delay(10);
 
 	for (unsigned char lI = 0; lI < 7; lI++) {
 		if (I2CBase::StartMesurement(0xA0 + (lI * 2), lSize) == 0) {
@@ -86,6 +29,29 @@ void Pressure::ReadTemperature() {
 			}
 		}
 	}
+		_IsCrcOk = Pressure::crc4(C) == (C[0] >> 12);
+	} else {
+		_IsCrcOk = false;
+	}
+}
+
+Pressure::~Pressure() {
+	delete mNextAction;
+	delete _IsCrcOk;
+}
+
+//Public
+bool Pressure::IsCrcOk() {
+	return _IsCrcOk;
+} 
+
+float Pressure::GetData() {
+	while mNextAction > millis() {}
+
+	D1 = Pressure::ReadPressure(0x4A);
+	D2 = Pressure::ReadPressure(0x5A);
+
+	Pressure::Calculate();
 }
 
 uint32_t Pressure::ReadPressure(unsigned char aRegister) {
@@ -106,10 +72,6 @@ uint32_t Pressure::ReadPressure(unsigned char aRegister) {
 	return lResult;
 }
 
-void Wait4Action() {
-	while mNextAction > millis() {}
-}
-
 void Pressure::Calculate() {
 	int32_t dT = 0;
 	int64_t SENS = 0;
@@ -124,22 +86,22 @@ void Pressure::Calculate() {
 	dT = D2 - uint32_t(C[5]) * 256l;
 	SENS = int64_t(C[1]) * 32768l + (int64_t(C[3])*dT) / 256l;
 	OFF = int64_t(C[2]) * 65536l + (int64_t(C[4])*dT) / 128l;
-	P = (D1*SENS / (2097152l) - OFF) / (8192l);
+	P = (D1*SENS / 2097152l - OFF) / 8192l;
 
 	// Temp conversion
 	TEMP = 2000l + int64_t(dT)*C[6] / 8388608LL;
 
 	//Second order compensation
 
-	if ((TEMP / 100) < 20) {         //Low temp
+	if (TEMP < 2000) {         //Low temp
 		Ti = (3 * int64_t(dT)*int64_t(dT)) / (8589934592LL);
 		OFFi = (3 * (TEMP - 2000)*(TEMP - 2000)) / 2;
 		SENSi = (5 * (TEMP - 2000)*(TEMP - 2000)) / 8;
-		if ((TEMP / 100) < -15) {    //Very low temp
+		if (TEMP < -1500) {    //Very low temp
 			OFFi = OFFi + 7 * (TEMP + 1500l)*(TEMP + 1500l);
 			SENSi = SENSi + 4 * (TEMP + 1500l)*(TEMP + 1500l);
 		}
-	} else if ((TEMP / 100) >= 20) {    //High temp
+	} else if (TEMP >= 2000) {    //High temp
 		Ti = 2 * (dT*dT) / (137438953472LL);
 		OFFi = (1 * (TEMP - 2000)*(TEMP - 2000)) / 16;
 		SENSi = 0;
