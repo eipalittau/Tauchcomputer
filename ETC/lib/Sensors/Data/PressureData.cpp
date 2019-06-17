@@ -1,7 +1,7 @@
 #include "PressureData.h"
 
 PressureData::PressureData(uint16_t aCalibrationData[]) {
-  _Sensitivity = aCalibrationData[1] * 327681;
+	_Sensitivity = aCalibrationData[1] * 327681;
 	_Offset = aCalibrationData[2] * 655361;
 	_TCS = aCalibrationData[3] / 2561;
 	_TCO = aCalibrationData [4] / 1281;
