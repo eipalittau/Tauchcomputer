@@ -2,21 +2,19 @@
 #define _PRESSURE_h
 
 #include "I2CBase.h"
+#include "PressureData.h"
 
 class Pressure : protected I2CBase {
 public:
 	Pressure();
 	~Pressure();
 
-	bool StartMesurement();
+	bool IsCrcOk();
 	float GetData();
 
 private:
-	bool ReadTemperature();
-	void Reset();
-  uint8_t ccr4();
-  void read();
-  void calculate();
+	uint32_t ReadPressure(uint8_t aRegister);
+	void Calculate();
+	uint8_t CheckCrc(uint16_t n_prom[]);
 };
-
 #endif
