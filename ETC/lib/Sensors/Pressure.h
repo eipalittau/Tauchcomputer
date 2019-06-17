@@ -3,6 +3,7 @@
 
 #include "I2CBase.h"
 #include "PressureData.h"
+#include <math.h>
 
 class Pressure : protected I2CBase {
 public:
@@ -10,11 +11,13 @@ public:
 	~Pressure();
 
 	bool IsCrcOk();
-	float GetData();
+	int32_t GetData();
 
 private:
-	uint32_t ReadPressure(uint8_t aRegister);
-	void Calculate();
+	uint32_t ReadData(uint8_t aRegister);
+	int32_t Calculate();
 	uint8_t CheckCrc(uint16_t n_prom[]);
+	
+	PressureData* mPressureData;	
 };
 #endif
