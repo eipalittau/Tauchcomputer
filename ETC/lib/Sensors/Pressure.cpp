@@ -7,31 +7,34 @@
 //#define MS5837_CONVERT_D1_8192    0x4A
 //#define MS5837_CONVERT_D2_8192    0x5A
 
-uint32_t D1, D2;
-int32_t P;
 unsigned long mNextAction;
 bool _IsCrcOk;
 
 //Constructor / Destructor
 Pressure::Pressure() : I2CBase(0x76) {
-	const unsigned char ARRAYSIZE = 2;
-
-	unsigned char lSize = ARRAYSIZE;
-	unsigned char lData[ARRAYSIZE];
-
+	const uint8_t ARRAYSIZE = 2;
+	
+	uint8_t lSize = ARRAYSIZE;
+	uint8_t lData[ARRAYSIZE];
+	uint16_t lCalibrationData[7];
+	
 	I2CBase::RequestRegister(0x1E); //Reset
 	delay(10);
-
+	
 	for (unsigned char lI = 0; lI < 7; lI++) {
 		if (I2CBase::StartMesurement(0xA0 + (lI * 2), lSize) == 0) {
 			if (lSize == ARRAYSIZE && I2CBase::GetData(lData) == ARRAYSIZE) {
-				C[i] = (lData[0] << 8) | lData[1];
+				lCalibrationData[i] = (lData[0] << 8) | lData[1];
 			}
 		}
 	}
-		_IsCrcOk = Pressure::crc4(C) == (C[0] >> 12);
+	
+	_IsCrcOk = Pressure::CheckCrc(lCalibrationData) == (lCalibrationData[0] >> 12);
+		
+	if (_IsCrcOk) {
+		mPressureData = new PressureData(lCalibrationData);			
 	} else {
-		_IsCrcOk = false;
+		mPressureData = null;
 	}
 }
 
@@ -45,17 +48,42 @@ bool Pressure::IsCrcOk() {
 	return _IsCrcOk;
 } 
 
-float Pressure::GetData() {
+int32_t Pressure::GetData() {
 	while mNextAction > millis() {}
 
-	D1 = Pressure::ReadPressure(0x4A);
-	D2 = Pressure::ReadPressure(0x5A);
+	int32_t lDeltaTemp = Pressure::ReadData(0x5A) - mPressureData.ReferenceTemperature();
+	int64_t lSensitivity = mPressureData.Sensitivity + mPressureData.TCS  * lDeltaTemp;
+	int64_t lOffset = mPressureData.Offset + mPressureData.TCO  * lDeltaTemp;
+	int32_t lSensitivity2;
+	int32_t lOffset2;
+	int32_t lTemperature = 2000l + lDeltaTemp * mPressureData.TCT;
 
-	Pressure::Calculate();
+	if (lTemperature < 2000) {
+		int32_t lTemperature2 = pow(lTemperature - 2000, 2);
+		
+		lOffset2 = 3 * lTemperature2 / 2;
+		lSensitivity2 = 5 * lTemperature2 / 8;
+		
+		if (lTemperature < -1500) {
+			lOffset2 += 7 * pow(lTemperature + 1500l, 2);
+			lSensitivity2 += 4 * pow(lTemperature + 1500l, 2);
+		}
+		
+		lTemperature -= 3 * pow(lDeltaTemp, 2) / 8589934592LL;
+	} else
+		int32_t lTemperature2 = pow(lTemperature - 2000, 2);
+	
+		lTemperature -= 2 * pow(lDeltaTemp, 2) / 137438953472LL;
+		lOffset2 = lTemperature2 / 16;
+		lSensitivity2 = 0;
+	}
+
+	return (Pressure::ReadData(0x4A) * (lSensitivity - lSensitivity2) / 2097152l - (lOffset - lOffset2)) / 8192l;
 }
 
-uint32_t Pressure::ReadPressure(unsigned char aRegister) {
-	unsigned char lSize = 3;
+//Private
+uint32_t Pressure::ReadData(uint8_t aRegister) {
+	uint8_t lSize = 3;
 	uint32_t lResult = 0;
 
 	if (I2CBase::RequestRegister(aRegister) == 0) {
@@ -72,69 +100,23 @@ uint32_t Pressure::ReadPressure(unsigned char aRegister) {
 	return lResult;
 }
 
-void Pressure::Calculate() {
-	int32_t dT = 0;
-	int64_t SENS = 0;
-	int64_t OFF = 0;
-	int32_t SENSi = 0;
-	int32_t OFFi = 0;
-	int32_t Ti = 0;
-	int64_t OFF2 = 0;
-	int64_t SENS2 = 0;
-
-	// Terms called
-	dT = D2 - uint32_t(C[5]) * 256l;
-	SENS = int64_t(C[1]) * 32768l + (int64_t(C[3])*dT) / 256l;
-	OFF = int64_t(C[2]) * 65536l + (int64_t(C[4])*dT) / 128l;
-	P = (D1*SENS / 2097152l - OFF) / 8192l;
-
-	// Temp conversion
-	TEMP = 2000l + int64_t(dT)*C[6] / 8388608LL;
-
-	//Second order compensation
-
-	if (TEMP < 2000) {         //Low temp
-		Ti = (3 * int64_t(dT)*int64_t(dT)) / (8589934592LL);
-		OFFi = (3 * (TEMP - 2000)*(TEMP - 2000)) / 2;
-		SENSi = (5 * (TEMP - 2000)*(TEMP - 2000)) / 8;
-		if (TEMP < -1500) {    //Very low temp
-			OFFi = OFFi + 7 * (TEMP + 1500l)*(TEMP + 1500l);
-			SENSi = SENSi + 4 * (TEMP + 1500l)*(TEMP + 1500l);
-		}
-	} else if (TEMP >= 2000) {    //High temp
-		Ti = 2 * (dT*dT) / (137438953472LL);
-		OFFi = (1 * (TEMP - 2000)*(TEMP - 2000)) / 16;
-		SENSi = 0;
-	}
-
-	OFF2 = OFF - OFFi;           //Calculate pressure and temp second order
-	SENS2 = SENS - SENSi;
-
-	TEMP = (TEMP - Ti);
-
-	P = (((D1*SENS2) / 2097152l - OFF2) / 8192l);
-}
-
-
-uint8_t Pressure::crc4(uint16_t n_prom[]) {
+uint8_t Pressure::CheckCrc(uint16_t n_prom[]) {
 	uint16_t n_rem = 0;
 
 	n_prom[0] = (n_prom[0] & 0x0FFF);
 	n_prom[7] = 0;
 
-	for (uint8_t i = 0; i < 16; i++) {
-		if (i % 2 == 1) {
+	for (uint8_t lI = 0; lI < 16; lI++) {
+		if (lI % 2 == 1) {
 			n_rem ^= (uint16_t)((n_prom[i >> 1]) & 0x00FF);
-		}
-		else {
+		} else {
 			n_rem ^= (uint16_t)(n_prom[i >> 1] >> 8);
 		}
 
 		for (uint8_t n_bit = 8; n_bit > 0; n_bit--) {
 			if (n_rem & 0x8000) {
 				n_rem = (n_rem << 1) ^ 0x3000;
-			}
-			else {
+			} else {
 				n_rem = (n_rem << 1);
 			}
 		}
