@@ -4,31 +4,35 @@ Clock mClock;
 Temperature mTemperature;
 Pressure mPressure;
 
-const unsigned char INTERVALL_5 = 5;
-
 //Constructor / Destructor
-Sensor::Sensor() {}
+Sensor::Sensor() {
+	mData = new SensorData();
+}
 
-Sensor::~Sensor() {}
+Sensor::~Sensor() {
+	delete mData;
+}
 
 //Public
 void Sensor::StartMesurement(uint8_t aTick) {
 	mClock.StartMesurement();
 	
-	if (aTick % INTERVALL_5 == 0) {
+	if (aTick % Constants::INTERVALL_5 == 0) {
 		mTemperature.StartMesurement();
 	}
+
+	mNextAction = millis() + 20;
 }
 
 SensorData Sensor::GetData(uint8_t aTick) {
-	SensorData lData;
+	while mNextAction > millis() {}
 
-	lData.DateTime = mClock.GetData();
-	lData.Pressure = mPressure.GetData();
+	mData.DateTime = mClock.GetData();
+	mData.Pressure = mPressure.GetData();
 
-	if (aTick % INTERVALL_5 == 0) {
-		lData.Temperature = mTemperature.GetData();
+	if (aTick % Constants::INTERVALL_5 == 0) {
+		mData.Temperature = mTemperature.GetData();
 	}
 
-	return lData;
+	return mData;
 }

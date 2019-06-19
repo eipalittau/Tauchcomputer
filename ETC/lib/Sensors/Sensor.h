@@ -14,5 +14,8 @@ public:
 private:
 	Sensor();
 	~Sensor();
+
+	SensorData* mData;
+	uint32_t mNextAction;
 };
 #endif
