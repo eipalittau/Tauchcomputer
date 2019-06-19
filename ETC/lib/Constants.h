@@ -5,6 +5,7 @@
 
 extern const unsigned char TIMEOUT;
 extern const float FLOAT_MIN;
+extern const uint8_t INTERVALL_5;
 
 class Constants {
 public:
