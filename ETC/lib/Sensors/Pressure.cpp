@@ -1,28 +1,20 @@
 #include "Pressure.h"
 
-//#define MS5837_ADDR               0x76  
-//#define MS5837_RESET              0x1E
-//#define MS5837_ADC_READ           0x00
-//#define MS5837_PROM_READ          0xA0
-//#define MS5837_CONVERT_D1_8192    0x4A
-//#define MS5837_CONVERT_D2_8192    0x5A
-
-unsigned long mNextAction;
-bool _IsCrcOk;
-
 //Constructor / Destructor
-Pressure::Pressure() : I2CBase(0x76) {
+Pressure::Pressure() : I2CBase(0x76) { //I2C-Adress
 	const uint8_t ARRAYSIZE = 2;
 	
 	uint8_t lSize = ARRAYSIZE;
 	uint8_t lData[ARRAYSIZE];
 	uint16_t lCalibrationData[7];
 	
+	_IsCrcOk = false;
+
 	I2CBase::RequestRegister(0x1E); //Reset
 	delay(10);
 	
 	for (unsigned char lI = 0; lI < 7; lI++) {
-		if (I2CBase::StartMesurement(0xA0 + (lI * 2), lSize) == 0) {
+		if (I2CBase::StartMesurement(0xA0 + (lI * 2), lSize) == 0) { //Read PROM
 			if (lSize == ARRAYSIZE && I2CBase::GetData(lData) == ARRAYSIZE) {
 				lCalibrationData[i] = (lData[0] << 8) | lData[1];
 			}
@@ -40,6 +32,7 @@ Pressure::Pressure() : I2CBase(0x76) {
 
 Pressure::~Pressure() {
 	delete mNextAction;
+	delete mPressureData;
 	delete _IsCrcOk;
 }
 
@@ -49,6 +42,9 @@ bool Pressure::IsCrcOk() {
 } 
 
 int32_t Pressure::GetData() {
+	assert(mPressureData != NULL);
+	assert(_IsCrcOk)
+
 	while mNextAction > millis() {}
 
 	int32_t lDeltaTemp = Pressure::ReadData(0x5A) - mPressureData.ReferenceTemperature();
@@ -65,12 +61,14 @@ int32_t Pressure::GetData() {
 		lSensitivity2 = 5 * lTemperature2 / 8;
 		
 		if (lTemperature < -1500) {
-			lOffset2 += 7 * pow(lTemperature + 1500l, 2);
-			lSensitivity2 += 4 * pow(lTemperature + 1500l, 2);
+			int32_t lTemperature3 = pow(lTemperature + 1500l, 2);
+
+			lOffset2 += 7 * lTemperature3;
+			lSensitivity2 += 4 * lTemperature3;
 		}
 		
 		lTemperature -= 3 * pow(lDeltaTemp, 2) / 8589934592LL;
-	} else
+	} else {
 		int32_t lTemperature2 = pow(lTemperature - 2000, 2);
 	
 		lTemperature -= 2 * pow(lDeltaTemp, 2) / 137438953472LL;

@@ -4,9 +4,8 @@
     "\\ETC",
     "\\ETC\\lib",
     "\\ETC\\lib\\Sensors",
-    "\\ETC\\lib\\Sensors\\Data",
-    "\\ETC\\Sensors"
+    "\\ETC\\lib\\Sensors\\Base",
+    "\\ETC\\lib\\Sensors\\Data"
   ],
-  "SelectedNode": "\\ETC\\lib\\Sensors\\I2CBase.cpp",
   "PreviewInSolutionExplorer": false
 }

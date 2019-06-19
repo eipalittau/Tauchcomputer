@@ -11,7 +11,9 @@ public:
 	Sensor();
 	~Sensor();
 
-	void StartMesurement(unsigned char aTick);
-	SensorData GetData(unsigned char aTick);
+	void StartMesurement(uint8_t aTick);
+	SensorData GetData(uint8_t aTick);
+
+private:
 };
 #endif

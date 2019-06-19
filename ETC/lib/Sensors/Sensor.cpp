@@ -12,7 +12,7 @@ Sensor::Sensor() {}
 Sensor::~Sensor() {}
 
 //Public
-void Sensor::StartMesurement(unsigned char aTick) {
+void Sensor::StartMesurement(uint8_t aTick) {
 	mClock.StartMesurement();
 	
 	if (aTick % INTERVALL_5 == 0) {
@@ -20,7 +20,7 @@ void Sensor::StartMesurement(unsigned char aTick) {
 	}
 }
 
-SensorData Sensor::GetData(unsigned char aTick) {
+SensorData Sensor::GetData(uint8_t aTick) {
 	SensorData lData;
 
 	lData.DateTime = mClock.GetData();
