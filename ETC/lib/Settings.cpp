@@ -3,6 +3,13 @@
 //Constructor / Destructor
 Settings::Settings() {}
 	
-Pressure::~Pressure() {}
+Settings::~Settings() {}
 
 //Public
+void Settings::TemperatureUnit(Temperature::TemperatureUnitEnum aValue) {
+	_TemperatureUnit = aValue;
+}
+
+Temperature::TemperatureUnitEnum Settings::TemperatureUnit() {
+	return _TemperatureUnit;
+}

@@ -4,15 +4,16 @@
 #include <OneWire.h>
 #include "WireBase.h"
 #include "Constants.h"
+#include "/Projekte/ETC/ETC/lib/Settings.h"
 
 class Temperature : protected WireBase {
 public:
 	Temperature();
 	~Temperature();
 
-	enum UnitMesurmentTemperature { C, F, K };
+	enum TemperatureUnitEnum { C, F, K };
 
 	void StartMesurement();
-	float GetData(UnitMesurmentTemperature aUnitMesurment = C);
+	float GetData();
 };
 #endif

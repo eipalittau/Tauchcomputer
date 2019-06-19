@@ -27,7 +27,7 @@ SensorData Sensor::GetData(uint8_t aTick) {
 	lData.Pressure = mPressure.GetData();
 
 	if (aTick % INTERVALL_5 == 0) {
-		lData.Temperature = mTemperature.GetData(Temperature::C);
+		lData.Temperature = mTemperature.GetData();
 	}
 
 	return lData;

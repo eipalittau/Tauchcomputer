@@ -8,12 +8,11 @@
 
 class Sensor {
 public:
-	Sensor();
-	~Sensor();
-
-	void StartMesurement(uint8_t aTick);
-	SensorData GetData(uint8_t aTick);
+	static void StartMesurement(uint8_t aTick);
+	static SensorData GetData(uint8_t aTick);
 
 private:
+	Sensor();
+	~Sensor();
 };
 #endif

@@ -10,14 +10,14 @@ void Temperature::StartMesurement() {
 	WireBase::StartMesurement(0x44);
 }
 
-float Temperature::GetData(UnitMesurmentTemperature aUnitMesurment) {
+float Temperature::GetData() {
 	unsigned short lData[9];
 	float lResult = FLOAT_MIN;
 
 	if (WireBase::GetData(0xBE, lData) == 0) {
 		lResult = (float)((lData[1] << 11) | (lData[0] << 3));
 		
-		switch (aUnitMesurment) {
+		switch (Settings::TemperatureUnit()) {
 		case F:
 			lResult = lResult * 0.0140625 + 32;
 			break;
