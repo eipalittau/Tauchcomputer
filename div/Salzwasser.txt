@@ -13,3 +13,24 @@ Süsswasser
 
 997 freshwater, 
 1029 for seawater
+
+Temp
+( °C)	Density
+pure water
+(g/cm3)	Density
+pure water
+(kg/m3)	Density
+tap water
+(g/cm3)	Density
+pure water
+lb/cu.ft	Specific Gravity
+4 °C reference	Specific Gravity
+60 °F reference
+0 (solid)	0.9150	915.0	-	-	0.915	-
+0 (liquid)	0.9999	999.9	0.99987	62.42	0.999	1.002
+4	1.0000	1000	0.99999	62.42	1.000	1.001
+20	0.9982	998.2	0.99823	62.28	0.998	0.999
+40	0.9922	992.2	0.99225	61.92	0.992	0.993
+60	0.9832	983.2	0.98389	61.39	0.983	0.985
+80	0.9718	971.8	0.97487	60.65	0.972	0.973
+100 (gas)	0.0006	see steam tables...
