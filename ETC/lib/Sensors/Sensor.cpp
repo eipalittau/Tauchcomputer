@@ -31,7 +31,22 @@ SensorData Sensor::GetData(uint8_t aTick) {
 	mData.Pressure = mPressure.GetData();
 
 	if (aTick % Constants::INTERVALL_5 == 0) {
-		mData.Temperature = mTemperature.GetData();
+		float lData = mTemperature.GetData();
+		
+		switch (Settings::TemperatureUnit()) {
+		case F:
+			mData.Temperature = lData * 0.0140625 + 32;
+			break;
+
+		case K:
+			mData.Temperature = lData * 0.0078125 + 273.15;
+			break;
+
+		case C:
+		default:
+			mData.Temperature = lData * 0.0078125;
+			break;
+		}
 	}
 
 	return mData;
