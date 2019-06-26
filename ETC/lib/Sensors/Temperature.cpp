@@ -11,27 +11,11 @@ void Temperature::StartMesurement() {
 }
 
 float Temperature::GetData() {
-	unsigned short lData[9];
-	float lResult = FLOAT_MIN;
+	uint8_t lData[9];
 
 	if (WireBase::GetData(0xBE, lData) == 0) {
-		lResult = (float)((lData[1] << 11) | (lData[0] << 3));
-		
-		switch (Settings::TemperatureUnit()) {
-		case F:
-			lResult = lResult * 0.0140625 + 32;
-			break;
-
-		case K:
-			lResult = lResult * 0.0078125 + 273.15;
-			break;
-
-		case C:
-		default:
-			lResult = lResult * 0.0078125;
-			break;
-		}
+		return (float)((lData[1] << 11) | (lData[0] << 3));
+	} else {
+		return FLOAT_MIN;
 	}
-
-	return lResult;
 }
