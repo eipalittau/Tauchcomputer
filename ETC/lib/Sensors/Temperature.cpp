@@ -11,11 +11,12 @@ void Temperature::StartMesurement() {
 }
 
 float Temperature::GetData() {
-	uint8_t lData[9];
+	unsigned char lData[9];
 
 	if (WireBase::GetData(0xBE, lData) == 0) {
 		return (float)((lData[1] << 11) | (lData[0] << 3));
-	} else {
+	}
+	else {
 		return FLOAT_MIN;
 	}
 }
