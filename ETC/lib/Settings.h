@@ -1,8 +1,6 @@
 #ifndef _SETTINGS_h
 #define _SETTINGS_h
 
-#include "Sensors/Temperature.h"
-
 class Settings {
 public:
 	///<summary>Constructor</summary>
@@ -11,10 +9,12 @@ public:
 	///<summyry>Destructor</summary>
 	~Settings();
 
-	void TemperatureUnit(Temperature::TemperatureUnitEnum aValue);
-	Temperature::TemperatureUnitEnum TemperatureUnit();
+	enum TemperatureUnitEnum { C, F, K };
+
+	void TemperatureUnit(TemperatureUnitEnum aValue);
+	TemperatureUnitEnum TemperatureUnit();
 
 private:
-	Temperature::TemperatureUnitEnum _TemperatureUnit = Temperature::C;
+	TemperatureUnitEnum _TemperatureUnit = C;
 };
 #endif
