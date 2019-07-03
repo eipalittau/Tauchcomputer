@@ -4,12 +4,12 @@
 #include <math.h>
 
 class Essentials {
-	public:
-		static bool IsBetween(int aLower, int aUpper, int aNumber);
-		static int Constrain(int aLower, int aUpper, int aNumber);
+public:
+	static bool IsBetween(int16_t aLower, int16_t aUpper, int16_t aNumber);
+	static int16_t Constrain(int16_t aLower, int16_t aUpper, int16_t aNumber);
 
-	private:
-		Essentials();
-		~Essentials();
+private:
+	Essentials();
+	~Essentials();
 };
 #endif
