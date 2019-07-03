@@ -1,6 +1,6 @@
 #include "Clock.h"
 
-const uint8_t ARRAYSIZE = 7;
+const unsigned char ARRAYSIZE = 7;
 
 #pragma region Constructor / Destructor
 Clock::Clock() : I2CBase(0x68) {}
@@ -10,19 +10,19 @@ Clock::~Clock() {}
 
 #pragma region Public
 void Clock::StartMesurement() {
-	uint8_t lSize = ARRAYSIZE;
+	unsigned char lSize = ARRAYSIZE;
 
 	I2CBase::StartMesurement(0x00, lSize);
 }
 
 void Clock::SetData(DateTimeData aData) {
-	uint8_t lTimestamp[ARRAYSIZE] = { aData.Second(), aData.Minute(), aData.Hour(), aData.Weekday(), aData.Day(), aData.Month(), aData.Year() - 2000 };
+	unsigned char lTimestamp[ARRAYSIZE] = { aData.Second(), aData.Minute(), aData.Hour(), aData.Weekday(), aData.Day(), aData.Month(), aData.Year() - 2000 };
 
 	I2CBase::SetData(lTimestamp);
 }
 
 DateTimeData Clock::GetData() {
-	uint8_t lData[ARRAYSIZE];
+	unsigned char lData[ARRAYSIZE];
 	DateTimeData lResult;
 
 	if (I2CBase::GetData(lData) >= 7) {
