@@ -12,14 +12,14 @@ public:
 	~Pressure();
 
 	bool IsCrcOk();
-	int32_t GetData();
+	long GetData();
 
 private:
-	uint32_t ReadData(uint8_t aRegister);
-	uint8_t CheckCrc(uint16_t n_prom[]);
-	
+	unsigned long ReadData(unsigned char aRegister);
+	unsigned char CheckCrc(unsigned int n_prom[]);
+
 	bool _IsCrcOk = false;
-	uint32_t mNextAction = 0;
-	PressureData* mPressureData;	
+	unsigned long mNextAction = 0;
+	PressureData* mPressureData;
 };
 #endif
