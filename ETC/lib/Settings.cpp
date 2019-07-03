@@ -2,14 +2,14 @@
 
 //Constructor / Destructor
 Settings::Settings() {}
-	
+
 Settings::~Settings() {}
 
 //Public
-void Settings::TemperatureUnit(Temperature::TemperatureUnitEnum aValue) {
+void Settings::TemperatureUnit(TemperatureUnitEnum aValue) {
 	_TemperatureUnit = aValue;
 }
 
-Temperature::TemperatureUnitEnum Settings::TemperatureUnit() {
+Settings::TemperatureUnitEnum Settings::TemperatureUnit() {
 	return _TemperatureUnit;
 }
