@@ -1,8 +1,8 @@
-#ifndef _PRESSURE_h
+#ifdef _PRESSURE_h
 #define _PRESSURE_h
 
-#include "I2CBase.h"
-#include "PressureData.h"
+#include "Base/I2CBase.h"
+#include "Data/PressureData.h"
 #include <math.h>
 #include <assert.h>
 
