@@ -13,8 +13,9 @@ Sensor::~Sensor() {}
 
 //Public
 void Sensor::StartMesurement(unsigned char aTick) {
+	assert(!mPressure.IsCrcOk());
+	
 	mClock.StartMesurement();
-	mPressure.StartMesurement();
 
 	if (aTick % INTERVALL_5 == 0) {
 		mTemperature.StartMesurement();
@@ -22,13 +23,15 @@ void Sensor::StartMesurement(unsigned char aTick) {
 }
 
 SensorData Sensor::GetData(unsigned char aTick) {
+	assert(!mPressure.IsCrcOk());
+
 	SensorData lData;
 
 	lData.DateTime = mClock.GetData();
 	lData.Pressure = mPressure.GetData();
 
 	if (aTick % INTERVALL_5 == 0) {
-		lData.Temperature = mTemperature.GetData(Temperature::C);
+		lData.Temperature = mTemperature.GetData();
 	}
 
 	return lData;
