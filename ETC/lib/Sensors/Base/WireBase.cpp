@@ -1,7 +1,7 @@
 #include "WireBase.h"
 
 #pragma region Constructor / Destructor
-WireBase::WireBase(unsigned char aPinNumber, const unsigned char aDeviceAdressSize) {
+WireBase::WireBase(uint8_t aPinNumber, const uint8_t aDeviceAdressSize) {
 	assert(aPinNumber < 0 || aPinNumber > 13);
 
 	m1Wire = new OneWire(aPinNumber);
@@ -22,21 +22,21 @@ WireBase::~WireBase() {
 #pragma endregion
 
 #pragma region Protected
-void WireBase::StartMesurement(unsigned char aCommand) {
+void WireBase::StartMesurement(uint8_t aCommand) {
 	SendCommand(aCommand);
 }
 
-unsigned char WireBase::GetData(unsigned char aCommand, unsigned short aData[]) {
-	unsigned long lStart = millis();
+unsigned char WireBase::GetData(uint8_t aCommand, uint16_t aData[]) {
+	uint32_t lStart = millis();
 
 	while (m1Wire->read_bit() != 1 && millis() - lStart < TIMEOUT) {
 		delay(2);
 	}
 
 	if (SendCommand(aCommand)) {
-		unsigned short lSize = sizeof(aData) / sizeof(unsigned char);
+		uint16_t lSize = sizeof(aData) / sizeof(unsigned char);
 
-		for (unsigned char lI = 0; lI < lSize; lI++) {
+		for (uint8_t lI = 0; lI < lSize; lI++) {
 			aData[lI] = m1Wire->read();
 		}
 
@@ -48,7 +48,7 @@ unsigned char WireBase::GetData(unsigned char aCommand, unsigned short aData[]) 
 #pragma endregion
 
 #pragma region Private
-bool WireBase::SendCommand(unsigned char aValue) {
+bool WireBase::SendCommand(uint8_t aValue) {
 	if (m1Wire->reset() == 0) {
 		return false;
 	}
