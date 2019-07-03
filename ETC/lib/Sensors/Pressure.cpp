@@ -2,11 +2,11 @@
 
 //Constructor / Destructor
 Pressure::Pressure() : I2CBase(0x76) { //I2C-Adress
-	const uint8_t ARRAYSIZE = 2;
+	const unsigned char ARRAYSIZE = 2;
 	
-	uint8_t lSize = ARRAYSIZE;
-	uint8_t lData[ARRAYSIZE];
-	uint16_t lCalibrationData[7];
+	unsigned char lSize = ARRAYSIZE;
+	unsigned char lData[ARRAYSIZE];
+	unsinged int  lCalibrationData[7];
 	
 	_IsCrcOk = false;
 
@@ -41,27 +41,27 @@ bool Pressure::IsCrcOk() {
 	return _IsCrcOk;
 } 
 
-int32_t Pressure::GetData() {
+long Pressure::GetData() {
 	assert(mPressureData != NULL);
 	assert(_IsCrcOk)
 
 	while mNextAction > millis() {}
 
-	int32_t lDeltaTemp = Pressure::ReadData(0x5A) - mPressureData.ReferenceTemperature();
-	int64_t lSensitivity = mPressureData.Sensitivity + mPressureData.TCS  * lDeltaTemp;
-	int64_t lOffset = mPressureData.Offset + mPressureData.TCO  * lDeltaTemp;
-	int32_t lSensitivity2;
-	int32_t lOffset2;
-	int32_t lTemperature = 2000l + lDeltaTemp * mPressureData.TCT;
+	long lDeltaTemp = Pressure::ReadData(0x5A) - mPressureData.ReferenceTemperature();
+	long long lSensitivity = mPressureData.Sensitivity + mPressureData.TCS  * lDeltaTemp;
+	long long lOffset = mPressureData.Offset + mPressureData.TCO  * lDeltaTemp;
+	long lSensitivity2;
+	long lOffset2;
+	long lTemperature = 2000l + lDeltaTemp * mPressureData.TCT;
 
 	if (lTemperature < 2000) {
-		int32_t lTemperature2 = pow(lTemperature - 2000, 2);
+		long lTemperature2 = pow(lTemperature - 2000, 2);
 		
 		lOffset2 = 3 * lTemperature2 / 2;
 		lSensitivity2 = 5 * lTemperature2 / 8;
 		
 		if (lTemperature < -1500) {
-			int32_t lTemperature3 = pow(lTemperature + 1500l, 2);
+			long lTemperature3 = pow(lTemperature + 1500l, 2);
 
 			lOffset2 += 7 * lTemperature3;
 			lSensitivity2 += 4 * lTemperature3;
@@ -69,7 +69,7 @@ int32_t Pressure::GetData() {
 		
 		lTemperature -= 3 * pow(lDeltaTemp, 2) / 8589934592LL;
 	} else {
-		int32_t lTemperature2 = pow(lTemperature - 2000, 2);
+		long lTemperature2 = pow(lTemperature - 2000, 2);
 	
 		lTemperature -= 2 * pow(lDeltaTemp, 2) / 137438953472LL;
 		lOffset2 = lTemperature2 / 16;
@@ -80,9 +80,9 @@ int32_t Pressure::GetData() {
 }
 
 //Private
-uint32_t Pressure::ReadData(uint8_t aRegister) {
-	uint8_t lSize = 3;
-	uint32_t lResult = 0;
+unsigned long Pressure::ReadData(unsinged char aRegister) {
+	unsinged char lSize = 3;
+	unsinged long lResult = 0;
 
 	if (I2CBase::RequestRegister(aRegister) == 0) {
 		delay(20);
@@ -98,20 +98,20 @@ uint32_t Pressure::ReadData(uint8_t aRegister) {
 	return lResult;
 }
 
-uint8_t Pressure::CheckCrc(uint16_t n_prom[]) {
-	uint16_t n_rem = 0;
+unsinged char Pressure::CheckCrc(unsinged int n_prom[]) {
+	unsigned int n_rem = 0;
 
 	n_prom[0] = (n_prom[0] & 0x0FFF);
 	n_prom[7] = 0;
 
-	for (uint8_t lI = 0; lI < 16; lI++) {
+	for (unsigned char lI = 0; lI < 16; lI++) {
 		if (lI % 2 == 1) {
-			n_rem ^= (uint16_t)((n_prom[i >> 1]) & 0x00FF);
+			n_rem ^= (unsinged int)((n_prom[i >> 1]) & 0x00FF);
 		} else {
-			n_rem ^= (uint16_t)(n_prom[i >> 1] >> 8);
+			n_rem ^= (unsinged int)(n_prom[i >> 1] >> 8);
 		}
 
-		for (uint8_t n_bit = 8; n_bit > 0; n_bit--) {
+		for (unsinged char n_bit = 8; n_bit > 0; n_bit--) {
 			if (n_rem & 0x8000) {
 				n_rem = (n_rem << 1) ^ 0x3000;
 			} else {
