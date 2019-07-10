@@ -3,18 +3,18 @@
 
 class Settings {
 public:
+	enum TemperatureUnitEnum { C, F, K };
+
+	void static SetTemperatureUnit(TemperatureUnitEnum aValue);
+	TemperatureUnitEnum static GetTemperatureUnit();
+
+private:
 	///<summary>Constructor</summary>
 	Settings();
 
 	///<summyry>Destructor</summary>
 	~Settings();
 
-	enum TemperatureUnitEnum { C, F, K };
-
-	void TemperatureUnit(TemperatureUnitEnum aValue);
-	TemperatureUnitEnum TemperatureUnit();
-
-private:
 	TemperatureUnitEnum _TemperatureUnit = C;
 };
 #endif
