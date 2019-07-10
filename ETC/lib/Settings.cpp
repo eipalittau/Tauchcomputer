@@ -6,10 +6,10 @@ Settings::Settings() {}
 Settings::~Settings() {}
 
 //Public
-void Settings::TemperatureUnit(TemperatureUnitEnum aValue) {
+void static Settings::SetTemperatureUnit(TemperatureUnitEnum aValue) {
 	_TemperatureUnit = aValue;
 }
 
-Settings::TemperatureUnitEnum Settings::TemperatureUnit() {
+Settings::TemperatureUnitEnum static Settings::GetTemperatureUnit() {
 	return _TemperatureUnit;
 }
