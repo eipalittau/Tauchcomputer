@@ -12,5 +12,9 @@ public:
 	void StartMesurement();
 	void SetData(DateTimeData aData);
 	DateTimeData GetData();
+
+private:
+	I2C mClock;
+
 };
 #endif
