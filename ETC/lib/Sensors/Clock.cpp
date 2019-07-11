@@ -3,7 +3,9 @@
 const unsigned char ARRAYSIZE = 7;
 
 #pragma region Constructor / Destructor
-Clock::Clock() : I2CBase(0x68) {}
+Clock::Clock() {
+	I2C mClock = new I2C(0x68);
+}
 
 Clock::~Clock() {}
 #pragma endregion
