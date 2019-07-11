@@ -17,14 +17,14 @@ I2C::~I2C() {}
 #pragma endregion
 
 #pragma region Public
-char I2C::RequestRegister(uint8_t aRegister) {
+int8_t I2C::RequestRegister(uint8_t aRegister) {
 	Wire.beginTransmission(mI2CAdress);
 	Wire.write(aRegister);
 
 	return Wire.endTransmission();
 }
 
-char I2C::StartMesurement(uint8_t aRegister, uint8_t &aDataSize) {
+int8_t I2C::StartMesurement(uint8_t aRegister, uint8_t &aDataSize) {
 	int8_t lResult = RequestRegister(aRegister);
 
 	if (lResult == 0) {
