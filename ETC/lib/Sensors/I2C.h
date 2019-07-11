@@ -1,26 +1,26 @@
-#ifndef _I2CBASE_h
-#define _I2CBASE_h
+#ifndef _I2C_h
+#define _I2C_h
 
 #include <Arduino.h>
 #include <Wire.h>
 #include "Constants.h"
 
-class I2CBase {
+class I2C {
 protected:
 	///<summary>Constructor</summary>
 	///<param name="aI2CAdress">I2C Bus-Addresse</param>
-	I2CBase(uint8_t aI2CAdress);
+	I2C(uint8_t aI2CAdress);
 
 	///<summyry>Destructor</summary>
-	~I2CBase();
+	~I2C();
 
 	///<summary>Ruft ein Resgister an.</summary>
 	///<param name="aRegister">Anzusprechendes Sensor-Register</param>
 	///<returns>0 = Successful send.
 	///1 = Send buffer too large for the twi buffer.
 	///2 = Address was sent and a NACK received. This is an issue, and the master should send a STOP condition.
-	///3: Data was sent and a NACK received. This means the slave has no more to send. The master can send a STOP condition, or a repeated START.
-	///4: Another twi error took place (eg, the master lost bus arbitration).</returns>
+	///3 = Data was sent and a NACK received. This means the slave has no more to send. The master can send a STOP condition, or a repeated START.
+	///4 = Another twi error took place (eg, the master lost bus arbitration).</returns>
 	char RequestRegister(uint8_t aRegister);
 
 	///<summary>Weisst den Sensor zur Datenerfassung an.</summary>
@@ -31,7 +31,7 @@ protected:
 	///2 = Address was sent and a NACK received. This is an issue, and the master should send a STOP condition.
 	///3: Data was sent and a NACK received. This means the slave has no more to send. The master can send a STOP condition, or a repeated START.
 	///4: Another twi error took place (eg, the master lost bus arbitration).</returns>
-	char StartMesurement(uint8_t aRegister, uint8_t&aDataSize);
+	char StartMesurement(uint8_t aRegister, uint8_t &aDataSize);
 
 	void SetData(uint8_t aData[]);
 
