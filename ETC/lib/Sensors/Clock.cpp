@@ -4,7 +4,7 @@ const unsigned char ARRAYSIZE = 7;
 
 #pragma region Constructor / Destructor
 Clock::Clock() {
-	I2C mClock = new I2C(0x68);
+	I2C mClock = new I2C(0x68, true);
 }
 
 Clock::~Clock() {}
@@ -12,15 +12,9 @@ Clock::~Clock() {}
 
 #pragma region Public
 void Clock::StartMesurement() {
-	unsigned char lSize = ARRAYSIZE;
+	uint8_t lSize = ARRAYSIZE;
 
-	I2CBase::StartMesurement(0x00, lSize);
-}
-
-void Clock::SetData(DateTimeData aData) {
-	unsigned char lTimestamp[ARRAYSIZE] = { aData.Second(), aData.Minute(), aData.Hour(), aData.Weekday(), aData.Day(), aData.Month(), aData.Year() - 2000 };
-
-	I2CBase::SetData(lTimestamp);
+	mClock.StartMesurement(0x00, lSize);
 }
 
 DateTimeData Clock::GetData() {
