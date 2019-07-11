@@ -6,10 +6,15 @@
 #include "Constants.h"
 
 class I2C {
-protected:
+public:
 	///<summary>Constructor</summary>
 	///<param name="aI2CAdress">I2C Bus-Addresse</param>
 	I2C(uint8_t aI2CAdress);
+
+	///<summary>Constructor</summary>
+	///<param name="aI2CAdress">I2C Bus-Addresse</param>
+	///<param name="aInitWire">Soll die Wire-Klasse initialisiert werden?</param>
+	I2C(uint8_t aI2CAdress, bool aInitWire);
 
 	///<summyry>Destructor</summary>
 	~I2C();
@@ -29,8 +34,8 @@ protected:
 	///<returns>0 = Successful send.
 	///1 = Send buffer too large for the twi buffer.
 	///2 = Address was sent and a NACK received. This is an issue, and the master should send a STOP condition.
-	///3: Data was sent and a NACK received. This means the slave has no more to send. The master can send a STOP condition, or a repeated START.
-	///4: Another twi error took place (eg, the master lost bus arbitration).</returns>
+	///3 = Data was sent and a NACK received. This means the slave has no more to send. The master can send a STOP condition, or a repeated START.
+	///4 = Another twi error took place (eg, the master lost bus arbitration).</returns>
 	char StartMesurement(uint8_t aRegister, uint8_t &aDataSize);
 
 	void SetData(uint8_t aData[]);
@@ -42,13 +47,12 @@ protected:
 
 private:
 	///<summary>Konvertiert den übergebenen dezimalen Wert in einen Hexadezimalen.</summary>
-	unsigned char Dec2Hex(uint8_t aValue);
+	uint8_t Dec2Hex(uint8_t aValue);
 
 	///<summary>Konvertiert den übergebenen hexadezimalen Wert in einen Dezimalen.</summary>
-	unsigned char Hex2Dec(uint8_t aValue);
+	uint8_t Hex2Dec(uint8_t aValue);
 
-	unsigned char mI2CAdress;
-	unsigned char mRegister;
-	static bool mInitWire;
+	uint8_t mI2CAdress;
+	uint8_t mRegister;
 };
 #endif
