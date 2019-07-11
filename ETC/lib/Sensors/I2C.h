@@ -26,7 +26,7 @@ public:
 	///2 = Address was sent and a NACK received. This is an issue, and the master should send a STOP condition.
 	///3 = Data was sent and a NACK received. This means the slave has no more to send. The master can send a STOP condition, or a repeated START.
 	///4 = Another twi error took place (eg, the master lost bus arbitration).</returns>
-	char RequestRegister(uint8_t aRegister);
+	int8_t RequestRegister(uint8_t aRegister);
 
 	///<summary>Weisst den Sensor zur Datenerfassung an.</summary>
 	///<param name="aRegister">Anzusprechendes Sensor-Register</param>
@@ -36,7 +36,7 @@ public:
 	///2 = Address was sent and a NACK received. This is an issue, and the master should send a STOP condition.
 	///3 = Data was sent and a NACK received. This means the slave has no more to send. The master can send a STOP condition, or a repeated START.
 	///4 = Another twi error took place (eg, the master lost bus arbitration).</returns>
-	char StartMesurement(uint8_t aRegister, uint8_t &aDataSize);
+	int8_t StartMesurement(uint8_t aRegister, uint8_t &aDataSize);
 
 	void SetData(uint8_t aData[]);
 
@@ -53,6 +53,5 @@ private:
 	uint8_t Hex2Dec(uint8_t aValue);
 
 	uint8_t mI2CAdress;
-	uint8_t mRegister;
 };
 #endif
