@@ -1,27 +1,30 @@
-#include "Clock.h"
+#include "Sensors.h"
 
 const unsigned char ARRAYSIZE = 7;
 
 #pragma region Constructor / Destructor
-Clock::Clock() {
-	I2C mClock = new I2C(0x68, true);
+Sensors::Sensors() {
+	Wire.begin();
+
+	mClock = new I2C(0x68);
+	mPressure = new I2C();
 }
 
-Clock::~Clock() {}
+Sensors::~Sensors() {}
 #pragma endregion
 
 #pragma region Public
-void Clock::StartMesurement() {
+void Sensors::StartMesurement() {
 	uint8_t lSize = ARRAYSIZE;
 
 	mClock.StartMesurement(0x00, lSize);
 }
 
-DateTimeData Clock::GetData() {
+DateTimeData Sensors::GetData() {
 	unsigned char lData[ARRAYSIZE];
 	DateTimeData lResult;
 
-	if (I2CBase::GetData(lData) >= 7) {
+	if (mClock.GetData(lData) >= 7) {
 		lResult.Second(lData[0]);
 		lResult.Minute(lData[1]);
 		lResult.Hour(lData[2]);
