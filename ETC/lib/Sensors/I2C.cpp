@@ -2,15 +2,7 @@
 
 #pragma region Constructor / Destructor
 I2C::I2C(uint8_t aI2CAdress) {
-	myclass.new(aI2CAdress);
-}
-
-I2C::I2C(uint8_t aI2CAdress, bool aInitWire) {
 	mI2CAdress = aI2CAdress;
-
-	if (aInitWire) {
-		Wire.begin();
-	}
 }
 
 I2C::~I2C() {}
