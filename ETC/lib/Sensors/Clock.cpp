@@ -1,6 +1,6 @@
 #include "Sensors.h"
 
-const unsigned char ARRAYSIZE = 7;
+const unsigned char CLOCK_ARRAYSIZE = 7;
 
 #pragma region Constructor / Destructor
 Sensors::Sensors() {
@@ -15,16 +15,16 @@ Sensors::~Sensors() {}
 
 #pragma region Public
 void Sensors::StartMesurement() {
-	uint8_t lSize = ARRAYSIZE;
+	uint8_t lSize = CLOCK_ARRAYSIZE;
 
 	mClock.StartMesurement(0x00, lSize);
 }
 
 DateTimeData Sensors::GetData() {
-	unsigned char lData[ARRAYSIZE];
+	uint8_t lData[ARRAYSIZE];
 	DateTimeData lResult;
 
-	if (mClock.GetData(lData) >= 7) {
+	if (mClock.GetData(lData) >= CLOCK_ARRAYSIZE) {
 		lResult.Second(lData[0]);
 		lResult.Minute(lData[1]);
 		lResult.Hour(lData[2]);
