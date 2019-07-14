@@ -19,8 +19,8 @@ private:
 	I2C mPressure;
 	Wire mTemperature;
 
-	SensorData* mData;
-
+	SensorData* mSensorData;
+	PressureData* mPressureData;
 	bool _IsCrcOk;
 };
 #endif
