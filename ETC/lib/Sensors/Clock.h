@@ -15,6 +15,6 @@ public:
 
 private:
 	I2C mClock;
-
+	SensorData* mData;
 };
 #endif
