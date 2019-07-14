@@ -12,26 +12,24 @@ Sensors::Sensors() {
 	mPressure = new I2C(0x76);
 	mTemperature = new Wire(2, 8);
 
-	mData = new SensorData();
+	mSensorData = new SensorData();
 
 	uint8_t lSize = PRESS_ARRAYSIZE;
 	uint8_t lData[PRESS_ARRAYSIZE];
 	uint16_t lCalibrationData[CALIB_ARRAYSIZE];
 
-	_IsCrcOk = false;
-
 	mPressure.RequestRegister(0x1E); //Reset
 	delay(10);
 
 	for (uint8_t lI = 0; lI < CALIB_ARRAYSIZE; lI++) {
-		if (I2CBase::StartMesurement(0xA0 + (lI * 2), lSize) == 0) { //Read PROM
-			if (lSize == PRESS_ARRAYSIZE && I2CBase::GetData(lData) == PRESS_ARRAYSIZE) {
+		if (mPressure.StartMesurement(0xA0 + (lI * 2), lSize) == 0) { //Read EPROM
+			if (lSize == PRESS_ARRAYSIZE && mPressure.GetData(lData) == PRESS_ARRAYSIZE) {
 				lCalibrationData[lI] = (lData[0] << 8) | lData[1];
 			}
 		}
 	}
 
-	_IsCrcOk = Pressure::CheckCrc(lCalibrationData) == (lCalibrationData[0] >> 12);
+	_IsCrcOk = Sensors::CheckCrc(lCalibrationData) == (lCalibrationData[0] >> 12);
 
 	if (_IsCrcOk) {
 		mPressureData = new PressureData(lCalibrationData);
