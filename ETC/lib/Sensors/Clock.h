@@ -1,20 +1,26 @@
-#ifndef _CLOCK_h
-#define _CLOCK_h
+#ifndef _SENSORS_h
+#define _SENSORS_h
 
 #include "I2C.h"
-#include "DateTimeData.h"
+#include "Wire.h"
+#include "SensorData.h"
 
-class Clock {
+class Sensors {
 public:
-	Clock();
-	~Clock();
+	Sensors();
+	~Sensors();
 
 	void StartMesurement();
-	void SetData(DateTimeData aData);
-	DateTimeData GetData();
+	void SetData(SensorData aData);
+	SensorData GetData();
 
 private:
 	I2C mClock;
+	I2C mPressure;
+	Wire mTemperature;
+
 	SensorData* mData;
+
+	bool _IsCrcOk;
 };
 #endif
