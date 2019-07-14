@@ -14,5 +14,10 @@ public:
 	float Temperature();
 	void Pressure(float aValue);
 	float Pressure();
+
+Private:
+	DateTimeData* _DateTime = NULL;
+	float _Temperature = FLOAT_MIN;
+	float _Pressure = FLOAT_MIN;
 };
 #endif
