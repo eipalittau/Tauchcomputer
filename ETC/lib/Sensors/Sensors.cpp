@@ -34,9 +34,6 @@ Sensors::Sensors() {
 	if (_IsCrcOk) {
 		mPressureData = new PressureData(lCalibrationData);
 	}
-	else {
-		mPressureData = NULL;
-	}
 
 }
 
