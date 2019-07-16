@@ -6,13 +6,12 @@ const uint8_t CALIB_ARRAYSIZE = 7;
 
 #pragma region Constructor / Destructor
 Sensors::Sensors() {
+	mSensorData = new SensorData();
+
 	Wire.begin();
 
 	mClock = new I2C(0x68);
 	mPressure = new I2C(0x76);
-	mTemperature = new Wire(2, 8);
-
-	mSensorData = new SensorData();
 
 	uint8_t lSize = PRESS_ARRAYSIZE;
 	uint8_t lData[PRESS_ARRAYSIZE];
@@ -34,6 +33,16 @@ Sensors::Sensors() {
 	if (_IsCrcOk) {
 		mPressureData = new PressureData(lCalibrationData);
 	}
+
+	mTemperature = new OneWire(2);
+	mDeviceAddress = new uint8_t[8]();
+
+	while (mTemperature->search(mDeviceAddress)) {
+		if (mTemperature->crc8(mDeviceAddress, 7) == mDeviceAddress[7]) {
+			break;
+		}
+	}
+
 }
 
 Sensors::~Sensors() {
