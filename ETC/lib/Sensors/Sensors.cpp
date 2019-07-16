@@ -101,7 +101,7 @@ SensorData Sensors::GetData() {
 }
 #pragma endregion
 
-uint32_t Sensors::ReadPressureData(uint8_t aRegister) {
+uint32_t Sensors::Pressure_ReadData(uint8_t aRegister) {
 	uint8_t lSize = 3;
 
 	if (mPressure.RequestRegister(aRegister) == 0) {
