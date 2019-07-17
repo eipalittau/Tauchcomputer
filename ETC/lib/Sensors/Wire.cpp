@@ -26,7 +26,7 @@ void Wire::StartMesurement(unsigned char aCommand) {
 	SendCommand(aCommand);
 }
 
-unsigned char WireBase::GetData(unsigned char aCommand, uint16_t aData[]) {
+unsigned char Wire::GetData(unsigned char aCommand, uint16_t aData[]) {
 	uint32_t lStart = millis();
 
 	while (m1Wire->read_bit() != 1 && millis() - lStart < TIMEOUT) {
