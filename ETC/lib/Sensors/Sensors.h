@@ -11,17 +11,17 @@ public:
 	~Sensors();
 
 	void StartMesurement();
-	void SetData(SensorData aData);
 	SensorData GetData();
 
 private:
-	SensorData* mSensorData;
+	void Sensors::Pressure_CreateCrc();
+	uint32_t Pressure_ReadData(uint8_t aRegister);
+	uint8_t Sensors::Pressure_CheckCrc(unsigned int n_prom[]);
 	
+	SensorData* mSensorData;	
 	I2C mClock;
 	I2C mPressure;
 	OneWire mTemperature;
-
-
 	//PressureData* mPressureData;
 	uint32_t mNextAction;
 	bool _IsCrcOk;
