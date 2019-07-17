@@ -21,11 +21,7 @@ Wire::~Wire() {
 }
 #pragma endregion
 
-#pragma region Protected
-void Wire::StartMesurement(unsigned char aCommand) {
-	SendCommand(aCommand);
-}
-
+#pragma region Public
 unsigned char Wire::GetData(unsigned char aCommand, uint16_t aData[]) {
 	uint32_t lStart = millis();
 
