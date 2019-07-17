@@ -37,6 +37,8 @@ void Sensors::StartMesurement() {
 }
 
 SensorData Sensors::GetData() {
+	assert(!_IsCrcOk);
+	
 	uint8_t lClockData[CLOCK_ARRAYSIZE];
 	uint8_t lTemperatureData[TEMPE_ARRAYSIZE];
 
