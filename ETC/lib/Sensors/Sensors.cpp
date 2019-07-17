@@ -29,7 +29,7 @@ Sensors::Sensors() {
 	}
 	mNextAction = millis() + 20;
 	
-	_IsCrcOk = Sensors::CheckCrc(lCalibrationData) == (lCalibrationData[0] >> 12);
+	_IsCrcOk = Sensors::Pressure_CheckCrc(lCalibrationData) == (lCalibrationData[0] >> 12);
 	if (_IsCrcOk) {
 		mPressureData = new PressureData(lCalibrationData);
 	}
@@ -77,7 +77,7 @@ SensorData Sensors::GetData() {
 	
 	while(mNextAction > millis()) {}
 
-	long lDeltaTemp = Sensors::ReadPressureData(0x5A) - mPressureData->ReferenceTemperature();
+	long lDeltaTemp = Sensors::Pressure_ReadData(0x5A) - mPressureData->ReferenceTemperature();
 	long long lSensitivity = mPressureData->Sensitivity + mPressureData->TCS  * lDeltaTemp;
 	long long lOffset = mPressureData->Offset + mPressureData->TCO  * lDeltaTemp;
 	long lSensitivity2;
@@ -106,7 +106,7 @@ SensorData Sensors::GetData() {
 		lSensitivity2 = 0;
 	}
 
-	mDate.Pressure = (Sensors::ReadPressureData(0x4A) * (lSensitivity - lSensitivity2) / 2097152l - (lOffset - lOffset2)) / 8192l;
+	mDate.Pressure = (Sensors::Pressure_ReadData(0x4A) * (lSensitivity - lSensitivity2) / 2097152l - (lOffset - lOffset2)) / 8192l;
 }
 #pragma endregion
 
@@ -130,7 +130,7 @@ uint32_t Sensors::Pressure_ReadData(uint8_t aRegister) {
 	}
 }
 
-uint8_t Sensors::CheckCrc(unsigned int n_prom[]) {
+uint8_t Sensors::Pressure_CheckCrc(unsigned int n_prom[]) {
 	unsigned int n_rem = 0;
 
 	n_prom[0] = (n_prom[0] & 0x0FFF);
