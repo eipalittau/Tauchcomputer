@@ -2,6 +2,7 @@
 
 const uint8_t CLOCK_ARRAYSIZE = 7;
 const uint8_t PRESS_ARRAYSIZE = 2;
+const uint8_t TEMPE_ARRAYSIZE = 9;
 const uint8_t CALIB_ARRAYSIZE = 7;
 
 #pragma region Constructor / Destructor
@@ -12,18 +13,19 @@ Sensors::Sensors() {
 
 	mClock = new I2C(0x68);
 	mPressure = new I2C(0x76);
-
-	uint8_t lSize = PRESS_ARRAYSIZE;
-	uint8_t lData[PRESS_ARRAYSIZE];
+	mTemperature = new Wire(2, 8);
+	
+	uint8_t lPressureSize = PRESS_ARRAYSIZE;
+	uint8_t lPressureData[PRESS_ARRAYSIZE];
 	uint16_t lCalibrationData[CALIB_ARRAYSIZE];
 
 	mPressure.RequestRegister(0x1E); //Reset
 	delay(10);
 
 	for (uint8_t lI = 0; lI < CALIB_ARRAYSIZE; lI++) {
-		if (mPressure.StartMesurement(0xA0 + (lI * 2), lSize) == 0) { //Read EPROM
-			if (lSize == PRESS_ARRAYSIZE && mPressure.GetData(lData) == PRESS_ARRAYSIZE) {
-				lCalibrationData[lI] = (lData[0] << 8) | lData[1];
+		if (mPressure.StartMesurement(0xA0 + (lI * 2), lPressureSize) == 0) { //Read EPROM
+			if (lPressureSize == PRESS_ARRAYSIZE && mPressure.GetData(lPressureData) == PRESS_ARRAYSIZE) {
+				lCalibrationData[lI] = (lPressureData[0] << 8) | lPressureData[1];
 			}
 		}
 	}
@@ -33,16 +35,6 @@ Sensors::Sensors() {
 	if (_IsCrcOk) {
 		mPressureData = new PressureData(lCalibrationData);
 	}
-
-	mTemperature = new OneWire(2);
-	mDeviceAddress = new uint8_t[8]();
-
-	while (mTemperature->search(mDeviceAddress)) {
-		if (mTemperature->crc8(mDeviceAddress, 7) == mDeviceAddress[7]) {
-			break;
-		}
-	}
-
 }
 
 Sensors::~Sensors() {
@@ -60,19 +52,21 @@ void Sensors::StartMesurement() {
 	uint8_t lSize = CLOCK_ARRAYSIZE;
 
 	mClock.StartMesurement(0x00, lSize);
+	mTemperature.StartMesurement(0x44);
 }
 
 SensorData Sensors::GetData() {
-	uint8_t lData[CLOCK_ARRAYSIZE];
+	uint8_t lClockData[CLOCK_ARRAYSIZE];
+	uint8_t lTemperatureData[TEMPE_ARRAYSIZE];
 
-	if (mClock.GetData(lData) >= CLOCK_ARRAYSIZE) {
-		mData.DateTime.Second(lData[0]);
-		mData.DateTime.Minute(lData[1]);
-		mData.DateTime.Hour(lData[2]);
-		mData.DateTime.Weekday(lData[3]);
-		mData.DateTime.Day(lData[4]);
-		mDate.DateTime.Month(lData[5]);
-		mDate.DateTime.Year(lData[6] + 2000);
+	if (mClock.GetData(lClockData) >= CLOCK_ARRAYSIZE) {
+		mData.DateTime.Second(lClockData[0]);
+		mData.DateTime.Minute(lClockData[1]);
+		mData.DateTime.Hour(lClockData[2]);
+		mData.DateTime.Weekday(lClockData[3]);
+		mData.DateTime.Day(lClockData[4]);
+		mDate.DateTime.Month(lClockData[5]);
+		mDate.DateTime.Year(lClockData[6] + 2000);
 	}
 	
 	while(mNextAction > millis()) {}
@@ -106,10 +100,15 @@ SensorData Sensors::GetData() {
 		lSensitivity2 = 0;
 	}
 
-	mDate.Pressure = (Sensors::Pressure_ReadData(0x4A) * (lSensitivity - lSensitivity2) / 2097152l - (lOffset - lOffset2)) / 8192l;
+	mData.Pressure = (Sensors::Pressure_ReadData(0x4A) * (lSensitivity - lSensitivity2) / 2097152l - (lOffset - lOffset2)) / 8192l;
+	
+	if (Wire.GetData(0xBE, lTemperatureData) == 0) {
+		mData.Temperature = (float)((lTemperatureData[1] << 11) | (lTemperatureData[0] << 3));
+	}
 }
 #pragma endregion
 
+#pragma region Private
 uint32_t Sensors::Pressure_ReadData(uint8_t aRegister) {
 	uint8_t lSize = 3;
 
@@ -156,3 +155,4 @@ uint8_t Sensors::Pressure_CheckCrc(unsigned int n_prom[]) {
 
 	return n_rem ^ 0x00;
 }
+#pragma endregion
