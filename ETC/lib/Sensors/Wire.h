@@ -2,7 +2,6 @@
 #define _WIRE_h
 
 #include <OneWire.h>
-#include "Constants.h"
 #include <assert.h>
 
 class Wire {
