@@ -2,7 +2,7 @@
 #define _SENSORS_h
 
 #include "I2C.h"
-#include <OneWire.h>
+#include "Wire.h"
 #include "SensorData.h"
 
 class Sensors {
