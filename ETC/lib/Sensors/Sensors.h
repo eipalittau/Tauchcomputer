@@ -2,7 +2,7 @@
 #define _SENSORS_h
 
 #include "I2C.h"
-#include "Wire.h"
+#include <OneWire.h>
 #include "SensorData.h"
 
 class Sensors {
@@ -15,12 +15,15 @@ public:
 	SensorData GetData();
 
 private:
+	SensorData* mSensorData;
+	
 	I2C mClock;
 	I2C mPressure;
-	Wire mTemperature;
+	OneWire mTemperature;
 
-	SensorData* mSensorData;
-	PressureData* mPressureData;
+
+	//PressureData* mPressureData;
+	uint32_t mNextAction;
 	bool _IsCrcOk;
 };
 #endif
