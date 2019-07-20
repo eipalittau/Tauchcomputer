@@ -30,9 +30,9 @@ Sensors::~Sensors() {
 void Sensors::StartMesurement() {
 	assert(!_IsCrcOk);
 	
-	uint8_t lSize = CLOCK_ARRAYSIZE;
+	uint8_t lClickSize = CLOCK_ARRAYSIZE;
 
-	mClock.StartMesurement(0x00, lSize);
+	mClock.StartMesurement(0x00, lClockSize);
 	mTemperature.StartMesurement(0x44);
 }
 
