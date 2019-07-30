@@ -38,7 +38,7 @@ private:
 };
 
 Private:
-	DateTimeData* _DateTime = NULL;
+	DateTimeData* _DateTime = new DateTimeData();
 	float _Temperature = FLOAT_MIN;
 	float _Pressure = FLOAT_MIN;
 };
