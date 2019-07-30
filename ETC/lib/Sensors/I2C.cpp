@@ -1,14 +1,12 @@
 #include "I2C.h"
 
-#pragma region Constructor / Destructor
+
 I2C::I2C(uint8_t aI2CAdress) {
 	mI2CAdress = aI2CAdress;
 }
 
 I2C::~I2C() {}
-#pragma endregion
 
-#pragma region Public
 int8_t I2C::RequestRegister(uint8_t aRegister) {
 	Wire.beginTransmission(mI2CAdress);
 	Wire.write(aRegister);
@@ -55,9 +53,7 @@ int I2C::GetData(uint8_t aData[]) {
 
 	return lSize;
 }
-#pragma endregion
 
-#pragma region Privat
 uint8_t I2C::Dec2Hex(uint8_t aValue) {
 	return (aValue * 1.6) + (aValue % 10);
 }
@@ -65,4 +61,3 @@ uint8_t I2C::Dec2Hex(uint8_t aValue) {
 uint8_t I2C::Hex2Dec(uint8_t aValue) {
 	return (aValue / 160) + (aValue % 16);
 }
-#pragma endregion
