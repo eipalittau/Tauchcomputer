@@ -36,20 +36,20 @@ void Sensors::StartMesurement() {
 	mTemperature.StartMesurement(0x44);
 }
 
-SensorData Sensors::GetData() {
+void Sensors::GetData(SensorStruct* aData) {
 	assert(!_IsCrcOk);
 	
 	uint8_t lClockData[CLOCK_ARRAYSIZE];
 	uint8_t lTemperatureData[TEMPE_ARRAYSIZE];
 
 	if (mClock.GetData(lClockData) >= CLOCK_ARRAYSIZE) {
-		mSensorData.DateTime.Second(lClockData[0]);
-		mSensorData.DateTime.Minute(lClockData[1]);
-		mSensorData.DateTime.Hour(lClockData[2]);
-		mSensorData.DateTime.Weekday(lClockData[3]);
-		mSensorData.DateTime.Day(lClockData[4]);
-		mSensorData.DateTime.Month(lClockData[5]);
-		mSensorData.DateTime.Year(lClockData[6] + 2000);
+		aData->DateTime.Second(lClockData[0]);
+		aData->DateTime.Minute(lClockData[1]);
+		aData->DateTime.Hour(lClockData[2]);
+		aData->DateTime.Weekday(lClockData[3]);
+		aData->DateTime.Day(lClockData[4]);
+		aData->DateTime.Month(lClockData[5]);
+		aData->DateTime.Year(lClockData[6] + 2000);
 	}
 	
 	while(mNextAction > millis()) {}
@@ -83,10 +83,10 @@ SensorData Sensors::GetData() {
 		lSensitivity2 = 0;
 	}
 
-	mSensorData.Pressure = (Sensors::Pressure_ReadData(0x4A) * (lSensitivity - lSensitivity2) / 2097152l - (lOffset - lOffset2)) / 8192l;
+	aData->Pressure = (Sensors::Pressure_ReadData(0x4A) * (lSensitivity - lSensitivity2) / 2097152l - (lOffset - lOffset2)) / 8192l;
 	
 	if (Wire.GetData(0xBE, lTemperatureData) == 0) {
-		mSensorData.Temperature = (float)((lTemperatureData[1] << 11) | (lTemperatureData[0] << 3));
+		aData->Temperature = (float)((lTemperatureData[1] << 11) | (lTemperatureData[0] << 3));
 	}
 }
 #pragma endregion
