@@ -5,9 +5,6 @@ SensorData::SensorData() {}
 
 SensorData::~SensorData() {}
 
-void SensorData::DateTime(DateTimeData* aValue) {
-	_DateTime = aValue;
-}
 DateTimeData* SensorData::DateTime() {
 	return _DateTime;
 }
