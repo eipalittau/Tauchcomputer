@@ -22,3 +22,7 @@ void SensorData::Pressure(float aValue) {
 float SensorData::Pressure() {
 	return _Pressure;
 }
+
+void SensorData::DateTimeData::Minute() {
+	_Minute = aValue;
+} 
