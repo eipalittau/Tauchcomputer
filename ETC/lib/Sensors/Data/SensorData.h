@@ -8,7 +8,6 @@ public:
 	SensorData();
 	~SensorData();
 
-	void DateTime(DateTimeData* aValue);
 	DateTimeData* DateTime();
 	void Temperature(float aValue);
 	float Temperature();
