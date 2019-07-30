@@ -1,7 +1,7 @@
 #ifndef _SENSORDATA_h
 #define _SENSORDATA_h
 
-#include "DateTimeData.h"
+#include "Essentials.h"
 
 class SensorData {
 public:
@@ -14,6 +14,28 @@ public:
 	float Temperature();
 	void Pressure(float aValue);
 	float Pressure();
+
+class DateTimeData {
+public:
+	unsigned char Second();
+	void Second(unsigned char aValue);
+	unsigned char Minute();
+	void Minute(unsigned char aValue);
+	unsigned char Hour();
+	void Hour(unsigned char aValue);
+	unsigned char Day();
+	void Day(unsigned char aValue);
+	unsigned char Month();
+	void Month(unsigned char aValue);
+	unsigned short int Year();
+	void Year(unsigned short int aValue);
+	unsigned char Weekday();
+	void Weekday(unsigned char aValue);
+
+private:
+	DateTimeData();
+	~DateTimeData();
+};
 
 Private:
 	DateTimeData* _DateTime = NULL;
