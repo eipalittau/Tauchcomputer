@@ -11,9 +11,9 @@ typedef struct DateTimeStructDef {
   unsigned char Weekday;
 } DateTimeStruct;
 
-typedef struct SensorStructDef {
+typedef struct SensorsDataStructDef {
   DateTimeStruct DateTime;  
   float Temperature;
   float Pressure();
-} SensorStruct;
+} SensorsDataStruct;
 #endif
