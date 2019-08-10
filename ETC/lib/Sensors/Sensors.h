@@ -1,29 +1,21 @@
-#ifndef _SENSORS_h
-#define _SENSORS_h
+#ifndef _SENSORS_H
+#define _SENSORS_H
 
-#include "I2C.h"
-#include "Wire.h"
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include <Wire.h>
+#include "MS5837.h"
 #include "SensorData.h"
 
 class Sensors {
 public:
-	Sensors();
-	~Sensors();
-
-	void StartMesurement();
-	void GetData(SensorStruct* aData);
+  Sensors();
+  ~Sensors();
 
 private:
-	void Sensors::Pressure_CreateCrc();
-	uint32_t Pressure_ReadData(uint8_t aRegister);
-	uint8_t Sensors::Pressure_CheckCrc(unsigned int n_prom[]);
-	
-	SensorStruct mSensorData;	
-	I2C mClock;
-	I2C mPressure;
-	OneWire mTemperature;
-	//PressureData* mPressureData;
-	uint32_t mNextAction;
-	bool _IsCrcOk;
+  SensorData GetData();
+  
+  MS5837 mPressure;
+  SensorData mSensorData;
 };
 #endif
