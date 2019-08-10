@@ -15,7 +15,7 @@ Sensors::Sensors() {
 
 Sensors::~Sensors() {}
 
-SensorData Sensors::GetData() {
+SensorsData Sensors::GetData() {
   mPressure.read();
 
   mSensorData.Pressure(mPressure.pressure());
