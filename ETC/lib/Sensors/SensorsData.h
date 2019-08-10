@@ -1,5 +1,5 @@
-#ifndef _SENSORDATA_h
-#define _SENSORDATA_h
+#ifndef _SENSORSDATA_h
+#define _SENSORSDATA_h
 
 typedef struct DateTimeStructDef {
   unsigned char Second;
