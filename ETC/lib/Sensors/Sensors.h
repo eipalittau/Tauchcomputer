@@ -5,7 +5,7 @@
 #include <DallasTemperature.h>
 #include <Wire.h>
 #include "MS5837.h"
-#include "SensorData.h"
+#include "SensorsData.h"
 
 class Sensors {
 public:
@@ -13,9 +13,9 @@ public:
   ~Sensors();
 
 private:
-  SensorData GetData();
+  SensorsData GetData();
   
   MS5837 mPressure;
-  SensorData mSensorData;
+  SensorsData mSensorData;
 };
 #endif
