@@ -4,10 +4,9 @@
 ### Board
 - Arduino Uno
 
-### Sensoren
-- Real-Time-Clock DS3231
+### Sensoren / Shields
 - Drucksensor MS5837-30BA
-- Temperatursensor Dallas DS18B20
+- Diymore Micro SD Storage Board Mciro SD TF Card Memory SPI Shield
 
 ## Schaltplan 
 
