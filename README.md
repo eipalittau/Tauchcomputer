@@ -4,10 +4,10 @@
 ### Board
 - Arduino Uno
 
-### Sensoren / Shields
+### Komponenten
 - Drucksensor MS5837-30BA
 - Diymore Micro SD Storage Board Mciro SD TF Card Memory SPI Shield
-- Bildschrim
+- Nextion 3,5" NX4832K035
 
 ## Schaltplan 
 
