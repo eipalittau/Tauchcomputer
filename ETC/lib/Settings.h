@@ -10,7 +10,10 @@ public:
 	TemperatureUnitEnum static GetTemperatureUnit();
 
 	void static SetPressureUnit(PressureUnitEnum aValue);
-	PressureUnitEnum static SetPressureUnit();
+	PressureUnitEnum static GetPressureUnit();
+
+	void static SetWaterDensity(int aValue);
+	int static GetWaterDensity();
 private:
 	///<summary>Constructor</summary>
 	Settings();
@@ -20,5 +23,6 @@ private:
 
 	TemperatureUnitEnum _TemperatureUnit = C;
 	PressureUnitEnum _PessureUnit = mBar;
+	int _WaterDensity;
 };
 #endif
