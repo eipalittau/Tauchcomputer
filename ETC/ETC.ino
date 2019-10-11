@@ -50,20 +50,3 @@ void loop() {
     Serial.println(lData.Clock.Second, DEC);
   }
 }
-
-void ReadDiveData() {
-  mData = mDiveData.GetData();
-
-  Serial.print("Zeit: ");
-  Serial.print(mData.Clock.Day, DEC);
-  Serial.print(".");
-  Serial.print(mData.Clock.Month, DEC);
-  Serial.print(".");
-  Serial.print(mData.Clock.Year, DEC);
-  Serial.print(" ");
-  Serial.print(mData.Clock.Hour, DEC);
-  Serial.print(":");
-  Serial.print(mData.Clock.Minute, DEC);
-  Serial.print(":");
-  Serial.println(mData.Clock.Second, DEC);
-}
