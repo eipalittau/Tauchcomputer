@@ -1,30 +1,69 @@
-#include "Sensor.h"
+#include <Wire.h>
+#include "DataCollector.h"
+#include "SettingsData.h"
 
-Sensor mPressure;
+DataCollector mDiveData;
 unsigned long mLastMillis = 0;
+DiveDataStruct mData;
 
 void setup() {
   Serial.begin(9600);
-
   Wire.begin();
-
-  mPressure.Init();
+  
+  if (mDiveData.Init()) {
+    Serial.println("Sensoren initialisiert");
+  } else {
+    Serial.println("Sensoren NOK");
+  }
 }
 
 void loop() {
-  SensorDataStruct lData;
-
+  DiveDataStruct lData;
+    
   if (mLastMillis <= millis()) {
-    mLastMillis = millis() + 5000;
+    mLastMillis = millis() + 1000;
     
-    lData = mPressure.GetData();
+    lData = mDiveData.GetData();
+
+    Serial.print("Millis: ");
+    Serial.println(millis());
+
+    Serial.print("Druck: ");
+    Serial.print(lData.Pressure);
+    Serial.print(" mbar / ");
     
-    Serial.print("Druck: "); 
-    Serial.print(lData.Pressure); 
-    Serial.println(" mbar");
+    Serial.print("Temperatur: ");
+    Serial.print(lData.Temperature);
+    Serial.print(" °C / ");
     
-    Serial.print("Temperatur: "); 
-    Serial.print(lData.Temperature); 
-    Serial.println(" °C");
+    Serial.print("Zeit: ");
+    Serial.print(lData.Clock.Day, DEC);
+    Serial.print(".");
+    Serial.print(lData.Clock.Month, DEC);
+    Serial.print(".");
+    Serial.print(lData.Clock.Year, DEC);
+    Serial.print(" ");
+    Serial.print(lData.Clock.Hour, DEC);
+    Serial.print(":");
+    Serial.print(lData.Clock.Minute, DEC);
+    Serial.print(":");
+    Serial.println(lData.Clock.Second, DEC);
   }
+}
+
+void ReadDiveData() {
+  mData = mDiveData.GetData();
+
+  Serial.print("Zeit: ");
+  Serial.print(mData.Clock.Day, DEC);
+  Serial.print(".");
+  Serial.print(mData.Clock.Month, DEC);
+  Serial.print(".");
+  Serial.print(mData.Clock.Year, DEC);
+  Serial.print(" ");
+  Serial.print(mData.Clock.Hour, DEC);
+  Serial.print(":");
+  Serial.print(mData.Clock.Minute, DEC);
+  Serial.print(":");
+  Serial.println(mData.Clock.Second, DEC);
 }
