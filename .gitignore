@@ -2,8 +2,11 @@
 # Diese .gitignore-Datei wurde von Microsoft(R) Visual Studio automatisch erstellt.
 ################################################################################
 
-/ETC/.vs/ETC/v16/.suo
-/ETC/.vs/ETC/v16/Browse.VC.db
+/ETC/.vs
+/ETC/ETCalc/.vs
 *.suo
 *.db
 *.opendb
+/ETCalc/ETCalc/obj/Debug/net8.0-windows
+/ETCalc/.vs/ETCalc
+/.vs/ETC/v17

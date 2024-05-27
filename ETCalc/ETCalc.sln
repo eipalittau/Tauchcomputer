@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34916.146
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETCalc", "ETCalc\ETCalc.csproj", "{FAD2528A-0FEA-494D-9227-3B68C2020755}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FAD2528A-0FEA-494D-9227-3B68C2020755}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAD2528A-0FEA-494D-9227-3B68C2020755}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAD2528A-0FEA-494D-9227-3B68C2020755}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAD2528A-0FEA-494D-9227-3B68C2020755}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E1C6D399-9009-451E-9C15-822717682CDB}
+	EndGlobalSection
+EndGlobal
