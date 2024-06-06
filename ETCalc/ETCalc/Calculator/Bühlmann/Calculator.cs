@@ -2,7 +2,7 @@
     internal class Calculator : ICalculator{
         #region Properties / Felder
         /// <summary>Liste der Inertgase mit der jeweiligen Gewebesättigung und Gas-Informationen.</summary>
-        public GasDTO[] GasComposition { get; init; }
+        public GasData[] GasComposition { get; init; }
 
         private readonly double Log2 = Math.Log(2);
 
@@ -13,12 +13,12 @@
         /// <summary>Initialisiert Pressluft als Atemgas, damit eine initiale Sättigung berechnet werden kann.</summary>
         /// <param name="pSurfacePressure">Der aktuelle Oberflächendruck in bar.</param>
         /// <param name="pExposureTime">Expositionszeit in Minuten</param>
-        public Calculator(DiveData pParent, GasDTO[] pGasComposition) {
+        public Calculator(DiveData pParent, GasData[] pGasComposition) {
             Parent = pParent;
             GasComposition = pGasComposition;
             SwitchGas(0);
 
-            foreach (GasDTO gas in Enumerate()) {
+            foreach (GasData gas in Enumerate()) {
                 gas.SetPartialGasPressure(Parent.SurfacePressure);
 
                 for (int i = 0; i < gas.Saturations.Length; i++) {
@@ -44,7 +44,7 @@
         public DTO.DiveProfileResult Calculate(double pAmbientPressure, double pExposureTime) {
             DTO.DiveProfileResult result = new();
 
-            foreach (GasDTO gas in Enumerate()) {
+            foreach (GasData gas in Enumerate()) {
                 gas.SetPartialGasPressure(pAmbientPressure);
 
                 for (int i = 0; i < gas.InertGas.Compartments.Length; i++) {
@@ -56,16 +56,20 @@
                         result.NDL = tmpNDL;
                     }
 
-                    double tmpMaxAscentHeight = CalculateMaxAscentHeight(gas, i);
-                    if (tmpMaxAscentHeight > result.MaxAscentHeight) {
-                        result.MaxAscentHeight = tmpMaxAscentHeight;
+                    double tmpMaxAmbientPressure = CalculateMinimumAmbientPressure(gas, i);
+                    if (tmpMaxAmbientPressure > result.NextDecoStop.AmbientPressure) {
+                        result.NextDecoStop.AmbientPressure = tmpMaxAmbientPressure;
                     }
 
-                    result.TimeAtMaxAscentHeight = Math.Max(result.TimeAtMaxAscentHeight, CalculateTimeAtMaxAscentHeight(gas, i, pAmbientPressure));
+                    result.NextDecoStop.Time = Math.Max(result.NextDecoStop.Time, CalculateTimeAtMinimumAmbientPressure(gas, i, pAmbientPressure));
                 }
             }
 
             return result;
+        }
+
+        public Calculator Clone() {
+            return (Calculator)MemberwiseClone();
         }
 
         /// <summary>Aktualisiert die Gewebedrücke basierend auf dem aktuellen Umgebungsdruck und der Expositionszeit.
@@ -74,12 +78,13 @@
         /// <param name="pIndex">Array-Index für Saturations und Compartments.</param>
         /// <param name="pAmbientPressure">Der aktuelle Umgebungsdruck in bar.</param>
         /// <param name="pExposureTime">Die Expositionszeit in Minuten.</param>
-        private void UpdateSaturation(GasDTO pGas, int pIndex, double pAmbientPressure, double pExposureTime) {
+        private void UpdateSaturation(GasData pGas, int pIndex, double pAmbientPressure, double pExposureTime) {
             double pressureDelta = pAmbientPressure - pGas.Saturations[pIndex];
-            double saturationChange = pGas.GetCompartiment(pIndex).A * pressureDelta - pGas.GetCompartiment(pIndex).B * Math.Pow(pressureDelta, 2);
+            //double saturationChange = pGas.GetCompartiment(pIndex).A * pressureDelta - pGas.GetCompartiment(pIndex).B * Math.Pow(pressureDelta, 2);
             double timeFactor = 1 - Math.Exp(-pExposureTime / TAU(pGas.GetCompartiment(pIndex)));
 
-            pGas.Saturations[pIndex] = saturationChange * timeFactor + pGas.Saturations[pIndex];
+            //pGas.Saturations[pIndex] = saturationChange * timeFactor + pGas.Saturations[pIndex];
+            pGas.Saturations[pIndex] = pGas.Saturations[pIndex] + pressureDelta * timeFactor;
         }
 
         /// <summary>Berechnet die Time To Surface (TTS) basierend auf dem aktuellen Umgebungsdruck.
@@ -88,7 +93,13 @@
         /// <param name="pIndex">Array-Index für Saturations und Compartments.</param>
         /// <param name="pAmbientPressure">Der aktuelle Umgebungsdruck in bar.</param>
         /// <returns>Die Time To Surface (TTS).</returns>
-        private double CalculateTTS(GasDTO pGas, int pIndex, double pAmbientPressure) {
+        private double CalculateTTS(GasData pGas, int pIndex, double pAmbientPressure) {
+            double allowablePressure = pGas.GetCompartiment(pIndex).A * pAmbientPressure + pGas.GetCompartiment(pIndex).B;
+            double pressureGas = pGas.Saturations[pIndex] - allowablePressure;
+
+            return pressureGas > 0 ? -TAU(pGas.GetCompartiment(pIndex)) * Math.Log((allowablePressure - pressureGas) / allowablePressure) : 0;
+
+            /*
             double pressureGas = pGas.Saturations[pIndex] - pGas.PartialGasPressure;
             double pressureDelta = pAmbientPressure - pGas.Saturations[pIndex];
 
@@ -97,6 +108,7 @@
             } else {
                 return 0;
             }
+            */
         }
 
         /// <summary>Berechnet die NDL (Non-Decompression Limit), auch Null-Zeit genannt, basierend auf dem aktuellen Umgebungsdruck.
@@ -105,7 +117,7 @@
         /// <param name="pIndex">Array-Index für Saturations und Compartments.</param>
         /// <param name="pAmbientPressure">Der aktuelle Umgebungsdruck in bar.</param>
         /// <returns>Das NDL, auch Null-Zeit genannt.</returns>
-        private double CalculateNDL(GasDTO pGas, int pIndex, double pAmbientPressure) {
+        private double CalculateNDL(GasData pGas, int pIndex, double pAmbientPressure) {
             double pressureGas = (pAmbientPressure - Parent.SurfacePressure) * pGas.GasFraction;
             double maxInertGasPressure = pGas.GetCompartiment(pIndex).A + (pAmbientPressure - pGas.GetCompartiment(pIndex).A) * pGas.GetCompartiment(pIndex).B;
 
@@ -115,7 +127,7 @@
         /// <summary>Berechnet die maximale Tauchtiefe ohne Dekompression basierend auf den aktuellen Gewebesättigungen und Gewebekoeffizienten.
         /// Die maximale Tauchtiefe ohne Dekompression repräsentiert die maximale Tiefe, die erreicht werden kann, ohne die Grenzwerte für die Gewebesättigung zu überschreiten.</summary>
         /// <returns>Die maximal zu erreichende auftauchtiefe ohne Dekompression.</returns>
-        private double CalculateMaxAscentHeight(GasDTO pGas, int pIndex) {
+        private double CalculateMinimumAmbientPressure(GasData pGas, int pIndex) {
             return (pGas.Saturations[pIndex] - pGas.GetCompartiment(pIndex).A) / pGas.GetCompartiment(pIndex).B;
         }
 
@@ -125,7 +137,7 @@
         /// <param name="pIndex">Array-Index für Saturations und Compartments.</param>
         /// <param name="pAmbientPressure">Der aktuelle Umgebungsdruck in bar.</param>
         /// <returns>Die Zeit in Minuten, die benötigt wird, um ein sicheres Druckniveau für alle Gewebekompartimente zu erreichen.</returns>
-        private double CalculateTimeAtMaxAscentHeight(GasDTO pGas, int pIndex, double pAmbientPressure) {
+        private double CalculateTimeAtMinimumAmbientPressure(GasData pGas, int pIndex, double pAmbientPressure) {
             double allowablePressure = pGas.GetCompartiment(pIndex).A * pAmbientPressure + pGas.GetCompartiment(pIndex).B;
 
             return TAU(pGas.GetCompartiment(pIndex)) * Math.Log((allowablePressure - pGas.GetCompartiment(pIndex).A) / (pGas.Saturations[pIndex] - pGas.GetCompartiment(pIndex).A));
@@ -133,7 +145,7 @@
 
         /// <summary>Aufzählung der verwendeten Inert-Gase.</summary>
         /// <returns></returns>
-        private IEnumerable<GasDTO> Enumerate() {
+        private IEnumerable<GasData> Enumerate() {
             return GasComposition.Where(x => x.IsActive);
         }
 

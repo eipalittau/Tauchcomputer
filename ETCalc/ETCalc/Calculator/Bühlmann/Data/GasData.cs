@@ -1,5 +1,5 @@
 ﻿namespace ETCalc.Calculator.Bühlmann {
-    internal class GasDTO {
+    internal class GasData {
         #region Properties / Felder
         public GasEnum InertGas { get; init; }
 
@@ -12,10 +12,10 @@
         public bool IsActive { get { return GasFraction > 0; }  }
         #endregion
 
-        public GasDTO(GasEnum pInertGas) {
+        public GasData(GasEnum pInertGas) {
             InertGas = pInertGas;
             Saturations = new double[pInertGas.Compartments.Length];
-            GasFraction = double.MinValue;
+            GasFraction = pInertGas.StandardGasFraction;
             PartialGasPressure = double.MinValue;
         }
 

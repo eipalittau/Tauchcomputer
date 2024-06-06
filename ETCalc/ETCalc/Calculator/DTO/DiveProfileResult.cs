@@ -2,12 +2,10 @@
     public class DiveProfileResult {
         public double TTS { get; set; }
 
-        public double NDL { get; set; }
+        public double NDL { get; set; } = double.MaxValue;
 
-        public double MaxAscentHeight { get; set; }
+        public DecoStopDTO NextDecoStop { get; } = new ();
 
-        public double TimeAtMaxAscentHeight { get; set; }
-
-        public List<DecoStopDTO> DecoStops { get; set; } = [];
+        public List<DecoStopDTO> DecoStops { get; } = [];
     }
 }
