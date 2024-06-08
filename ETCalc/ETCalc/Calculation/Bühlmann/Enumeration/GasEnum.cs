@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 
-namespace ETCalc.Calculator.Bühlmann {
-    internal class GasEnum {
+namespace ETCalc.Calculation.Bühlmann {
+    public class GasEnum {
         #region Properties / Felder
         public static readonly GasEnum N2 = new(0, nameof(N2), 0.781, [
             new CompartmentData(0, 4.0, 1.2599, 0.5050),
@@ -107,7 +107,7 @@ namespace ETCalc.Calculator.Bühlmann {
 
         public double StandardGasFraction { get; init; }
 
-        public bool IsInertGas { get; init; }
+        public GasTypeEnum GasType { get; init; }
 
         public CompartmentData[] Compartments { get; init; }
 
@@ -117,7 +117,7 @@ namespace ETCalc.Calculator.Bühlmann {
         #region Konstruktor
         private GasEnum(int pId, string pName, double pStandardGasFraction, CompartmentData[] pCompartments) {
             Id = pId;
-            IsInertGas = true;
+            GasType = GasTypeEnum.Inert;
             Name = pName;
             StandardGasFraction = pStandardGasFraction;
             Compartments = pCompartments;
@@ -126,7 +126,7 @@ namespace ETCalc.Calculator.Bühlmann {
 
         private GasEnum(int pId, string pName, double pStandardGasFraction, ExposerLimitData[] pExposerLimits) {
             Id = pId;
-            IsInertGas = false;
+            GasType = GasTypeEnum.Metabolic;
             Name = pName;
             StandardGasFraction = pStandardGasFraction;
             Compartments = [];
@@ -150,6 +150,14 @@ namespace ETCalc.Calculator.Bühlmann {
 
         public bool EqualsAny(params GasEnum[] pOthers) {
             return pOthers.Any(x => x.Name.Equals(Name));
+        }
+
+        public MixtureGasDTO ToMixtureGas() {
+            return ToMixtureGas(StandardGasFraction);
+        }
+
+        public MixtureGasDTO ToMixtureGas(double pGasFraction) {
+            return new MixtureGasDTO(this, pGasFraction);
         }
         #endregion
     }

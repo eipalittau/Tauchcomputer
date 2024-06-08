@@ -1,4 +1,4 @@
-﻿namespace ETCalc.Calculator {
+﻿namespace ETCalc.Calculation {
     internal class Pressure {
         #region Properties / Felder
         /// <summary>Süsswasserdruck pro Meter in Bar-</summary>

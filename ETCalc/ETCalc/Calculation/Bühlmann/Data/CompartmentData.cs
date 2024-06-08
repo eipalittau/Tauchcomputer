@@ -1,5 +1,5 @@
-﻿namespace ETCalc.Calculator.Bühlmann {
-    internal class CompartmentData
+﻿namespace ETCalc.Calculation.Bühlmann {
+    public class CompartmentData
     {
         #region Properties / Felder
         public int Compartment { get; init; }

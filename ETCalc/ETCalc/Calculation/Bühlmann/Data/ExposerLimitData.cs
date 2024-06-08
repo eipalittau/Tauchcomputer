@@ -1,5 +1,5 @@
-﻿namespace ETCalc.Calculator.Bühlmann {
-    internal class ExposerLimitData {
+﻿namespace ETCalc.Calculation.Bühlmann {
+    public class ExposerLimitData {
         #region Properties / Felder
         /// <summary>Partieller Gasdruck.</summary>
         public double Pressure { get; init; }

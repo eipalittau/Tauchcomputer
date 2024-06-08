@@ -9,6 +9,8 @@
         /// <summary>Minimaler partieller Sauerstoff-Druck.</summary>
         public static double MinimumPPO2 { get; set; }
 
+        public static double MaximumPPN2 {  get; set; }
+
         /// <summary>Maximale Aufstiegsgeschwindigkeit in bar pro Sekunde.</summary>
         public static double MaximumAscent { get; set; }
 
@@ -19,6 +21,7 @@
             MaximumPPO2Deko = 1.6;
             MaximumPPO2Tg = 1.4;
             MinimumPPO2 = 0.16;
+            MaximumPPN2 = 3.16;
             MaximumAscent = 1 / 60; // 1 bar pro Minute = 10m pro Minute
             CalculationInterval = 5;
         }

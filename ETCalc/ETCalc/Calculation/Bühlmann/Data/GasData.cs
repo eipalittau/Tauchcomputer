@@ -1,7 +1,7 @@
-﻿namespace ETCalc.Calculator.Bühlmann {
+﻿namespace ETCalc.Calculation.Bühlmann {
     internal class GasData {
         #region Properties / Felder
-        public GasEnum InertGas { get; init; }
+        public GasEnum Gas { get; init; }
 
         public double[] Saturations { get; set; }
 
@@ -12,10 +12,10 @@
         public bool IsActive { get { return GasFraction > 0; }  }
         #endregion
 
-        public GasData(GasEnum pInertGas) {
-            InertGas = pInertGas;
-            Saturations = new double[pInertGas.Compartments.Length];
-            GasFraction = pInertGas.StandardGasFraction;
+        public GasData(GasEnum pGas) {
+            Gas = pGas;
+            Saturations = new double[pGas.Compartments.Length];
+            GasFraction = pGas.StandardGasFraction;
             PartialGasPressure = double.MinValue;
         }
 
@@ -24,7 +24,7 @@
         }
 
         public CompartmentData GetCompartiment(int pIndex) {
-            return InertGas.Compartments[pIndex];
+            return Gas.Compartments[pIndex];
         }
     }
 }

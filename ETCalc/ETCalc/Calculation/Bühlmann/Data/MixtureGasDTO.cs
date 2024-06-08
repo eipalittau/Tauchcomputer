@@ -1,5 +1,5 @@
-﻿namespace ETCalc.Calculator.Bühlmann {
-    internal class MixtureGasDTO {
+﻿namespace ETCalc.Calculation.Bühlmann {
+    public class MixtureGasDTO {
         public GasEnum Gas { get; init; }
 
         public double Fraction { get; init; }

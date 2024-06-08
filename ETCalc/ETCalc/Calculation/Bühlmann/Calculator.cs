@@ -1,4 +1,4 @@
-﻿namespace ETCalc.Calculator.Bühlmann {
+﻿namespace ETCalc.Calculation.Bühlmann {
     internal class Calculator : ICalculator{
         #region Properties / Felder
         /// <summary>Liste der Inertgase mit der jeweiligen Gewebesättigung und Gas-Informationen.</summary>
@@ -16,7 +16,6 @@
         public Calculator(DiveData pParent, GasData[] pGasComposition) {
             Parent = pParent;
             GasComposition = pGasComposition;
-            SwitchGas(0);
 
             foreach (GasData gas in Enumerate()) {
                 gas.SetPartialGasPressure(Parent.SurfacePressure);
@@ -29,14 +28,15 @@
         #endregion
 
         #region Methoden
-        /// <summary>Führt einen Gaswechsel aus.</summary>
-        /// <param name="pIndex">Der Index des Gases in der Liste. <paramref name="pIndex"/>grösser/gleich 1</param>
-        public void SwitchGas(int pIndex) {
-            foreach (GasEnum gas in GasEnum.Enumerate(true)) {
-                GasComposition[gas.Id].GasFraction = Parent.Mixtures[pIndex].Gases.First(x => x.Gas.EqualsAny(gas)).Fraction;
-            }
+        public void SwitchGas(int pId, double pFraction) {
+            GasComposition[pId].GasFraction = pFraction;
         }
 
+        public Calculator Clone() {
+            return (Calculator)MemberwiseClone();
+        }
+
+        #region Berechnung
         /// <summary>Berechnet die neue Iteration.</summary>
         /// <param name="pAmbientPressure">Der aktuelle Umgebungsdruck in bar.</param>
         /// <param name="pExposureTime">Die Expositionszeit in Minuten.</param>
@@ -44,10 +44,12 @@
         public DTO.DiveProfileResult Calculate(double pAmbientPressure, double pExposureTime) {
             DTO.DiveProfileResult result = new();
 
+            GasComposition.First(x => x.Gas.GasType == GasTypeEnum.Metabolic).SetPartialGasPressure(pAmbientPressure);
+
             foreach (GasData gas in Enumerate()) {
                 gas.SetPartialGasPressure(pAmbientPressure);
 
-                for (int i = 0; i < gas.InertGas.Compartments.Length; i++) {
+                for (int i = 0; i < gas.Gas.Compartments.Length; i++) {
                     UpdateSaturation(gas, i, pAmbientPressure, pExposureTime);
                     result.TTS = Math.Max(result.TTS, CalculateTTS(gas, i, pAmbientPressure));
 
@@ -66,10 +68,6 @@
             }
 
             return result;
-        }
-
-        public Calculator Clone() {
-            return (Calculator)MemberwiseClone();
         }
 
         /// <summary>Aktualisiert die Gewebedrücke basierend auf dem aktuellen Umgebungsdruck und der Expositionszeit.
@@ -143,17 +141,18 @@
             return TAU(pGas.GetCompartiment(pIndex)) * Math.Log((allowablePressure - pGas.GetCompartiment(pIndex).A) / (pGas.Saturations[pIndex] - pGas.GetCompartiment(pIndex).A));
         }
 
-        /// <summary>Aufzählung der verwendeten Inert-Gase.</summary>
-        /// <returns></returns>
-        private IEnumerable<GasData> Enumerate() {
-            return GasComposition.Where(x => x.IsActive);
-        }
-
         /// <summary>Berechnet den tau für das jeweilige Compartiment.</summary>
         /// <param name="pCompartment"></param>
         /// <returns></returns>
         private double TAU(CompartmentData pCompartment) {
             return pCompartment.HalfTime / Log2;
+        }
+        #endregion
+
+        /// <summary>Aufzählung der verwendeten Inert-Gase.</summary>
+        /// <returns></returns>
+        private IEnumerable<GasData> Enumerate() {
+            return GasComposition.Where(x => x.IsActive);
         }
         #endregion
     }

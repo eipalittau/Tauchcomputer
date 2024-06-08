@@ -1,5 +1,5 @@
-﻿namespace ETCalc.Calculator.Bühlmann {
-    internal class DiveProfileData {
+﻿namespace ETCalc.Calculation.Bühlmann {
+    public class DiveProfileData {
         #region Properties / Felder
         public long Number { get; init; }
 

@@ -1,4 +1,4 @@
-﻿namespace ETCalc.Calculator.DTO {
+﻿namespace ETCalc.Calculation.DTO {
     public class DecoStopDTO {
         public double AmbientPressure { get; set; }
 
