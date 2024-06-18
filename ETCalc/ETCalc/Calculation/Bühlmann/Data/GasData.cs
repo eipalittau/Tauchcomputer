@@ -1,5 +1,5 @@
 ﻿namespace ETCalc.Calculation.Bühlmann {
-    internal class GasData {
+    public class GasData {
         #region Properties / Felder
         public GasEnum Gas { get; init; }
 
@@ -10,6 +10,8 @@
         public double PartialGasPressure { get; private set; }
 
         public bool IsActive { get { return GasFraction > 0; }  }
+
+        private readonly double Log2 = Math.Log(2);
         #endregion
 
         public GasData(GasEnum pGas) {
@@ -23,7 +25,7 @@
             PartialGasPressure = pAmbientPressure * GasFraction;
         }
 
-        public CompartmentData GetCompartiment(int pIndex) {
+        public CompartmentData GetCompartment(int pIndex) {
             return Gas.Compartments[pIndex];
         }
     }

@@ -5,7 +5,5 @@
         void SwitchGas(int pId, double pFraction);
 
         DTO.DiveProfileResult Calculate(double pAmbientPressure, double pExposureTime);
-
-        Bühlmann.Calculator Clone();
     }
 }

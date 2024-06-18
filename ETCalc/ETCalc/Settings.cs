@@ -11,19 +11,23 @@
 
         public static double MaximumPPN2 {  get; set; }
 
-        /// <summary>Maximale Aufstiegsgeschwindigkeit in bar pro Sekunde.</summary>
+        /// <summary>Maximale Aufstiegsgeschwindigkeit in bar pro Minute.</summary>
         public static double MaximumAscent { get; set; }
 
-        /// <summary>Intervall zur Berechnung des Tauchprofils in Sekunden.</summary>
-        public static int CalculationInterval { get; set; }
+        /// <summary>Intervall zur Berechnung des Tauchprofils in Minuten.</summary>
+        public static double CalculationInterval { get; set; }
+
+        /// <summary>Abstand der Dekompressionsstopps in bar.</summary>
+        public static double DecompressionStopInterval { get; set; }
 
         public static void LoadDefault() {
             MaximumPPO2Deko = 1.6;
             MaximumPPO2Tg = 1.4;
             MinimumPPO2 = 0.16;
             MaximumPPN2 = 3.16;
-            MaximumAscent = 1 / 60; // 1 bar pro Minute = 10m pro Minute
-            CalculationInterval = 5;
+            MaximumAscent = 1; // 1 bar pro Minute = 10m pro Minute
+            CalculationInterval = 0.1; // 6 Sekunden
+            DecompressionStopInterval = 0.3;
         }
     }
 }

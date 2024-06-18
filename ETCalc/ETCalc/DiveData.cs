@@ -6,36 +6,46 @@ using ETCalc.Enumeration;
 namespace ETCalc {
     public class DiveData {
         #region Properties / Felder
-        private readonly ICalculator Calculator;
+        /// <summary>Das zur Zeit geatmete Gas.</summary>
+        public MixtureDTO ActiveMixture { get; set; }
 
-        /// <summary>Oberflächendruck in bar.</summary>
-        public double SurfacePressure { get; init; }
+        public double CNSLoad { get; private set; }
+
+        /// <summary>Das zuletzt berechnete Tauch-Profil.</summary>
+        public DiveProfileResult CurrentProfile { get; private set; }
+
+        public double GFHigh { get; init; }
+
+        public double GFLow { get; init; }
 
         /// <summary>Liste der mitgeführten Gase und zusätzlich das Oberflächengas.</summary>
         public List<MixtureDTO> Mixtures { get; init; }
 
-        /// <summary>Das zur Zeit geatmete Gas.</summary>
-        public MixtureDTO ActiveMixture { get; set; }
-
-        /// <summary>Das zuletzt berechnete Tauch-Profil.</summary>
-        public DiveProfileResult? CurrentProfile { get; private set; }
-
+        /// <summary>Aufzeichnung des gesammten Tauchgangs.</summary>
         public List<DiveProfileData> Profile { get; private set; }
 
-        public double CNSLoad { get; private set; }
+        /// <summary>Oberflächendruck in bar.</summary>
+        public double SurfacePressure { get; init; }
+
+        private readonly ICalculator _Calculator;
         #endregion
 
         #region Konstruktor
-        public DiveData(double pSurfacePressure) {
+        public DiveData(double pSurfacePressure, double pGFLow, double pGFHigh) {
+            _Calculator = new Calculator(this, GasEnum.Enumerate(true).Select(x => new GasData(x)).ToArray());
+
+            CNSLoad = 0;
+            CurrentProfile = new DiveProfileResult();
+            GFHigh = pGFHigh;
+            GFLow = pGFLow;
             Mixtures = [];
             Profile = [];
             SurfacePressure = pSurfacePressure;
-            AddMixture(ModeEnum.Surfacegas,
+
+            AddMixture(MixtureModeEnum.Surfacegas,
                        GasEnum.O2.ToMixtureGas(),
                        GasEnum.N2.ToMixtureGas(100 - GasEnum.O2.StandardGasFraction - GasEnum.He.StandardGasFraction),
                        GasEnum.He.ToMixtureGas());
-            Calculator = new Calculator(this, GasEnum.Enumerate(true).Select(x => new GasData(x)).ToArray());
-
             SwitchMixture(0);
         }
         #endregion
@@ -54,7 +64,7 @@ namespace ETCalc {
         /// <param name="pMode"></param>
         /// <param name="pMetabolicGas"></param>
         /// <param name="pInertGases"></param>
-        public void AddMixture(ModeEnum pMode, MixtureGasDTO pMetabolicGas, params MixtureGasDTO[] pInertGases) {
+        public void AddMixture(MixtureModeEnum pMode, MixtureGasDTO pMetabolicGas, params MixtureGasDTO[] pInertGases) {
             AddMixture(new MixtureDTO(pMode, pMetabolicGas, pInertGases));
         }
 
@@ -64,40 +74,15 @@ namespace ETCalc {
             ActiveMixture = Mixtures[pIndex];
 
             foreach (MixtureGasDTO inertGas in ActiveMixture.InertGases) {
-                Calculator.SwitchGas(inertGas.Gas.Id, inertGas.Fraction);
+                _Calculator.SwitchGas(inertGas.Gas.Id, inertGas.Fraction);
             }
         }
         #endregion
 
-        public void ProcessNewMeasurement(double pAmbientPressure, double pExposureTime) {
+        public void ProcessMeasurement(double pAmbientPressure, double pExposureTime) {
             Profile.Add(new DiveProfileData(Profile.Count, DateTime.Now, pAmbientPressure, pExposureTime, ActiveMixture));
-            CurrentProfile = Calculator.Calculate(pAmbientPressure, pExposureTime);
-
+            CurrentProfile = _Calculator.Calculate(pAmbientPressure, pExposureTime);
             CNSLoad += CalculateCnsLoad(pAmbientPressure, pExposureTime);
-
-            if (CurrentProfile.NDL < 0) {
-                //ICalculator tmpCalculator = new Calculator.Bühlmann.Calculator(this, (GasData[])Calculator.GasComposition.Clone());
-                ICalculator simCalculator = Calculator.Clone();
-                double simAmbientPressure = pAmbientPressure;
-
-                while (simAmbientPressure % 0.3 != 0) {
-                    simAmbientPressure -= 0.1;
-                }
-                CurrentProfile.DecoStops.Clear();
-
-                while (simAmbientPressure > SurfacePressure) {
-                    DiveProfileResult simProfile = simCalculator.Calculate(simAmbientPressure, Settings.CalculationInterval);
-                    DecoStopDTO? deepestStop = CurrentProfile.DecoStops.FirstOrDefault(x => x.AmbientPressure == simProfile.NextDecoStop.AmbientPressure);
-
-                    if (deepestStop is null) {
-                        CurrentProfile.DecoStops.Add(simProfile.NextDecoStop);
-                    }
-
-                    if (simProfile.NextDecoStop.Time <= 0 || simProfile.NextDecoStop.AmbientPressure > simAmbientPressure) {
-                        simAmbientPressure -= (Settings.MaximumAscent * Settings.CalculationInterval);
-                    }
-                }
-            }
         }
 
         /// <summary>Sucht das optimale Gas für den angegebenen Umgebungsdruck.
@@ -108,7 +93,7 @@ namespace ETCalc {
         /// <returns></returns>
         public MixtureDTO? FindOptimalDiveMixture(double pAmbientPressure) {
             List<MixtureDTO> result = [];
-            IEnumerable<MixtureDTO> gasesWithinPPO2 = GetMixturesWithinPPO2(pAmbientPressure, ModeEnum.Travelgas);
+            IEnumerable<MixtureDTO> gasesWithinPPO2 = GetMixturesWithinPPO2(pAmbientPressure, MixtureModeEnum.Travelgas);
 
             if (!gasesWithinPPO2.Any()) {
                 return null;
@@ -127,7 +112,7 @@ namespace ETCalc {
         }
 
         public MixtureDTO? FindOptimalDecoMixture(double pAmbientPressure) {
-            IEnumerable<MixtureDTO> gasesWithinPPO2 = GetMixturesWithinPPO2(pAmbientPressure, ModeEnum.Dekogas);
+            IEnumerable<MixtureDTO> gasesWithinPPO2 = GetMixturesWithinPPO2(pAmbientPressure, MixtureModeEnum.Dekogas);
 
             if (!gasesWithinPPO2.Any()) {
                 return null;
@@ -145,9 +130,9 @@ namespace ETCalc {
             }
         }
 
-        private IEnumerable<MixtureDTO> GetMixturesWithinPPO2(double pAmbientPressure, ModeEnum pMode) {
+        private IEnumerable<MixtureDTO> GetMixturesWithinPPO2(double pAmbientPressure, MixtureModeEnum pMode) {
             List<MixtureDTO> result = [];
-            double maxPPO2 = pMode == ModeEnum.Dekogas ? Settings.MaximumPPO2Deko : Settings.MaximumPPO2Tg;
+            double maxPPO2 = pMode == MixtureModeEnum.Dekogas ? Settings.MaximumPPO2Deko : Settings.MaximumPPO2Tg;
 
             foreach (MixtureDTO mixture in Mixtures) {
                 if (mixture.Mode == pMode) {
@@ -174,7 +159,7 @@ namespace ETCalc {
             ExposerLimitData? exposureLimit = ActiveMixture.MetabolicGas.Gas.ExposerLimits.FirstOrDefault(x => x.Pressure == usePartialGasPressure);
             int counter = 0;
 
-            while (exposureLimit is null || counter < 5) {
+            while (exposureLimit is null || counter < 12) {
                 counter++;
                 usePartialGasPressure += 0.01;
                 exposureLimit = ActiveMixture.MetabolicGas.Gas.ExposerLimits.FirstOrDefault(x => x.Pressure == usePartialGasPressure);

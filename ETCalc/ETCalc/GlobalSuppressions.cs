@@ -5,6 +5,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Performance", "CA1859:Verwenden Sie nach Möglichkeit konkrete Typen, um die Leistung zu verbessern.", Justification = "<Ausstehend>", Scope = "member", Target = "~F:ETCalc.DiveData.Calculator")]
+[assembly: SuppressMessage("Performance", "CA1859:Verwenden Sie nach Möglichkeit konkrete Typen, um die Leistung zu verbessern.", Justification = "<Ausstehend>", Scope = "member", Target = "~F:ETCalc.DiveData._Calculator")]
 [assembly: SuppressMessage("Performance", "CA1859:Verwenden Sie nach Möglichkeit konkrete Typen, um die Leistung zu verbessern.", Justification = "<Ausstehend>", Scope = "member", Target = "~M:ETCalc.DiveData.ProcessNewMeasurement(System.Double,System.Double,ETCalc.Calculator.Bühlmann.MixtureDTO)")]
 [assembly: SuppressMessage("Performance", "CA1822:Member als statisch markieren", Justification = "<Ausstehend>", Scope = "member", Target = "~M:ETCalc.Calculation.Bühlmann.Calculator.CalculateMinimumAmbientPressure(ETCalc.Calculator.Bühlmann.GasData,System.Int32)~System.Double")]

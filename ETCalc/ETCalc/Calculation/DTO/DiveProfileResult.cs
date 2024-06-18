@@ -2,16 +2,8 @@
     public class DiveProfileResult {
         public double TTS { get; set; }
 
-        public double NDL { get; set; } = double.MaxValue;
+        public double NDL { get; set; }
 
-        public DecoStopDTO NextDecoStop { get; }
-
-        public List<DecoStopDTO> DecoStops { get; }
-
-        public DiveProfileResult() {
-            DecoStops = [];
-            NDL = double.MaxValue;
-            NextDecoStop = new ();
-        }
+        public List<DecoStopDTO>? DecoStops { get; set; }
     }
 }

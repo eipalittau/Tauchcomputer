@@ -6,9 +6,9 @@ namespace ETCalc.Calculation.Bühlmann {
 
         public MixtureGasDTO MetabolicGas { get; init; }
 
-        public ModeEnum Mode { get; init; }
+        public MixtureModeEnum Mode { get; init; }
 
-        public MixtureDTO(ModeEnum pMode, MixtureGasDTO pMetabolicGas, params MixtureGasDTO[] pInertGases) {
+        public MixtureDTO(MixtureModeEnum pMode, MixtureGasDTO pMetabolicGas, params MixtureGasDTO[] pInertGases) {
             Mode = pMode;
             MetabolicGas = pMetabolicGas;
             InertGases = pInertGases;
