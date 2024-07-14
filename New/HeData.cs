@@ -1,7 +1,5 @@
 namespace ETC.Buehlmann {
   public class HeData : GasData {
-    public static float Fraction { get; } = 0.000005;
-
     public static TissueData[] Tissues { get; }
 
     static HeData() {
@@ -10,10 +8,11 @@ namespace ETC.Buehlmann {
       }
     }
 
-    public HeData() {}
+    public HeData()
+      : base(0.000005) {}
 
-    public float PIHe(float pAmbientPressure) {
-      return base.PI(pAmbientPressure, Fraction);
+    public new float PI(float pAmbientPressure) {
+      return PI(pAmbientPressure);
     }
   }
 }
