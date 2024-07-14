@@ -10,11 +10,13 @@ namespace ETC.Buehlmann {
         new TissueData() { Halftime: 1, A: 1, B: 1 }
       }
     }
+    
+    <summary>Nur N2=0.78084; N2+Ar+Ne=0.79020</summary>
+    public N2Data()
+      : base(0.79020) {}
 
-    public N2Data() {}
-
-    public float PIN2(float pAmbientPressure) {
-      return base.PI(pAmbientPressure, Fraction);
+    public new float PI(float pAmbientPressure) {
+      return PI(pAmbientPressure);
     }
   }
 }
