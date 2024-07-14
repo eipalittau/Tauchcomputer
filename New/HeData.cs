@@ -4,7 +4,7 @@ namespace ETC.Buehlmann {
 
     public TissueData[] Tissues { get; }
 
-    static N2Data() {
+    static HeData() {
       Tissues = {
         new TissueData() { Halftime: 1, A: 1, B: 1 }
       }
