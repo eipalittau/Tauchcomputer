@@ -1,4 +1,4 @@
-namespace ETC {
+namespace ETC.Buehlmann {
   public static class Constant {
     <summary>Respiratorischer Quotient</summary>
     public float RQ { get; } = 0.8;
