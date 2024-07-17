@@ -1,5 +1,5 @@
 namespace ETC.Bühlmann {
-    public class MetabolicGasEnum {
+    public class MetabolicGasEnum : IGas {
         #region Properties / Felder
         public static readonly MetabolicGasEnum O2 = new(pName: nameof(O2),
                                           pStandardGasFraction: 0.20948,
