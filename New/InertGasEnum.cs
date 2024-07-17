@@ -7,7 +7,7 @@ namespace ETC.Buehlmann {
         /// </summary>
         public static readonly InertGasEnum N2 = new(pId: 0,
                                                    pName: nameof(N2),
-                                    pStandardGasFraction: 0.781,
+                                    pStandardGasFraction: 0.79020,
                                            pCompartments: [ new CompartmentData(  4.0, 1.2599, 0.5050),
                                                             new CompartmentData(  5.0, 1.1696, 0.5577),
                                                             new CompartmentData(  8.0, 1.0000, 0.6514),
