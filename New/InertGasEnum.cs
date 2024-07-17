@@ -1,5 +1,5 @@
 namespace ETC.Buehlmann {
-    public class InertGasEnum {
+    public class InertGasEnum : IGas {
         #region Properties / Felder
         /// <summary>
         /// Berechnung Koeffizenz A: 2 * (HalfTime ^ (-1/3))
