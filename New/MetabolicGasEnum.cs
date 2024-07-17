@@ -2,7 +2,7 @@ namespace ETC.Bühlmann {
     public class MetabolicGasEnum {
         #region Properties / Felder
         public static readonly MetabolicGasEnum O2 = new(pName: nameof(O2),
-                                          pStandardGasFraction: 0.2095,
+                                          pStandardGasFraction: 0.20948,
                                                 pExposerLimits: [ new ExposerLimitData(0.50,   0.00, int.MaxValue),
                                                                   new ExposerLimitData(0.60,   0.14, 714),
                                                                   new ExposerLimitData(0.64,   0.15, 667),
