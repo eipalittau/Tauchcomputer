@@ -1,9 +1,9 @@
 namespace ETC.Buehlmann {
-  public static class Constant {
+  public static partial class Constant {
     <summary>Respiratorischer Quotient</summary>
-    public float RQ { get; } = 0.8;
+    public static float RQ { get; } = 0.8;
 
     <summary>Wasserdampfdruck</summary>
-    public float PH2O { get; } = 0.0627;
+    public static float WaterVaporPressure { get; } = 0.0627;
   }
 }
