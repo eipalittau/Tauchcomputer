@@ -1,5 +1,5 @@
 namespace ETC.Buehlmann {
-  public sealed class TissueData {
+  public sealed class CompartmentData {
     ///<summary>Halbwertzeit des Kompartiments</summary>
     public float Halftime { get; set; }
 
