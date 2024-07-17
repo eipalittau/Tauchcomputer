@@ -2,7 +2,7 @@ namespace ETC.Buehlmann {
   public partial class Calculation {
     private float _AmbientPressure;
 
-    private Dictionary<string, List<MixturData>> Mixture
+    public List<MixturData> Mixture
 
     public Calculation(float pAmbientPressure) {
       SetAmbientPressure(pAmbientPressure);
