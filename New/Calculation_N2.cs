@@ -1,7 +1,7 @@
 namespace ETC.Buehlmann {
   public class Calculation {
     public class N2 : IInertGas {
-      public float Fraction { get; private set; }
+      public float Fraction { get; internal set; }
 
       private Calculation _Parent;
 
