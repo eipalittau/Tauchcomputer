@@ -62,4 +62,43 @@ namespace ETC.Bühlmann {
                                                                   new ExposerLimitData(1.77,  25.00,   4),
                                                                   new ExposerLimitData(1.79,  31.25,   3),
                                                                   new ExposerLimitData(1.80,  50.00,   2),
-                                          
+                                                                 
+        public string Name { get; init; }
+
+        public double StandardGasFraction { get; init; }
+
+        public ExposerLimitData[] ExposerLimits { get; init; }
+        #endregion
+
+        #region Konstruktor
+        private GasEnum(string pName, double pStandardGasFraction, ExposerLimitData[] pExposerLimits) {
+            Name = pName;
+            StandardGasFraction = pStandardGasFraction;
+            ExposerLimits = pExposerLimits;
+        }
+        #endregion
+
+        #region Methoden
+        public static IEnumerable<MetabolicGasEnum> Enumerate() {
+            return typeof(MetabolicGasEnum)
+                .GetProperties(BindingFlags.Static | BindingFlags.Public)
+                .Select(x => x.GetValue(null))
+                .Cast<MetabolicGasEnum>();
+        }
+
+        public bool EqualsAny(params MetabolicGasEnum[] pOthers) {
+            return pOthers.Any(x => x.Name.Equals(Name));
+        }
+
+        #region Convertion
+        public MixtureGasDTO ToMixtureGas() {
+            return ToMixtureGas(StandardGasFraction);
+        }
+
+        public MixtureGasDTO ToMixtureGas(double pGasFraction) {
+            return new MixtureGasDTO(this, pGasFraction);
+        }
+        #endregion
+        #endregion
+    }
+}
