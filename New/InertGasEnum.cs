@@ -49,6 +49,8 @@ namespace ETC.Buehlmann {
 
         public double StandardGasFraction { get; init; }
 
+        public GasTypeEnum GasType { get; init; }
+
         public CompartmentData[] Compartments { get; init; }
         #endregion
 
@@ -56,6 +58,7 @@ namespace ETC.Buehlmann {
         private GasEnum(string pName, double pStandardGasFraction, CompartmentData[] pCompartments) {
             Name = pName;
             StandardGasFraction = pStandardGasFraction;
+            GasType = GasTypeEnum.Inert;
             Compartments = pCompartments;
         }
         #endregion
