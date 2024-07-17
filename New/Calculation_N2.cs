@@ -1,19 +1,12 @@
 namespace ETC.Buehlmann {
   public class Calculation {
-    public class N2 {
-      public float AmbientPressure { get; private set; }
-      
+    public class N2 : IInertGas {
       public float Fraction { get; private set; }
 
       private Calculation _Parent;
 
       private N2(Calculation pParent) {
         _Parent = pParent;
-      }
-      
-      public SetAmbientPressure(float pAmbientPressure) {
-        AmbientPressure = pAmbientPressure;
-        Fraction = Constant.N2.BaseFraction * pAmbientPressure;
       }
       
       <summary>Partialdruck im Atemgas bei der Einatmung</summary>
