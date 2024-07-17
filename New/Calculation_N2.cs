@@ -1,17 +1,13 @@
 namespace ETC.Buehlmann {
   public class Calculation {
-    public class N2 : IInertGas {
+    public class N2 : InertGasBase, IInertGas {
       public float Fraction { get; internal set; }
 
-      private Calculation _Parent;
-
-      private N2(Calculation pParent) {
-        _Parent = pParent;
-      }
+      private N2(Calculation pParent) : base(pParent) { }
       
       <summary>Partialdruck im Atemgas bei der Einatmung</summary>
-      public float PIN2() {
-        return (_Parent - Constant.PH2O) * Constant.N2.BaseFraction;
+      public float CalculateInspiredPartialPressure() {
+        return CalculateInspiredPartialPressure(Constant.N2.BaseFraction);
       }
     }
   }
