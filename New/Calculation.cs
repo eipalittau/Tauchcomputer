@@ -2,7 +2,7 @@ namespace ETC.Buehlmann {
   public partial class Calculation {
     private float _AmbientPressure;
 
-    private Calculation.N2 InertGas
+    private Dictionary<string, Calculation.IInertGas InertGases
 
     public Calculation(float pAmbientPressure) {
       SetAmbientPressure(pAmbientPressure);
