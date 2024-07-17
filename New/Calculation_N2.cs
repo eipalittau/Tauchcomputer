@@ -10,8 +10,8 @@ namespace ETC.Buehlmann {
       }
       
       <summary>Partialdruck im Atemgas bei der Einatmung</summary>
-      public float PIN2(float pAmbientPressure) {
-        return (pAmbientPressure - Constant.PH2O) * Constant.N2.BaseFraction;
+      public float PIN2() {
+        return (_Parent - Constant.PH2O) * Constant.N2.BaseFraction;
       }
     }
   }
