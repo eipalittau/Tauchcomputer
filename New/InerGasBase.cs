@@ -1,16 +1,16 @@
 namespace ETC.Buehlmann {
-  public abstract class InerGasBase {
+  public abstract class InertGasBase {
     private protected Calculation _Parent;
 
     private protected float Fraction { get; set; }
 
-    private protected InerGasBase(Calculation pParent) {
+    private protected InertGasBase(Calculation pParent) {
       _Parent = pParent;
     }
       
     <summary>Partialdruck im Atemgas bei der Einatmung</summary>
-    private protected float CalculateInspiredPartialPressure(float pBaseFraction) {
-      return (_Parent.AmbientPressure - Constant.PH2O) * pBaseFraction;
+    private protected float CalculateInspiredPartialPressure(float pStandardGasFraction) {
+      return (_Parent.AmbientPressure - Constant.PH2O) * pStandardGasFraction;
     }
   }
 }
