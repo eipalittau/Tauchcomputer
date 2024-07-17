@@ -4,6 +4,12 @@ namespace ETC.Buehlmann {
       public float AmbientPressure { get; private set; }
       
       public float Fraction { get; private set; }
+
+      private Calculation _Parent;
+
+      private N2(Calculation pParent) {
+        _Parent = pParent;
+      }
       
       public SetAmbientPressure(float pAmbientPressure) {
         AmbientPressure = pAmbientPressure;
