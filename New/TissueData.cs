@@ -1,7 +1,7 @@
 namespace ETC.Buehlmann {
   public sealed class TissueData {
     ///<summary>Halbwertzeit des Kompartiments</summary>
-    public float Halflife { get; set; }
+    public float Halftime { get; set; }
 
     ///<summary>Koeffizient a</summary>
     public float A { get; set; }
