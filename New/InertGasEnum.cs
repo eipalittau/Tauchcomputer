@@ -1,5 +1,5 @@
 namespace ETC.Buehlmann {
-    public class InertGasEnum : IGas {
+    public class InertGasEnum : GasEnumBase, IGas {
         #region Properties / Felder
         /// <summary>
         /// Berechnung Koeffizenz A: 2 * (HalfTime ^ (-1/3))
@@ -45,20 +45,12 @@ namespace ETC.Buehlmann {
                                                               new CompartmentData(188.24, 0.5172, 0.9217),
                                                               new CompartmentData(240.03, 0.5119, 0.9267) ]);
         
-        public string Name { get; init; }
-
-        public double StandardGasFraction { get; init; }
-
-        public GasTypeEnum GasType { get; init; }
-
         public CompartmentData[] Compartments { get; init; }
         #endregion
 
         #region Konstruktor
-        private GasEnum(string pName, double pStandardGasFraction, CompartmentData[] pCompartments) {
-            Name = pName;
-            StandardGasFraction = pStandardGasFraction;
-            GasType = GasTypeEnum.Inert;
+        private InertGasEnum(string pName, double pStandardGasFraction, CompartmentData[] pCompartments)
+          : base(pName, pStandardGasFraction, GasTypeEnum.Inert) {
             Compartments = pCompartments;
         }
         #endregion
