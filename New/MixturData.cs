@@ -1,7 +1,11 @@
 namespace ETC.Buehlmann {
   public class MixturData {
-    public IGas Gas { get; set; }
+    public List<GasData> Gas { get; } = new List<GasData>();
 
-    public float Fraction { get; set; }
+    public MixturData(params GasData[] pGases) {
+      if (pGases?.Lenght > 0) {
+        Gas.AddList(pGases);
+      }
+    }
   }
 }
