@@ -46,3 +46,61 @@ namespace ETC.Buehlmann {
                                                             new CompartmentData(147.42, 0.5176, 0.9171),
                                                             new CompartmentData(188.24, 0.5172, 0.9217),
                                                             new CompartmentData(240.03, 0.5119, 0.9267) ]);
+        
+        public int Id { get; init; }
+
+        public string Name { get; init; }
+
+        public double StandardGasFraction { get; init; }
+
+        public CompartmentData[] Compartments { get; init; }
+        #endregion
+
+        #region Konstruktor
+        private GasEnum(int pId, string pName, double pStandardGasFraction, CompartmentData[] pCompartments) {
+            Id = pId;
+            Name = pName;
+            StandardGasFraction = pStandardGasFraction;
+            Compartments = pCompartments;
+        }
+
+        private GasEnum(int pId, string pName, double pStandardGasFraction, ExposerLimitData[] pExposerLimits) {
+            Id = pId;
+            GasType = GasTypeEnum.Metabolic;
+            Name = pName;
+            StandardGasFraction = pStandardGasFraction;
+            Compartments = [];
+            ExposerLimits = pExposerLimits;
+        }
+        #endregion
+
+        #region Methoden
+        public static IEnumerable<GasEnum> Enumerate(bool pOnlyInertGas) {
+            IEnumerable<GasEnum> gases = typeof(GasEnum)
+                .GetProperties(BindingFlags.Static | BindingFlags.Public)
+                .Select(x => x.GetValue(null))
+                .Cast<GasEnum>();
+
+            if (pOnlyInertGas) {
+                return gases.Where(x => x.GasType == GasTypeEnum.Inert);
+            } else {
+                return gases;
+            }
+        }
+
+        public bool EqualsAny(params GasEnum[] pOthers) {
+            return pOthers.Any(x => x.Name.Equals(Name));
+        }
+
+        #region Convertion
+        public MixtureGasDTO ToMixtureGas() {
+            return ToMixtureGas(StandardGasFraction);
+        }
+
+        public MixtureGasDTO ToMixtureGas(double pGasFraction) {
+            return new MixtureGasDTO(this, pGasFraction);
+        }
+        #endregion
+        #endregion
+    }
+}
