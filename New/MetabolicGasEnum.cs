@@ -1,5 +1,5 @@
 namespace ETC.Bühlmann {
-    public class MetabolicGasEnum : IGas {
+    public class MetabolicGasEnum : GasEnumBase, IGas {
         #region Properties / Felder
         public static readonly MetabolicGasEnum O2 = new(pName: nameof(O2),
                                           pStandardGasFraction: 0.20948,
@@ -63,17 +63,12 @@ namespace ETC.Bühlmann {
                                                                   new ExposerLimitData(1.79,  31.25,   3),
                                                                   new ExposerLimitData(1.80,  50.00,   2),
                                                                  
-        public string Name { get; init; }
-
-        public double StandardGasFraction { get; init; }
-
         public ExposerLimitData[] ExposerLimits { get; init; }
         #endregion
 
         #region Konstruktor
-        private GasEnum(string pName, double pStandardGasFraction, ExposerLimitData[] pExposerLimits) {
-            Name = pName;
-            StandardGasFraction = pStandardGasFraction;
+        private MetsbolicGasEnum(string pName, double pStandardGasFraction, ExposerLimitData[] pExposerLimits)
+            : base(pName, pStandardGasFraction, GasTypeEnum.Metabolic) {
             ExposerLimits = pExposerLimits;
         }
         #endregion
