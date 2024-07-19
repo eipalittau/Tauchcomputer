@@ -51,7 +51,7 @@ namespace ETC.Gas {
         #region Konstruktor
         private InertGasEnum(string pName, double pStandardGasFraction, CompartmentData[] pCompartments)
           : base(pName, pStandardGasFraction, GasTypeEnum.Inert) {
-            Compartments = pCompartments;
+          Compartments = pCompartments;
         }
         #endregion
 
