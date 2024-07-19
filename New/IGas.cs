@@ -1,4 +1,4 @@
-namespace ETC.Buehlmann {
+namespace ETC.Gas {
   public interface IGas {
     string Name { get; init; }
     double StandardGasFraction { get; init; }
