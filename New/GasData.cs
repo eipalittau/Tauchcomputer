@@ -4,9 +4,8 @@ namespace ETC.Gas {
 
     public float Fraction { get; set; }
 
-    public bool IsWithinPpO2(float pAmbientPressure) {
-      float fraction = Fraction * pAmbientPressure;
-      
+    public float CalculatePartialPressure(float pAmbientPressure) {
+      return Fraction * pAmbientPressure;
     }
   }
 }
