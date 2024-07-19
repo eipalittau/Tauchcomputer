@@ -1,31 +1,26 @@
 namespace ETC.Gas {
-  public abstract class GasEnumBase {
+  public abstract class GasEnumBase : EnumBase {
     #region Properties / Felder
-    public string Name { get; init; }
-
     public double StandardGasFraction { get; init; }
 
     public GasTypeEnum GasType { get; init; }
     #endregion
 
     #region Konstruktor
-    private protected GasEnumBase(string pName, double pStandardGasFraction, GasTypeEnum pGasType) {
-        Name = pName;
+    private protected GasEnumBase(string pName, double pStandardGasFraction, GasTypeEnum pGasType)
+    : base(pName) {
         StandardGasFraction = pStandardGasFraction;
         GasType = pGasType;
     }
     #endregion
 
     #region Methoden
-    private protected static IEnumerable<T> Enumerate<T() where T : GasEnumBase {
-      return typeof(T)
-        .GetProperties(BindingFlags.Static | BindingFlags.Public)
-        .Select(x => x.GetValue(null))
-        .Cast<T>();
+    private protected static IEnumerable<T> Enumerate<T>() {
+      return Enumerate<T>();
     }
 
-    private protected bool EqualsAny<T>(params T[] pOthers) where T : GasEnumBase {
-      return pOthers.Any(x => x.Name.Equals(Name));
+    private protected bool EqualsAny<T>(params T[] pOthers) {
+      return EqualsAny<T>(pOthers);
     }
 
     #region Convertion
