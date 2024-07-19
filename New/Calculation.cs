@@ -12,7 +12,7 @@ namespace ETC.Buehlmann {
             double maxPPO2 = pMixtureType == MixtureModeEnum.Dekogas ? Settings.MaximumPPO2Deko : Settings.MaximumPPO2Tg;
 
             foreach (MixtureData mixture in Mixtures) {
-                if (mixture.Mode == pMode) {
+                if (mixture.MixtureType == pMixtureType) {
                     double ppO2 = pAmbientPressure * mixture.MetabolicGas.Fraction;
 
                     if (ppO2 >= Settings.MinimumPPO2 && ppO2 <= maxPPO2) {
