@@ -1,4 +1,4 @@
-namespace ETC.Buehlmann {
+namespace ETC.Gas {
   public class GasData {
     public IGas Gas { get; set; }
 
