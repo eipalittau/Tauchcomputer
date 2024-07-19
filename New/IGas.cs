@@ -1,7 +1,10 @@
 namespace ETC.Buehlmann {
   public interface IGas {
-    string Name { get; set; }
+    string Name { get; init; }
     
-    double StandardGasFraction { get; set; }
+    double StandardGasFraction { get; init; }
+
+    GasTypeEnum GasType { get; init; }
+    
   }
 }
