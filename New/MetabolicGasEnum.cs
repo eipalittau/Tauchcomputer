@@ -68,18 +68,18 @@ namespace ETC.Gas {
 
         #region Konstruktor
         private MetsbolicGasEnum(string pName, double pStandardGasFraction, ExposerLimitData[] pExposerLimits)
-            : base(pName, pStandardGasFraction, GasTypeEnum.Metabolic) {
-            ExposerLimits = pExposerLimits;
+          : base(pName, pStandardGasFraction, GasTypeEnum.Metabolic) {
+          ExposerLimits = pExposerLimits;
         }
         #endregion
 
         #region Methoden
         public static IEnumerable<MetabolicGasEnum> Enumerate() {
-            return Enumerate<MetabolicGasEnum>();
+          return Enumerate<MetabolicGasEnum>();
         }
 
         public bool EqualsAny(params MetabolicGasEnum[] pOthers) {
-            return EqualsAny<MetabolicGasEnum>(pOthers);
+          return EqualsAny<MetabolicGasEnum>(pOthers);
         }
         #endregion
     }
