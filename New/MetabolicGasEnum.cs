@@ -74,6 +74,12 @@ namespace ETC.Gas {
         #endregion
 
         #region Methoden
+        public CalculateAlveolarPressure(double pSurfacePressure) {
+          double alveolarPressure = pSurfacePressure - Settings.WaterVaporPressure;
+          
+          return (StandardGasFraction * alveolarPressure) - Settings.CorrectedCO2Pressure;
+        }
+                                                                 
         public static IEnumerable<MetabolicGasEnum> Enumerate() {
           return Enumerate<MetabolicGasEnum>();
         }
