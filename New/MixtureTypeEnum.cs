@@ -1,4 +1,4 @@
-namespace ETC.Buehlmann {
+namespace ETC.Gas {
   public sealed class MixtureTypeEnum : EnumBase {
     public static readonly Surfacegas = new MixtureTypeEnum(nameof(Surfacegas), false);
     
