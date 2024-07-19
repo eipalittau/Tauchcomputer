@@ -11,5 +11,20 @@ namespace ETC.Gas {
     private MixtureTypeEnum(string pName, bool pIsSelectable)
       : base(pName) {
       IsSelectable = pIsSelectable;
+    }
+
+    public static IEnumerable<MixtureTypeEnum> Enumerate(bool pOnlySelectable = true) {
+      IEnumerable<MixtureTypeEnum> result = Enumerate<MixtureTypeEnum>();
+
+      if (pOnlySelectable) {
+        return result.Where(x => x.IsSelectable);
+      }
+
+      return result;
+    }
+
+    public bool EqualsAny(params MixtureTypeEnum[] pOthers) {
+      return EqualsAny<MixtureTypeEnum>(pOthers);
+    }
   }
 }
