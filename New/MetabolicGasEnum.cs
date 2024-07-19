@@ -75,23 +75,20 @@ namespace ETC.Bühlmann {
 
         #region Methoden
         public static IEnumerable<MetabolicGasEnum> Enumerate() {
-            return typeof(MetabolicGasEnum)
-                .GetProperties(BindingFlags.Static | BindingFlags.Public)
-                .Select(x => x.GetValue(null))
-                .Cast<MetabolicGasEnum>();
+            return Enumerate<MetabolicGasEnum>();
         }
 
         public bool EqualsAny(params MetabolicGasEnum[] pOthers) {
-            return pOthers.Any(x => x.Name.Equals(Name));
+            return EqualsAny<MetabolicGasEnum>(pOthers);
         }
 
         #region Convertion
         public MixtureGasDTO ToMixtureGas() {
-            return ToMixtureGas(StandardGasFraction);
+            return ToMixtureGas<MetabolicGasEnum>();
         }
 
         public MixtureGasDTO ToMixtureGas(double pGasFraction) {
-            return new MixtureGasDTO(this, pGasFraction);
+            return ToMixtureGas<MetabolicGasEnum>(pGasFraction);
         }
         #endregion
         #endregion
