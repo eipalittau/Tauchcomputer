@@ -2,8 +2,8 @@ namespace ETC.Buehlmann {
   public sealed class Calculation {
     public List<MixturData> Mixtures;
     
-    <summary>Partialdruck im Atemgas bei der Einatmung</summary>
-    private PI(float pAmbientPressure) {
+    ///<summary>Partialdruck im Atemgas bei der Einatmung</summary>
+    private PI(double pAmbientPressure) {
       return (pAmbientPressure - Constant.PH2O) * BaseFraction;
     }
 
