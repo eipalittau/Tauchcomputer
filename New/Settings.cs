@@ -9,6 +9,9 @@ namespace ETC {
     public double MaxPpO2Dive { get; set; }
 
     public double MaxPpN2 { get; set; }
+    
+    ///<summary>Respiratorischer Quotient</summary>
+    public double RQ { get; set; }
 
     static Settings() {
       Mixtures = new List<MixtureData>();
@@ -16,5 +19,6 @@ namespace ETC {
       MaxPpO2Deco = 1.6;
       MaxPpO2Dive = 1.4;
       MaxPpN2 = 3.2;
+      RQ = 0.8;
   }
 }
