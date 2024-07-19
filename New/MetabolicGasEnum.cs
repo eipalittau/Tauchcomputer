@@ -81,16 +81,6 @@ namespace ETC.Bühlmann {
         public bool EqualsAny(params MetabolicGasEnum[] pOthers) {
             return EqualsAny<MetabolicGasEnum>(pOthers);
         }
-
-        #region Convertion
-        public MixtureGasDTO ToMixtureGas() {
-            return ToMixtureGas<MetabolicGasEnum>();
-        }
-
-        public MixtureGasDTO ToMixtureGas(double pGasFraction) {
-            return ToMixtureGas<MetabolicGasEnum>(pGasFraction);
-        }
-        #endregion
         #endregion
     }
 }
