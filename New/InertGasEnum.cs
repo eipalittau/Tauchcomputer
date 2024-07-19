@@ -1,4 +1,4 @@
-namespace ETC.Buehlmann {
+namespace ETC.Gas {
     public class InertGasEnum : GasEnumBase, IGas {
         #region Properties / Felder
         /// <summary>
