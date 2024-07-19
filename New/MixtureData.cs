@@ -11,8 +11,8 @@ namespace ETC.Gas {
       }
     }
 
-    public bool IsWithinPPO2(float pAmbientPressure) {
-      float ppO2 = Gases
+    public bool IsWithinPPO2(double pAmbientPressure) {
+      double ppO2 = Gases
         .Where(x => x.GasType == GasTypeEnum.Metabolic)
         .CalculatePartialPressure(pAmbientPressure);
 
