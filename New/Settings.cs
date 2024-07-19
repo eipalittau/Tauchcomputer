@@ -16,6 +16,9 @@ namespace ETC {
     ///<summary>Wasserdampfdruck. 47mmHg * 0.00133322 bar/mmHg</summary>
     public static double WaterVaporPressure { get; set; }
 
+    ///<summary>Partialdruck Kohlendioxid. 40mmHg * 0.00133322 bar/mmHg<summary>
+    public static double PpCO2 { get; set; }
+
     static Settings() {
       LoadDefaults();
     }
@@ -28,6 +31,7 @@ namespace ETC {
       MaxPpN2 = 3.2;
       RQ = 0.8;
       WaterVaporPressure = 0.06266;
+      PpCO2 = 0.05333
     }
   }
 }
