@@ -19,6 +19,8 @@ namespace ETC {
     ///<summary>Partialdruck Kohlendioxid. 40mmHg * 0.00133322 bar/mmHg<summary>
     public static double PpCO2 { get; set; }
 
+    public static double CorrectedCO2 { get; } = PpCO2 / RQ;
+
     static Settings() {
       LoadDefaults();
     }
