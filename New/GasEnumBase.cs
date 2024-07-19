@@ -17,26 +17,26 @@ namespace ETC.Gas {
     #endregion
 
     #region Methoden
-    public static IEnumerable<T> Enumerate<T() where T : GasEnumBase {
-            return typeof(T)
-                .GetProperties(BindingFlags.Static | BindingFlags.Public)
-                .Select(x => x.GetValue(null))
-                .Cast<T>();
-        }
-
-        public bool EqualsAny<T>(params T[] pOthers) where T : GasEnumBase{
-            return pOthers.Any(x => x.Name.Equals(Name));
-        }
-
-        #region Convertion
-        public MixtureGasDTO ToMixtureGas() {
-            return ToMixtureGas(StandardGasFraction);
-        }
-
-        public MixtureGasDTO ToMixtureGas(double pGasFraction) {
-            return new MixtureGasDTO(this, pGasFraction);
-        }
-        #endregion
-        #endregion
+    private protected static IEnumerable<T> Enumerate<T() where T : GasEnumBase {
+      return typeof(T)
+        .GetProperties(BindingFlags.Static | BindingFlags.Public)
+        .Select(x => x.GetValue(null))
+        .Cast<T>();
     }
+
+    private protected bool EqualsAny<T>(params T[] pOthers) where T : GasEnumBase {
+      return pOthers.Any(x => x.Name.Equals(Name));
+    }
+
+    #region Convertion
+    public MixtureGasDTO ToMixtureGas() {
+      return ToMixtureGas(StandardGasFraction);
+    }
+
+    public MixtureGasDTO ToMixtureGas(double pGasFraction) {
+      return new MixtureGasDTO(this, pGasFraction);
+    }
+    #endregion
+    #endregion
+  }
 }
