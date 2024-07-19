@@ -24,5 +24,9 @@ namespace ETC.Buehlmann {
         return result.Max(x => x.CalculatePartialPressure(pAmbientPressure));
       }
     }
+
+    public int CalculateNDL(double pAmbientPressure) {
+      //-t12*log2((PIN2-PTTOLN2)/(PIN2-PTN2))
+    }
   }
 }
