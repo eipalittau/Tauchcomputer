@@ -56,26 +56,13 @@ namespace ETC.Buehlmann {
         #endregion
 
         #region Methoden
-        public static IEnumerable<GasEnum> Enumerate() {
-            return typeof(InertGasEnum)
-                .GetProperties(BindingFlags.Static | BindingFlags.Public)
-                .Select(x => x.GetValue(null))
-                .Cast<InertGasEnum>();
+        public static IEnumerable<InertGasEnum> Enumerate() {
+            return Enumerate<InertGasEnum>();
         }
 
-        public bool EqualsAny(params InertGasEnum[] pOthers) {
-            return pOthers.Any(x => x.Name.Equals(Name));
+        public bool EqualsAny<T>(params InertGasEnum[] pOthers) {
+            return EqualsAny<T>(pOthers);
         }
-
-        #region Convertion
-        public MixtureGasDTO ToMixtureGas() {
-            return ToMixtureGas(StandardGasFraction);
-        }
-
-        public MixtureGasDTO ToMixtureGas(double pGasFraction) {
-            return new MixtureGasDTO(this, pGasFraction);
-        }
-        #endregion
         #endregion
     }
 }
