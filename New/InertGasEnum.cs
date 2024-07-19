@@ -59,7 +59,7 @@ namespace ETC.Gas {
         public CalculateAlveolarPressure(double pSurfacePressure, double pPPO2) {
           double alveolarPressure = pSurfacePressure - Settings.WaterVaporPressure;
           
-          return (StandardGasFraction * alveolarPressure) - (pPPO2 + Settings.PpCO2);
+          return (StandardGasFraction * alveolarPressure) - (MetabilicGasEnum.O2.CalculateAlveolarPressure(pSurfacePressure) + Settings.PpCO2);
         }
             
         public static IEnumerable<InertGasEnum> Enumerate() {
