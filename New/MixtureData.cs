@@ -1,6 +1,6 @@
 namespace ETC.Gas {
-  public class MixtureData {
-    public List<GasData> Gas { get; } = new List<GasData>();
+  public sealed class MixtureData {
+    public List<GasData> Gases { get; } = new List<GasData>();
 
     public MixtureTypeEnum MixtureType { get; set; }
     
