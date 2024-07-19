@@ -10,5 +10,9 @@ namespace ETC.Gas {
         Gas.AddList(pGases);
       }
     }
+
+    public bool IsWithinPPO2() {
+      return true;
+    }
   }
 }
