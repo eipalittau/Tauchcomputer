@@ -11,7 +11,8 @@ namespace ETC.Gas {
       }
     }
 
-    public bool IsWithinPPO2() {
+    public bool IsWithinPPO2(float pAmbientPressure) {
+      return pAmbientPressure
       return true;
     }
   }
