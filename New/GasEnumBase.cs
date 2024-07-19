@@ -17,14 +17,14 @@ namespace ETC.Gas {
     #endregion
 
     #region Methoden
-    public static IEnumerable<GasEnum> Enumerate() {
-            return typeof(InertGasEnum)
+    public static IEnumerable<T> Enumerate<T() where T : GasEnumBase {
+            return typeof(T)
                 .GetProperties(BindingFlags.Static | BindingFlags.Public)
                 .Select(x => x.GetValue(null))
-                .Cast<InertGasEnum>();
+                .Cast<T>();
         }
 
-        public bool EqualsAny(params InertGasEnum[] pOthers) {
+        public bool EqualsAny<T>(params T[] pOthers) where T : GasEnumBase{
             return pOthers.Any(x => x.Name.Equals(Name));
         }
 
