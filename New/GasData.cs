@@ -2,9 +2,9 @@ namespace ETC.Gas {
   public class GasData {
     public IGas Gas { get; set; }
 
-    public float Fraction { get; set; }
+    public double Fraction { get; set; }
 
-    public float CalculatePartialPressure(float pAmbientPressure) {
+    public double CalculatePartialPressure(double pAmbientPressure) {
       return Fraction * pAmbientPressure;
     }
   }
