@@ -15,6 +15,6 @@ namespace ETC {
       MinPpO2 = 0.16;
       MaxPpO2Deco = 1.6;
       MaxPpO2Dive = 1.4;
-      MaxPpN2 = 3.16;
+      MaxPpN2 = 3.2;
   }
 }
