@@ -2,11 +2,11 @@ namespace ETC {
   public static class Settings {
     public List<MixturData> Mixtures { get; set; }
 
-    public float MinPpO2 { get; set; }
+    public double MinPpO2 { get; set; }
 
-    public float MaxPpO2Deco { get; set; }
+    public double MaxPpO2Deco { get; set; }
 
-    public float MaxPpO2Dive { get; set; }
+    public double MaxPpO2Dive { get; set; }
 
     public double MaxPpN2 { get; set; }
 
