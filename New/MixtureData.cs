@@ -2,9 +2,10 @@ namespace ETC.Buehlmann {
   public class MixtureData {
     public List<GasData> Gas { get; } = new List<GasData>();
 
-    public int Usage 
+    public MixtureTypeEnum MixtureType { get; set; }
     
-    public MixtureData(params GasData[] pGases) {
+    public MixtureData(MixtureTypeEnum pMixtureType, params GasData[] pGases) {
+      MixtureType = pMixtureType;
       if (pGases?.Lenght > 0) {
         Gas.AddList(pGases);
       }
