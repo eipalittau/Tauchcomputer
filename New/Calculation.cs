@@ -7,21 +7,22 @@ namespace ETC.Buehlmann {
       return (pAmbientPressure - Constant.PH2O) * BaseFraction;
     }
 
-    private IEnumerable<MixtureData> GetMixturesWithinPPO2(double pAmbientPressure, MixtureTypeEnum pMixtureType) {
-            List<MixtureData> result = [];
-            double maxPPO2 = pMixtureType == MixtureModeEnum.Dekogas ? Settings.MaximumPPO2Deko : Settings.MaximumPPO2Tg;
-
-            foreach (MixtureData mixture in Mixtures) {
-                if (mixture.MixtureType == pMixtureType) {
-                    double ppO2 = pAmbientPressure * mixture.MetabolicGas.Fraction;
-
-                    if (ppO2 >= Settings.MinimumPPO2 && ppO2 <= maxPPO2) {
-                        result.Add(mixture);
-                    }
-                }
-            }
-
-            return result;
+    public MixtureData GetBestMix(double pAmbientPressure) {
+      List<MixtureData> result = [];
+            
+      foreach (MixtureData mixture in Settings.Mixtures) {
+        if (mixture.IsWithinPPO2(pAmbientPressure)) {
+          result.Add(mixture);
         }
+      }
+
+      if (result.Count == 0) {
+        return null;
+      } else if (result.Count == 1) {
+        return result[0];
+      } else {
+        return result.Max(x => x.CalculatePartialPressure(pAmbientPressure));
+      }
+    }
   }
 }
