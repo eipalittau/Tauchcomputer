@@ -12,8 +12,19 @@ namespace ETC.Gas {
     }
 
     public bool IsWithinPPO2(float pAmbientPressure) {
-      return pAmbientPressure
-      return true;
+      float ppO2 = Gases
+        .Where(x => x.GasType == GasTypeEnum.Metabolic)
+        .CalculatePartialPressure(pAmbientPressure);
+
+      if (ppO2 > Settings.MinPpO2) {
+        if (MixtureType == MixtureTypeEnum.Decogas) {
+          return ppO2 < Settings.MaxPpO2Deco;
+        } else {
+          return ppO2 < Settings.MaxPpO2Dive;
+        }
+      } else {
+        return false;
+      }
     }
   }
 }
