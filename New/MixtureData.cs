@@ -1,4 +1,4 @@
-namespace ETC.Buehlmann {
+namespace ETC.Gas {
   public class MixtureData {
     public List<GasData> Gas { get; } = new List<GasData>();
 
