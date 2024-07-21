@@ -5,7 +5,8 @@ namespace ETC {
     static Settings() {
       Mixtures = new Mixture[6];
       Mixture[0] = new Mixture() {
-        O2 = 0.209
+        O2 = 0.20948,
+        He = 0
       }
     }
   }
