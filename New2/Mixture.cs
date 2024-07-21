@@ -1,5 +1,7 @@
 namespace ETC.Gas {
   public sealed class Mixture {
+    public string Type { get; set; }
+    
     ///<summary>Partialdruck Sauerstoff<summary>
     public double O2 { get; set; } = 20.946
 
