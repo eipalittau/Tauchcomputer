@@ -1,5 +1,5 @@
 namespace ETC.Gas {
-  public enum MixtureType {
+  public enum MixtureTypeEnum {
     Surfacegas,
     Travelgas,
     Decogas
