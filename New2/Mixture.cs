@@ -1,6 +1,6 @@
 namespace ETC.Gas {
   public sealed class Mixture {
-    public MixtureType Type { get; set; }
+    public MixtureTypeEnum Type { get; set; } = MixtureTypeEnum.Surfacegas;
     
     ///<summary>Partialdruck Sauerstoff<summary>
     public double O2 { get; set; } = 20.946
