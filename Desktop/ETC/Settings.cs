@@ -5,6 +5,8 @@ namespace ETC {
         #region Properties / Felder
         public static Mixture?[] Mixtures { get; } = new Mixture[6];
 
+        public static int ActiveMixtureIndex { get; set; }
+        
         public static double MinPpO2 { get; set; }
 
         public static double MaxPpO2Deco { get; set; }
@@ -42,6 +44,7 @@ namespace ETC {
             for (int i = 1; i < Mixtures.Length; i++) {
                 Mixtures[i] = null;
             }
+            ActiveMixtureIndex = 0;
             MinPpO2 = 0.16;
             MaxPpO2Deco = 1.6;
             MaxPpO2Dive = 1.4;
