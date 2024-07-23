@@ -20,6 +20,24 @@ namespace ETC.Buehlmann {
                                                             new CompartmentData(498.0, 0.2523, 0.9602),
                                                             new CompartmentData(635.0, 0.2327, 0.9653) ];
 
-        private static CompartmentData[] HeCompartments =      
+        private static CompartmentData[] HeCompartments = [ new CompartmentData(  1.51, 1.7424, 0.4245),
+                                                            new CompartmentData(  1.88, 1.6204, 0.2756),
+                                                            new CompartmentData(  3.02, 1.3830, 0.5747),
+                                                            new CompartmentData(  4.72, 1.1911, 0.6527),
+                                                            new CompartmentData(  6.99, 1.0458, 0.7223),
+                                                            new CompartmentData( 10.21, 0.9220, 0.7582),
+                                                            new CompartmentData( 14.48, 0.8205, 0.7957),
+                                                            new CompartmentData( 20.53, 0.7305, 0.8279),
+                                                            new CompartmentData( 29.11, 0.6502, 0.8553),
+                                                            new CompartmentData( 41.20, 0.5950, 0.8757),
+                                                            new CompartmentData( 55.19, 0.5545, 0.8903),
+                                                            new CompartmentData( 70.69, 0.5333, 0.8997),
+                                                            new CompartmentData( 90.34, 0.5189, 0.9073),
+                                                            new CompartmentData(115.29, 0.5181, 0.9122),
+                                                            new CompartmentData(147.42, 0.5176, 0.9171),
+                                                            new CompartmentData(188.24, 0.5172, 0.9217),
+                                                            new CompartmentData(240.03, 0.5119, 0.9267) ];
+
+        private static ExposureData[] O2Exposures =      
     }
 }
