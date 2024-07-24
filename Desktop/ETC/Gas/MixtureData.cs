@@ -1,19 +1,42 @@
-namespace ETC.Gas {
-    public sealed class MixtureData {
+﻿namespace ETC.Gas {
+    public partial class MixtureData {
+        #region Properties / Felder
         ///<summary>Partialdruck Helium<summary>
-        public double He { get; set; }
+        public GasData He { get; init; }
 
         ///<summary>Partialdruck Sauerstoff<summary>
-        public double O2 { get; set; }
-        
+        public GasData O2 { get; init; }
+
         ///<summary>Partialdruck Stickstoff<summary>
-        public double N2 {
-            get {
-                return 100 - O2 - He;
-            }
-        }
+        public GasData N2 { get; init; }
 
         /// <summary>Verwendungszweck des Gases</summary>
         public MixtureTypeEnum Type { get; set; }
+        #endregion
+
+        #region Konstruktor
+        public MixtureData(MixtureTypeEnum pType, double pO2Percent, double pHePercent)
+            : this() {
+            Type = pType;
+            He.Percent = pHePercent;
+            O2.Percent = pO2Percent;
+        }
+        
+        public MixtureData() {
+            He = new GasData(0, 99);
+            He.Changed += OnChanged;
+
+            O2 = new GasData(1, 100);
+            O2.Changed += OnChanged;
+
+            N2 = new GasData(0, 99);
+        }
+        #endregion
+
+        #region Methoden
+        public void OnChanged(object? sender, GasDataChangedEventArgs e) {
+            N2.Percent = 100 - O2.Percent - He.Percent;
+        }
+        #endregion
     }
 }

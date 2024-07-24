@@ -1,4 +1,4 @@
-namespace ETC.Buehlmann {
+﻿namespace ETC.Buehlmann {
     public sealed class CompartmentData {
         ///<summary>Halbwertzeit des Kompartiments</summary>
         public double HalfLife { get; set; }

@@ -1,101 +1,30 @@
-using ETC.Gas;
+﻿using ETC.Gas;
 
 namespace ETC.Buehlmann {
     public sealed class Calculation {
-        private static CompartmentData[] N2Compartments = [ new CompartmentData(  4.0, 1.2599, 0.5050),
-                                                            new CompartmentData(  5.0, 1.1696, 0.5577),
-                                                            new CompartmentData(  8.0, 1.0000, 0.6514),
-                                                            new CompartmentData( 12.5, 0.8618, 0.7222),
-                                                            new CompartmentData( 18.5, 0.7562, 0.7825),
-                                                            new CompartmentData( 27.0, 0.6667, 0.8125),
-                                                            new CompartmentData( 38.3, 0.5933, 0.8434),
-                                                            new CompartmentData( 54.3, 0.5282, 0.8693),
-                                                            new CompartmentData( 77.0, 0.4701, 0.8910),
-                                                            new CompartmentData(109.0, 0.4187, 0.9092),
-                                                            new CompartmentData(146.0, 0.3798, 0.9222),
-                                                            new CompartmentData(187.0, 0.3497, 0.9319),
-                                                            new CompartmentData(239.0, 0.3223, 0.9403),
-                                                            new CompartmentData(305.0, 0.2971, 0.9477),
-                                                            new CompartmentData(390.0, 0.2737, 0.9544),
-                                                            new CompartmentData(498.0, 0.2523, 0.9602),
-                                                            new CompartmentData(635.0, 0.2327, 0.9653) ];
+        public bool IsWithinPPO2(double pAmbientPressure) {
+            for (int i = 1; i < Settings.Mixtures.Length; i++) {
+                if (Settings.Mixtures[i].O2 * pAmbientPressure)
+            }
 
-        private static CompartmentData[] HeCompartments = [ new CompartmentData(  1.51, 1.7424, 0.4245),
-                                                            new CompartmentData(  1.88, 1.6204, 0.2756),
-                                                            new CompartmentData(  3.02, 1.3830, 0.5747),
-                                                            new CompartmentData(  4.72, 1.1911, 0.6527),
-                                                            new CompartmentData(  6.99, 1.0458, 0.7223),
-                                                            new CompartmentData( 10.21, 0.9220, 0.7582),
-                                                            new CompartmentData( 14.48, 0.8205, 0.7957),
-                                                            new CompartmentData( 20.53, 0.7305, 0.8279),
-                                                            new CompartmentData( 29.11, 0.6502, 0.8553),
-                                                            new CompartmentData( 41.20, 0.5950, 0.8757),
-                                                            new CompartmentData( 55.19, 0.5545, 0.8903),
-                                                            new CompartmentData( 70.69, 0.5333, 0.8997),
-                                                            new CompartmentData( 90.34, 0.5189, 0.9073),
-                                                            new CompartmentData(115.29, 0.5181, 0.9122),
-                                                            new CompartmentData(147.42, 0.5176, 0.9171),
-                                                            new CompartmentData(188.24, 0.5172, 0.9217),
-                                                            new CompartmentData(240.03, 0.5119, 0.9267) ];
+            Settings.Mixtures.Where(x => x.Type == )
+            foreach (MixtureData mix in Settings.Mixtures) {
 
-        private static ExpositionData[] O2ExpositionLimits = [ new ExpositionData(0.50,   0.00, int.MaxValue),
-                                                               new ExpositionData(0.60,   0.14, 714),
-                                                               new ExpositionData(0.64,   0.15, 667),
-                                                               new ExpositionData(0.66,   0.16, 625),
-                                                               new ExpositionData(0.68,   0.17, 588),
-                                                               new ExpositionData(0.70,   0.18, 556),
-                                                               new ExpositionData(0.74,   0.19, 526),
-                                                               new ExpositionData(0.76,   0.20, 500),
-                                                               new ExpositionData(0.78,   0.21, 476),
-                                                               new ExpositionData(0.80,   0.22, 455),
-                                                               new ExpositionData(0.82,   0.23, 435),
-                                                               new ExpositionData(0.84,   0.24, 417),
-                                                               new ExpositionData(0.86,   0.25, 400),
-                                                               new ExpositionData(0.88,   0.26, 385),
-                                                               new ExpositionData(0.90,   0.28, 357),
-                                                               new ExpositionData(0.92,   0.29, 345),
-                                                               new ExpositionData(0.94,   0.30, 333),
-                                                               new ExpositionData(0.96,   0.31, 323),
-                                                               new ExpositionData(0.98,   0.32, 313),
-                                                               new ExpositionData(1.00,   0.33, 303),
-                                                               new ExpositionData(1.02,   0.35, 286),
-                                                               new ExpositionData(1.04,   0.36, 278),
-                                                               new ExpositionData(1.06,   0.38, 263),
-                                                               new ExpositionData(1.08,   0.40, 250),
-                                                               new ExpositionData(1.10,   0.42, 238),
-                                                               new ExpositionData(1.12,   0.43, 233),
-                                                               new ExpositionData(1.14,   0.43, 233),
-                                                               new ExpositionData(1.16,   0.44, 227),
-                                                               new ExpositionData(1.18,   0.46, 217),
-                                                               new ExpositionData(1.20,   0.47, 213),
-                                                               new ExpositionData(1.22,   0.48, 208),
-                                                               new ExpositionData(1.24,   0.51, 196),
-                                                               new ExpositionData(1.26,   0.52, 192),
-                                                               new ExpositionData(1.28,   0.54, 185),
-                                                               new ExpositionData(1.30,   0.56, 179),
-                                                               new ExpositionData(1.32,   0.57, 175),
-                                                               new ExpositionData(1.34,   0.60, 167),
-                                                               new ExpositionData(1.36,   0.62, 161),
-                                                               new ExpositionData(1.38,   0.63, 159),
-                                                               new ExpositionData(1.40,   0.65, 154),
-                                                               new ExpositionData(1.42,   0.68, 147),
-                                                               new ExpositionData(1.44,   0.71, 141),
-                                                               new ExpositionData(1.46,   0.74, 135),
-                                                               new ExpositionData(1.48,   0.78, 128),
-                                                               new ExpositionData(1.50,   0.83, 120),
-                                                               new ExpositionData(1.52,   0.93, 108),
-                                                               new ExpositionData(1.54,   1.04,  96),
-                                                               new ExpositionData(1.56,   1.19,  84),
-                                                               new ExpositionData(1.58,   1.47,  68),
-                                                               new ExpositionData(1.60,   2.22,  45),
-                                                               new ExpositionData(1.62,   5.00,  20),
-                                                               new ExpositionData(1.65,   6.25,  16),
-                                                               new ExpositionData(1.67,   7.69,  13),
-                                                               new ExpositionData(1.70,  10.00,  10),
-                                                               new ExpositionData(1.72,  12.50,   8),
-                                                               new ExpositionData(1.74,  20.00,   5),
-                                                               new ExpositionData(1.77,  25.00,   4),
-                                                               new ExpositionData(1.79,  31.25,   3),
-                                                               new ExpositionData(1.80,  50.00,   2) ]   
+            }
+
+            double ppO2 = Settings.Mixtures Gases
+        .Where(x => x.GasType == GasTypeEnum.Metabolic)
+        .CalculatePartialPressure(pAmbientPressure);
+
+            if (ppO2 > Settings.MinPpO2) {
+                if (MixtureType == MixtureTypeEnum.Decogas) {
+                    return ppO2 < Settings.MaxPpO2Deco;
+                } else {
+                    return ppO2 < Settings.MaxPpO2Dive;
+                }
+            } else {
+                return false;
+            }
+        }
     }
 }
