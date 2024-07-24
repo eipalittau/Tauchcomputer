@@ -1,0 +1,22 @@
+Partialdruck der Gase
+Sauerstoff-Partialdruck im Atemgas bei der Einatmung: PIO2=(PAMB-0.0627)*0.2095
+PIN2=(PAMB-0.0627)*0.7902
+Wasserdampfdruck=PH2O=0.0627
+PAMB=Umgebungsdruck
+
+Sauerstoffteildruck in den Lungenalveolen:
+PAO2=PIO2-[(PACO2-PICO2)*(FIO2+((1-FIO2)/RQ))]
+RQ=respiratorischer Quotient=0.8 bis 0.85
+
+Tolerierter inertgasdruck im Gewebe:
+PTTOLIG=(PAMB/b)+a
+a=2*T12N2^(-1/3)
+b=1.005-1*T12N2^(-1/2)
+T12N2=Halbwertszeit Stickstoff
+Beziehung Halbwertszeit N2-He=2,64583
+
+PTIGTE=PTIGT0+(PIIG-PTIGT0)*(1-2^(-TE/T12))
+TE=Expositionszeit in Minuten
+T12=Halbwertszeit in Minuten
+
+Nullzeit = -t12*log2((PIN2-PTTOLN2)/(PIN2-PTN2))
