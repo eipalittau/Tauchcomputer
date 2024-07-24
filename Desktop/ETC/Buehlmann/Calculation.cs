@@ -50,6 +50,7 @@ namespace ETC.Buehlmann {
 
             double pressureInspiratoryN2 = pCurrentMixture.N2.CalculatePressureInspiratory(pPressureAmbient);
             double pressureInspiratoryHe = pCurrentMixture.He.CalculatePressureInspiratory(pPressureAmbient);
+            double pressureToleratedN2 = CalculatePressurePartialTolerated(pPressureAmbient);
 
 
 
@@ -74,8 +75,9 @@ namespace ETC.Buehlmann {
             return minNDL;
         }
 
+        ///<summary>PTTOLIG=(PAMB/b)+a<summary>
         private double CalculatePressurePartialTolerated(TissueData pTissue, double pPressureAmbient) {
-            return (pPressureAmbient - pTissue.A) / pTissue.B;
+            return (pPressureAmbient / pTissue.B) + pTissue.A;
         }
     }
 }
