@@ -40,6 +40,10 @@
                 return Bar * pPressureAmbient;
             }
 
+            public double CalculatePressureInspiratory(double pPressureAmbient) {
+                return Bar * (pPressureAmbient - Settings.WaterVaporPressure);
+            }
+
             private void ExecuteChanged(double pOldValue, double pNewValue) {
                 Changed?.Invoke(this, new GasDataChangedEventArgs(pOldValue, pNewValue));
             }
