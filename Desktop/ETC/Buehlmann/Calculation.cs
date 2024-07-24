@@ -50,8 +50,14 @@ namespace ETC.Buehlmann {
 
             double pressureInspiratoryN2 = pCurrentMixture.N2.CalculatePressureInspiratory(pPressureAmbient);
             double pressureInspiratoryHe = pCurrentMixture.He.CalculatePressureInspiratory(pPressureAmbient);
-            double pressureToleratedN2 = CalculatePressurePartialTolerated(pPressureAmbient);
 
+            foreach(TissueData tissue in N2) {
+                double tempNDL;
+                double pressureToleratedN2 = CalculatePressurePartialTolerated(tissue, pPressureAmbient);
+
+                tempNDL = -tissue.HalfLife * Math.Log2((pressureInspiratoryN2 - pressureToleratedN2) / (pressureInspiratoryN2  )
+                
+            }
 
 
             foreach (GasData gas in Enumerate()) {
