@@ -92,17 +92,10 @@
             }
         }
 
-        public MixtureData[] GetMixturesWithinPpO2(double pAmbientPressure, MixtureTypeEnum pMixtureType) {
-            for (int i = 1; i < Settings.Mixtures.Length; i++) {
-                MixtureData mix = Settings.Mixtures[i];
-
-                if (mix.Type == pMixtureType)
-                {
-                    
-                }
-                if (Settings.Mixtures[i])
-                if (Settings.Mixtures[i].O2 * pAmbientPressure)
-            }
+        public IEnumerable<MixtureData> GetMixturesWithinPpO2(double pPressureAmbient, MixtureTypeEnum pMixtureType) {
+            return Settings.Mixtures.Skip(1)
+                .Where(x => x.Type == pMixtureType
+                         && x.IsWithinPpO2(pPressureAmbient));
         }
     }
 }

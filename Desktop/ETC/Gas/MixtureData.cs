@@ -34,7 +34,19 @@
         #endregion
 
         #region Methoden
-        public void OnChanged(object? sender, GasDataChangedEventArgs e) {
+        public bool IsWithinPpO2(double pPressureAmbient) {
+            double pPO2 = O2.CalculatePressurePartial(pPressureAmbient);
+
+            if (pPO2 < Settings.MinPpO2) {
+                return false;
+            }
+
+            return Type == MixtureTypeEnum.Travelgas
+                ? pPO2 <= Settings.MaxPpO2Dive
+                : pPO2 <= Settings.MaxPpO2Deco;
+        }
+
+        private void OnChanged(object? sender, GasDataChangedEventArgs e) {
             N2.Percent = 100 - O2.Percent - He.Percent;
         }
         #endregion

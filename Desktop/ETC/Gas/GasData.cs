@@ -13,7 +13,7 @@
                 }
                 set {
                     if (_Percent != value && value >= _Min && value <= _Max) {
-                        OnChanged(value, _Percent);
+                        ExecuteChanged(value, _Percent);
                         _Percent = value;
                         Bar = _Percent / 100;
                     }
@@ -40,7 +40,7 @@
                 return Bar * pPressureAmbient;
             }
 
-            private void OnChanged(double pOldValue, double pNewValue) {
+            private void ExecuteChanged(double pOldValue, double pNewValue) {
                 Changed?.Invoke(this, new GasDataChangedEventArgs(pOldValue, pNewValue));
             }
             #endregion
