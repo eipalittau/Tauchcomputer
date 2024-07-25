@@ -37,11 +37,15 @@
 
             #region Methoden
             public double CalculatePressurePartial(double pPressureAmbient) {
-                return Bar * pPressureAmbient;
+                return pPressureAmbient * Bar;
             }
 
+            /// <summary>Partialdruck im Atemgas bei der Einatmung.</summary>
+            /// <param name="pPressureAmbient">Der aktuelle Umgebungsdruck in bar.</param>
+            /// <returns></returns>
+            /// <remarks>PIN2 = (PAMB - 0.0627) * 0.7902</remarks>
             public double CalculatePressureInspiratory(double pPressureAmbient) {
-                return Bar * (pPressureAmbient - Settings.WaterVaporPressure);
+                return (pPressureAmbient - Settings.WaterVaporPressure) * Bar;
             }
 
             private void ExecuteChanged(double pOldValue, double pNewValue) {

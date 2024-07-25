@@ -15,5 +15,16 @@
         public TissueData(double pHalfLife, double pA, double pB)
             => (HalfLife, A, B) = (pHalfLife, pA, pB);
         #endregion
+
+        #region Methoden
+        /// <summary>Der maximal tolerierte Inert-Gas-Druck.<summary>
+        /// <param name="pPressureAmbient">Der aktuelle Umgebungsdruck in bar.</param>
+        /// <returns></returns>
+        /// <remarks>PITOLIG = (PAMB / b) + a
+        /// ChatGPT:           (PAMB - a) / b</remarks>
+        public double CalculatePressurePartialTolerated(double pPressureAmbient) {
+            return (pPressureAmbient / B) + A;
+        }
+        #endregion
     }
 }

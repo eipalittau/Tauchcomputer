@@ -1,6 +1,4 @@
 ﻿using ETC.Gas;
-using Microsoft.VisualBasic;
-using static ETC.Gas.MixtureData;
 
 namespace ETC.Buehlmann {
     public sealed class Calculation {
@@ -48,26 +46,32 @@ namespace ETC.Buehlmann {
         private double CalculateNDL(MixtureData pCurrentMixture, double pPressureAmbient) {
             double minNDL = double.MaxValue;
 
-            double pressureInspiratoryN2 = pCurrentMixture.N2.CalculatePressureInspiratory(pPressureAmbient);
-            double pressureInspiratoryHe = pCurrentMixture.He.CalculatePressureInspiratory(pPressureAmbient);
+            if (pCurrentMixture.N2.Bar > 0) {
+                double pressureInspiratory = pCurrentMixture.N2.CalculatePressureInspiratory(pPressureAmbient);
 
-            foreach(TissueData tissue in N2) {
-                double tempNDL;
-                double pressureToleratedN2 = CalculatePressurePartialTolerated(tissue, pPressureAmbient);
-
-                tempNDL = -tissue.HalfLife * Math.Log2((pressureInspiratoryN2 - pressureToleratedN2) / (pressureInspiratoryN2  )
-                
-            }
-
-
-            foreach (GasData gas in Enumerate()) {
-                for (int i = 0; i < gas.Saturations.Length; i++) {
-                    double halftime = gas.GetCompartment(i).HalfTime;
-                    double maxTissuePressure = MaxTissuePressure(gas.GetCompartment(i), pAmbientPressure);
+                for (int i = 0; i < N2.Length; i++) {
                     double tempNDL;
 
-                    if (gas.PartialGasPressure > gas.Saturations[i]) {
-                        tempNDL = -halftime / Constants.LN2 * Math.Log(1 - (maxTissuePressure - gas.Saturations[i]) / (gas.PartialGasPressure - gas.Saturations[i]));
+                    if (pCurrentMixture.N2.CalculatePressurePartial(pPressureAmbient) > ContinuousData.CurrentSaturation[0, i]) {
+                        tempNDL = -N2[i].HalfLife * Math.Log2((pressureInspiratory - N2[i].CalculatePressurePartialTolerated(pPressureAmbient)) / (pressureInspiratory - ContinuousData.CurrentSaturation[0, i]));
+                    } else {
+                        tempNDL = 0;
+                    }
+
+                    if (tempNDL < minNDL) {
+                        minNDL = tempNDL;
+                    }
+                }
+            }
+
+            if (pCurrentMixture.He.Bar > 0) {
+                double pressureInspiratory = pCurrentMixture.He.CalculatePressureInspiratory(pPressureAmbient);
+
+                for (int i = 0; i < He.Length; i++) {
+                    double tempNDL;
+
+                    if (pCurrentMixture.He.CalculatePressurePartial(pPressureAmbient) > ContinuousData.CurrentSaturation[1, i]) {
+                        tempNDL = -He[i].HalfLife * Math.Log2((pressureInspiratory - He[i].CalculatePressurePartialTolerated(pPressureAmbient)) / (pressureInspiratory - ContinuousData.CurrentSaturation[1, i]));
                     } else {
                         tempNDL = 0;
                     }
@@ -79,11 +83,6 @@ namespace ETC.Buehlmann {
             }
 
             return minNDL;
-        }
-
-        ///<summary>PTTOLIG=(PAMB/b)+a<summary>
-        private double CalculatePressurePartialTolerated(TissueData pTissue, double pPressureAmbient) {
-            return (pPressureAmbient / pTissue.B) + pTissue.A;
         }
     }
 }
