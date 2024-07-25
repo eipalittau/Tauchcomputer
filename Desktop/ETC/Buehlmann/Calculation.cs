@@ -51,9 +51,13 @@ namespace ETC.Buehlmann {
 
                 for (int i = 0; i < N2.Length; i++) {
                     double tempNDL;
+                    double saturation = ContinuousData.CurrentSaturation[0, i];
 
-                    if (pCurrentMixture.N2.CalculatePressurePartial(pPressureAmbient) > ContinuousData.CurrentSaturation[0, i]) {
-                        tempNDL = -N2[i].HalfLife * Math.Log2((pressureInspiratory - N2[i].CalculatePressurePartialTolerated(pPressureAmbient)) / (pressureInspiratory - ContinuousData.CurrentSaturation[0, i]));
+                    if (pCurrentMixture.N2.CalculatePressurePartial(pPressureAmbient) > saturation) {
+                        double numerator = pressureInspiratory - N2[i].CalculatePressureTolerated(pPressureAmbient);
+                        double denominator = pressureInspiratory - saturation;
+
+                        tempNDL = -N2[i].HalfLife * Math.Log2(numerator / denominator);
                     } else {
                         tempNDL = 0;
                     }
@@ -69,9 +73,13 @@ namespace ETC.Buehlmann {
 
                 for (int i = 0; i < He.Length; i++) {
                     double tempNDL;
+                    double saturation = ContinuousData.CurrentSaturation[1, i];
 
-                    if (pCurrentMixture.He.CalculatePressurePartial(pPressureAmbient) > ContinuousData.CurrentSaturation[1, i]) {
-                        tempNDL = -He[i].HalfLife * Math.Log2((pressureInspiratory - He[i].CalculatePressurePartialTolerated(pPressureAmbient)) / (pressureInspiratory - ContinuousData.CurrentSaturation[1, i]));
+                    if (pCurrentMixture.He.CalculatePressurePartial(pPressureAmbient) > saturation) {
+                        double numerator = pressureInspiratory - He[i].CalculatePressureTolerated(pPressureAmbient);
+                        double denominator = pressureInspiratory - saturation;
+
+                        tempNDL = -He[i].HalfLife * Math.Log2(numerator / denominator);
                     } else {
                         tempNDL = 0;
                     }

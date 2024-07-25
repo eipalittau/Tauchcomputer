@@ -22,7 +22,7 @@
         /// <returns></returns>
         /// <remarks>PITOLIG = (PAMB / b) + a
         /// ChatGPT:           (PAMB - a) / b</remarks>
-        public double CalculatePressurePartialTolerated(double pPressureAmbient) {
+        public double CalculatePressureTolerated(double pPressureAmbient) {
             return (pPressureAmbient / B) + A;
         }
         #endregion
