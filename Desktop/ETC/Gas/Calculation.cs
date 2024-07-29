@@ -68,6 +68,12 @@
             if (pPressureAmbient < 0.3) {
                 //Entsättigung
                 //CNS %(t) = CNS % * (½)t/90 = CNS % * e–t/130
+                if (ContinousData.CurrentCnsExposition > 0) {
+                    ContinousData.CurrentCnsExposition *= Math.Exp(-pTimeExposition / 130.0);
+                    if (ContinuousData.CurrentCnsExposition < 0) {
+                        ContinuousData.CurrentCnsExposition = 0;
+                    }
+                }
             } else {
                 //Aufsättigung
                 if (pPressureAmbient <= O2ExpositionLimits[0].PressurePartial) {
