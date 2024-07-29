@@ -83,6 +83,7 @@
         /// <summary></summary>
         /// <param name="pDeltaSurfaceTime">Delta der Oberflächenpause seit der letzten Berechnung in Sekunden.</param>
         public void UpdateCnsDesaturation(int pDeltaSurfaceTime) {
+            //CNS %(t) = CNS % * (½)t/90 = CNS % * e–t/130
             if (ContinuousData.CurrentCnsExposition > 0) {
                 ContinuousData.CurrentCnsExposition -= Math.Pow(2, -pDeltaSurfaceTime / 60 / 90);
 
