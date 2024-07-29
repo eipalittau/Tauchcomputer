@@ -65,7 +65,7 @@
         /// <param name="pPressureAmbient">Umgebungsdruck in Bar.</param>
         /// <param name="pTimeExposition">Expositionszeit in Sekunden.</param>
         public void UpdateCnsSaturation(double pPressureAmbient, int pTimeExposition) {
-            if (pPressureAmbient < 0.3) {
+            if (pPressureAmbient < 0.24) {
                 //Entsättigung
                 //CNS %(t) = CNS % * (½)t/90 = CNS % * e–t/130
                 if (ContinousData.CurrentCnsExposition > 0) {
