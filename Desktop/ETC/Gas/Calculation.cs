@@ -65,17 +65,23 @@
         /// <param name="pPressureAmbient">Umgebungsdruck in Bar.</param>
         /// <param name="pTimeExposition">Expositionszeit in Sekunden.</param>
         public void UpdateCnsSaturation(double pPressureAmbient, int pTimeExposition) {
-            if (pPressureAmbient <= O2ExpositionLimits[0].PressurePartial) {
-                return;
-            } else if (pPressureAmbient > O2ExpositionLimits[O2ExpositionLimits.Length - 1].PressurePartial) {
-                ContinuousData.CurrentCnsExposition += O2ExpositionLimits[O2ExpositionLimits.Length - 1].CalculateStress(pTimeExposition);
-                return;
-            }
-
-            foreach (ExpositionData exp in O2ExpositionLimits) {
-                if (exp.PressurePartial >= pPressureAmbient) {
-                    ContinuousData.CurrentCnsExposition += exp.CalculateStress(pTimeExposition);
+            if (pPressureAmbient < 0.3) {
+                //Entsättigung
+                //CNS %(t) = CNS % * (½)t/90 = CNS % * e–t/130
+            } else {
+                //Aufsättigung
+                if (pPressureAmbient <= O2ExpositionLimits[0].PressurePartial) {
                     return;
+                } else if (pPressureAmbient > O2ExpositionLimits[O2ExpositionLimits.Length - 1].PressurePartial) {
+                    ContinuousData.CurrentCnsExposition += O2ExpositionLimits[O2ExpositionLimits.Length - 1].CalculateStress(pTimeExposition);
+                    return;
+                }
+
+                 foreach (ExpositionData exp in O2ExpositionLimits) {
+                    if (exp.PressurePartial >= pPressureAmbient) {
+                        ContinuousData.CurrentCnsExposition += exp.CalculateStress(pTimeExposition);
+                        return;
+                    }
                 }
             }
         }
