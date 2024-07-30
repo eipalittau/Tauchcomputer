@@ -38,6 +38,12 @@ namespace ETC.Buehlmann {
                                                    new TissueData(188.24, 0.5172, 0.9217),
                                                    new TissueData(240.03, 0.5119, 0.9267) ];
 
+        public DiveData Calculate(MixtureData pCurrentMixture, double pPressureAmbient) {
+            DiveData result = new DiveData();
+
+            result.NDL = CalculateNDL(pCurrentMixture, pPressureAmbient);
+        }
+        
         /// <summary>Berechnet die NDL (Non-Decompression Limit), auch Null-Zeit genannt, basierend auf dem aktuellen Umgebungsdruck.
         /// Das NDL repräsentiert die maximale verbleibende Tauchzeit ohne erforderliche Dekompression.</summary>
         /// <param name="pPressureAmbient">Der aktuelle Umgebungsdruck in bar.</param>
@@ -81,8 +87,9 @@ namespace ETC.Buehlmann {
             }
         }
 
-        private int CalculateTTS(double pPressureAmbient) {
-            D;
+        private int CalculateTTS(int pNDL, double pPressureAmbient) {
+            if (pNDL < 0) {
+            }
         }
     }
 }
