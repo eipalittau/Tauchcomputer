@@ -5,7 +5,7 @@
 
         public static double[,] CurrentSaturation { get; } = new double[1, 16];
 
-        public static double SurfacePressure { get; set; }
+        public static double PressureSurface { get; set; }
         #endregion
 
         #region Konstruktor

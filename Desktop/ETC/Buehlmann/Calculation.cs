@@ -38,11 +38,13 @@ namespace ETC.Buehlmann {
                                                    new TissueData(188.24, 0.5172, 0.9217),
                                                    new TissueData(240.03, 0.5119, 0.9267) ];
 
-        public DiveData Calculate(MixtureData pCurrentMixture, double pPressureAmbient) {
-            BuehlmannData result = new BuehlmannData;
+        public BuehlmannData Calculate(MixtureData pCurrentMixture, double pPressureAmbient) {
+            BuehlmannData result = new BuehlmannData();
 
             result.NDL = CalculateNDL(pCurrentMixture, pPressureAmbient);
             result.TTS = CalculateTTS(result.NDL, pPressureAmbient);
+
+            return result;
         }
         
         /// <summary>Berechnet die NDL (Non-Decompression Limit), auch Null-Zeit genannt, basierend auf dem aktuellen Umgebungsdruck.
@@ -84,12 +86,12 @@ namespace ETC.Buehlmann {
             if (minNDL < 0) {
                 return 0;
             } else {
-                return Math.Round(minNDL);
+                return (int)Math.Round(minNDL);
             }
         }
 
         private int CalculateTTS(int pNDL, double pPressureAmbient) {
-            int result = Math.Round(pPressureAmbient - ContinuousData.PressureSurface);
+            int result = (int)Math.Round(pPressureAmbient - ContinuousData.PressureSurface);
             
             if (pNDL < 0) {
                 // Dekompression vorausberechnen
@@ -98,6 +100,7 @@ namespace ETC.Buehlmann {
         }
 
         private (double, double) CalculateDeco(MixtureData pCurrentMixture, double pPressureAmbient) {
+
         }
     }
 }
