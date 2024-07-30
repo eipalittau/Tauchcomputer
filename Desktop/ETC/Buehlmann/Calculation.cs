@@ -42,6 +42,7 @@ namespace ETC.Buehlmann {
             DiveData result = new DiveData();
 
             result.NDL = CalculateNDL(pCurrentMixture, pPressureAmbient);
+            result.TTS = CalculateTTS(result.NDL, pPressureAmbient);
         }
         
         /// <summary>Berechnet die NDL (Non-Decompression Limit), auch Null-Zeit genannt, basierend auf dem aktuellen Umgebungsdruck.
@@ -88,6 +89,8 @@ namespace ETC.Buehlmann {
         }
 
         private int CalculateTTS(int pNDL, double pPressureAmbient) {
+            int tempTTS = Math.Round(pPressureAmbient - q);
+            
             if (pNDL < 0) {
             }
         }
