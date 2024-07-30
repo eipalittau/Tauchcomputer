@@ -43,24 +43,16 @@ namespace ETC.Buehlmann {
         /// <param name="pPressureAmbient">Der aktuelle Umgebungsdruck in bar.</param>
         /// <returns>Das NDL, auch Null-Zeit genannt.</returns>
         /// <remarks>Nullzeit = -t12*log2((PIN2-PTTOLN2)/(PIN2-PTN2))</remarks>
-        private double CalculateNDL(MixtureData pCurrentMixture, double pPressureAmbient) {
+        private int CalculateNDL(MixtureData pCurrentMixture, double pPressureAmbient) {
             double minNDL = double.MaxValue;
 
             if (pCurrentMixture.N2.Bar > 0) {
                 double pressureInspiratory = pCurrentMixture.N2.CalculatePressureInspiratory(pPressureAmbient);
 
                 for (int i = 0; i < N2.Length; i++) {
-                    double tempNDL;
-                    double saturation = ContinuousData.CurrentSaturation[0, i];
-
-                    if (pCurrentMixture.N2.CalculatePressurePartial(pPressureAmbient) > saturation) {
-                        double numerator = pressureInspiratory - N2[i].CalculatePressureTolerated(pPressureAmbient);
-                        double denominator = pressureInspiratory - saturation;
-
-                        tempNDL = -N2[i].HalfLife * Math.Log2(numerator / denominator);
-                    } else {
-                        tempNDL = 0;
-                    }
+                    double numerator = pressureInspiratory - N2[i].CalculatePressureTolerated(pPressureAmbient);
+                    double denominator = pressureInspiratory - ContinuousData.CurrentSaturation[0, i];
+                    double tempNDL = -N2[i].HalfLife * Math.Log2(numerator / denominator);
 
                     if (tempNDL < minNDL) {
                         minNDL = tempNDL;
@@ -72,17 +64,9 @@ namespace ETC.Buehlmann {
                 double pressureInspiratory = pCurrentMixture.He.CalculatePressureInspiratory(pPressureAmbient);
 
                 for (int i = 0; i < He.Length; i++) {
-                    double tempNDL;
-                    double saturation = ContinuousData.CurrentSaturation[1, i];
-
-                    if (pCurrentMixture.He.CalculatePressurePartial(pPressureAmbient) > saturation) {
-                        double numerator = pressureInspiratory - He[i].CalculatePressureTolerated(pPressureAmbient);
-                        double denominator = pressureInspiratory - saturation;
-
-                        tempNDL = -He[i].HalfLife * Math.Log2(numerator / denominator);
-                    } else {
-                        tempNDL = 0;
-                    }
+                    double numerator = pressureInspiratory - He[i].CalculatePressureTolerated(pPressureAmbient);
+                    double denominator = pressureInspiratory - ContinuousData.CurrentSaturation[1, i];
+                    double tempNDL = -He[i].HalfLife * Math.Log2(numerator / denominator);
 
                     if (tempNDL < minNDL) {
                         minNDL = tempNDL;
@@ -90,7 +74,15 @@ namespace ETC.Buehlmann {
                 }
             }
 
-            return minNDL;
+            if (minNDL < 0) {
+                return 0;
+            } else {
+                return Math.Round(minNDL);
+            }
+        }
+
+        private int CalculateTTS(double pPressureAmbient) {
+            D;
         }
     }
 }
