@@ -38,10 +38,10 @@ namespace ETC.Buehlmann {
                                                    new TissueData(188.24, 0.5172, 0.9217),
                                                    new TissueData(240.03, 0.5119, 0.9267) ];
 
-        public BuehlmannData Calculate(MixtureData pCurrentMixture, double pPressureAmbient) {
+        public BuehlmannData Calculate(double pPressureAmbient) {
             BuehlmannData result = new BuehlmannData();
 
-            result.NDL = CalculateNDL(pCurrentMixture, pPressureAmbient);
+            result.NDL = CalculateNDL(Settings.CurrentMixture, pPressureAmbient);
             result.TTS = CalculateTTS(result.NDL, pPressureAmbient);
 
             return result;
@@ -52,11 +52,11 @@ namespace ETC.Buehlmann {
         /// <param name="pPressureAmbient">Der aktuelle Umgebungsdruck in bar.</param>
         /// <returns>Das NDL, auch Null-Zeit genannt.</returns>
         /// <remarks>Nullzeit = -t12*log2((PIN2-PTTOLN2)/(PIN2-PTN2))</remarks>
-        private int CalculateNDL(MixtureData pCurrentMixture, double pPressureAmbient) {
+        private int CalculateNDL(double pPressureAmbient) {
             double minNDL = double.MaxValue;
 
             if (pCurrentMixture.N2.Bar > 0) {
-                double pressureInspiratory = pCurrentMixture.N2.CalculatePressureInspiratory(pPressureAmbient);
+                double pressureInspiratory = Settings.CurrentMixture.N2.CalculatePressureInspiratory(pPressureAmbient);
 
                 for (int i = 0; i < N2.Length; i++) {
                     double numerator = pressureInspiratory - N2[i].CalculatePressureTolerated(pPressureAmbient);
@@ -70,7 +70,7 @@ namespace ETC.Buehlmann {
             }
 
             if (pCurrentMixture.He.Bar > 0) {
-                double pressureInspiratory = pCurrentMixture.He.CalculatePressureInspiratory(pPressureAmbient);
+                double pressureInspiratory = Settings.CurrentMixture.He.CalculatePressureInspiratory(pPressureAmbient);
 
                 for (int i = 0; i < He.Length; i++) {
                     double numerator = pressureInspiratory - He[i].CalculatePressureTolerated(pPressureAmbient);
@@ -99,7 +99,7 @@ namespace ETC.Buehlmann {
             }
         }
 
-        private double[,] CalculateDeco(MixtureData pCurrentMixture, double pPressureAmbient) {
+        private double[,] CalculateDeco(double pPressureAmbient) {
 
         }
     }
