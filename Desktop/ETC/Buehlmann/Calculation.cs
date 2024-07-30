@@ -39,7 +39,7 @@ namespace ETC.Buehlmann {
                                                    new TissueData(240.03, 0.5119, 0.9267) ];
 
         public DiveData Calculate(MixtureData pCurrentMixture, double pPressureAmbient) {
-            DiveData result = new DiveData();
+            BuehlmannData result = new BuehlmannData;
 
             result.NDL = CalculateNDL(pCurrentMixture, pPressureAmbient);
             result.TTS = CalculateTTS(result.NDL, pPressureAmbient);
@@ -89,10 +89,15 @@ namespace ETC.Buehlmann {
         }
 
         private int CalculateTTS(int pNDL, double pPressureAmbient) {
-            int tempTTS = Math.Round(pPressureAmbient - q);
+            int result = Math.Round(pPressureAmbient - ContinuousData.PressureSurface);
             
             if (pNDL < 0) {
+                // Dekompression vorausberechnen
+                
             }
+        }
+
+        private (double, double) CalculateDeco(MixtureData pCurrentMixture, double pPressureAmbient) {
         }
     }
 }
