@@ -99,7 +99,7 @@ namespace ETC.Buehlmann {
             }
         }
 
-        private (double, double) CalculateDeco(MixtureData pCurrentMixture, double pPressureAmbient) {
+        private double[,] CalculateDeco(MixtureData pCurrentMixture, double pPressureAmbient) {
 
         }
     }
