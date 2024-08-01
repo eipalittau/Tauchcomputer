@@ -102,5 +102,9 @@ namespace ETC.Buehlmann {
         private double[,] CalculateDeco(double pPressureAmbient) {
 
         }
+
+        private void UpdatePressureTissue() {
+            //PTIGTE=PTIGT0+(PIIG-PTIGT0)*(1-2^(-TE/T12))
+        }
     }
 }
