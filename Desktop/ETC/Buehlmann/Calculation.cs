@@ -38,6 +38,8 @@ namespace ETC.Buehlmann {
                                                    new TissueData(188.24, 0.5172, 0.9217),
                                                    new TissueData(240.03, 0.5119, 0.9267) ];
 
+        private static double LN2 { get; set; } = Math.Log(2);
+        
         public BuehlmannData Calculate(double pPressureAmbient) {
             BuehlmannData result = new BuehlmannData();
 
@@ -105,9 +107,15 @@ namespace ETC.Buehlmann {
 
         private void UpdatePressureTissue(double pPressureAmbient, double pTimeExposition) {
             //PTIGTE=PTIGT0+(PIIG-PTIGT0)*(1-2^(-TE/T12))
+            //P 
+tissue(t)=P0+(Pamb−P0)⋅(1−e−τt)
             double timefactor = 1 - Math.Exp(-pTimeExposition * pCompartment.K);
 
             return pInitialPressure + (pPressureAmbient - pInitialPressure) * timefactor;
+        }
+
+        private double CalculateTau(double pHalfLife) {
+            return pHalfLife / LN2;
         }
     }
 }
