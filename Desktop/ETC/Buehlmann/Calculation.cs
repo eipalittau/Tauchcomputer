@@ -103,8 +103,11 @@ namespace ETC.Buehlmann {
 
         }
 
-        private void UpdatePressureTissue() {
+        private void UpdatePressureTissue(double pPressureAmbient, double pTimeExposition) {
             //PTIGTE=PTIGT0+(PIIG-PTIGT0)*(1-2^(-TE/T12))
+            double timefactor = 1 - Math.Exp(-pTimeExposition * pCompartment.K);
+
+            return pInitialPressure + (pPressureAmbient - pInitialPressure) * timefactor;
         }
     }
 }
