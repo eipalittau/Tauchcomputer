@@ -2,6 +2,8 @@
 
 namespace ETC.Buehlmann {
     public sealed class Calculation {
+        public const N2Index = 0;
+        
         public static readonly TissueData[] N2 = [ new TissueData(  4.0, 1.2599, 0.5050),
                                                    new TissueData(  5.0, 1.1696, 0.5577),
                                                    new TissueData(  8.0, 1.0000, 0.6514),
@@ -20,6 +22,8 @@ namespace ETC.Buehlmann {
                                                    new TissueData(498.0, 0.2523, 0.9602),
                                                    new TissueData(635.0, 0.2327, 0.9653) ];
 
+        public const HeIndex = 1;
+        
         public static readonly TissueData[] He = [ new TissueData(  1.51, 1.7424, 0.4245),
                                                    new TissueData(  1.88, 1.6204, 0.2756),
                                                    new TissueData(  3.02, 1.3830, 0.5747),
