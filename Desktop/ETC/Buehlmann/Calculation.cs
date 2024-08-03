@@ -110,7 +110,7 @@ namespace ETC.Buehlmann {
             for (int i = 0; i < N2.Length; i++) {
                 double factor = 1 - Math.Pow(2, -pTimeExposition / N2[i].HalfLife);
 
-            return pPressureInitial + (pPressureAmbient - pPressureInitial) * factor;
+                ContinousData.CurrentSaturation[0, i] = ContinousData.CurrentSaturation[0, i] + (pPressureAmbient - ContinousData.CurrentSaturation[0, i]) * factor;
             }
         }
     }
