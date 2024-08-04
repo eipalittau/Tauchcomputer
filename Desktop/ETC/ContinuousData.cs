@@ -13,12 +13,20 @@
         #endregion
 
         #region Methoden
-        public static double GetSaturationN2(int pIndex) {
+        public static double SaturationN2(int pIndex) {
             return CurrentSaturation[0, pIndex];
         }
 
-        public static double GetSaturationHe(int pIndex) {
+        public static void SaturationN2(int pIndex, double pValue) {
+            CurrentSaturation[0, pIndex] = pValue;
+        }
+
+        public static double SaturationHe(int pIndex) {
             return CurrentSaturation[1, pIndex];
+        }
+
+        public static void SaturationHe(int pIndex, double pValue) {
+            CurrentSaturation[1, pIndex] = pValue;
         }
     }
 }
