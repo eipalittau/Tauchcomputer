@@ -37,8 +37,6 @@ namespace ETC.Buehlmann {
                                                    new TissueData(147.42, 0.5176, 0.9171),
                                                    new TissueData(188.24, 0.5172, 0.9217),
                                                    new TissueData(240.03, 0.5119, 0.9267) ];
-
-        private static double LN2 { get; set; } = Math.Log(2);
         
         public BuehlmannData Calculate(double pPressureAmbient) {
             BuehlmannData result = new BuehlmannData();
