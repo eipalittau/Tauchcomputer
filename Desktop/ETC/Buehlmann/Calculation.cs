@@ -62,7 +62,7 @@ namespace ETC.Buehlmann {
 
                 for (int i = 0; i < N2.Length; i++) {
                     double numerator = pressureInspiratory - N2[i].CalculatePressureTolerated(pPressureAmbient);
-                    double denominator = pressureInspiratory - ContinuousData.CurrentSaturation[IndexEnum.N2, i];
+                    double denominator = pressureInspiratory - ContinuousData.GetSaturationN2(i);
                     double tempNDL = -N2[i].HalfLife * Math.Log2(numerator / denominator);
 
                     if (tempNDL < minNDL) {
@@ -76,7 +76,7 @@ namespace ETC.Buehlmann {
 
                 for (int i = 0; i < He.Length; i++) {
                     double numerator = pressureInspiratory - He[i].CalculatePressureTolerated(pPressureAmbient);
-                    double denominator = pressureInspiratory - ContinuousData.CurrentSaturation[IndexEnum.He, i];
+                    double denominator = pressureInspiratory - ContinuousData.GetSaturationHe(i);
                     double tempNDL = -He[i].HalfLife * Math.Log2(numerator / denominator);
 
                     if (tempNDL < minNDL) {
@@ -110,7 +110,7 @@ namespace ETC.Buehlmann {
             for (int i = 0; i < N2.Length; i++) {
                 double factor = 1 - Math.Pow(2, -pTimeExposition / N2[i].HalfLife);
 
-                ContinousData.CurrentSaturation[0, i] = ContinousData.CurrentSaturation[IndexEnum.N2, i] + (pPressureAmbient - ContinousData.CurrentSaturation[0, i]) * factor;
+                ContinousData.GetSaturationN2(i) = ContinousData.GetSaturationN2(i) + (pPressureAmbient - ContinousData.GetSaturationN2(i)) * factor;
             }
         }
     }
