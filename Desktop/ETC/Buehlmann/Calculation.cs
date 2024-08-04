@@ -2,8 +2,6 @@
 
 namespace ETC.Buehlmann {
     public sealed class Calculation {
-        public const N2Index = 0;
-        
         public static readonly TissueData[] N2 = [ new TissueData(  4.0, 1.2599, 0.5050),
                                                    new TissueData(  5.0, 1.1696, 0.5577),
                                                    new TissueData(  8.0, 1.0000, 0.6514),
@@ -22,8 +20,6 @@ namespace ETC.Buehlmann {
                                                    new TissueData(498.0, 0.2523, 0.9602),
                                                    new TissueData(635.0, 0.2327, 0.9653) ];
 
-        public const HeIndex = 1;
-        
         public static readonly TissueData[] He = [ new TissueData(  1.51, 1.7424, 0.4245),
                                                    new TissueData(  1.88, 1.6204, 0.2756),
                                                    new TissueData(  3.02, 1.3830, 0.5747),
@@ -66,7 +62,7 @@ namespace ETC.Buehlmann {
 
                 for (int i = 0; i < N2.Length; i++) {
                     double numerator = pressureInspiratory - N2[i].CalculatePressureTolerated(pPressureAmbient);
-                    double denominator = pressureInspiratory - ContinuousData.CurrentSaturation[0, i];
+                    double denominator = pressureInspiratory - ContinuousData.CurrentSaturation[IndexEnum.N2, i];
                     double tempNDL = -N2[i].HalfLife * Math.Log2(numerator / denominator);
 
                     if (tempNDL < minNDL) {
@@ -80,7 +76,7 @@ namespace ETC.Buehlmann {
 
                 for (int i = 0; i < He.Length; i++) {
                     double numerator = pressureInspiratory - He[i].CalculatePressureTolerated(pPressureAmbient);
-                    double denominator = pressureInspiratory - ContinuousData.CurrentSaturation[1, i];
+                    double denominator = pressureInspiratory - ContinuousData.CurrentSaturation[IndexEnum.He, i];
                     double tempNDL = -He[i].HalfLife * Math.Log2(numerator / denominator);
 
                     if (tempNDL < minNDL) {
@@ -114,7 +110,7 @@ namespace ETC.Buehlmann {
             for (int i = 0; i < N2.Length; i++) {
                 double factor = 1 - Math.Pow(2, -pTimeExposition / N2[i].HalfLife);
 
-                ContinousData.CurrentSaturation[0, i] = ContinousData.CurrentSaturation[0, i] + (pPressureAmbient - ContinousData.CurrentSaturation[0, i]) * factor;
+                ContinousData.CurrentSaturation[0, i] = ContinousData.CurrentSaturation[IndexEnum.N2, i] + (pPressureAmbient - ContinousData.CurrentSaturation[0, i]) * factor;
             }
         }
     }
