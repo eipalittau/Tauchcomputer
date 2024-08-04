@@ -25,10 +25,6 @@
         public double CalculatePressureTolerated(double pPressureAmbient) {
             return (pPressureAmbient / B) + A;
         }
-
-        public double CalculateTau() {
-            return HalfLife / LN2;
-        }
         #endregion
     }
 }
