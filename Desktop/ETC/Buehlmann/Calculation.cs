@@ -62,7 +62,7 @@ namespace ETC.Buehlmann {
 
                 for (int i = 0; i < N2.Length; i++) {
                     double numerator = pressureInspiratory - N2[i].CalculatePressureTolerated(pPressureAmbient);
-                    double denominator = pressureInspiratory - ContinuousData.GetSaturationN2(i);
+                    double denominator = pressureInspiratory - ContinuousData.SaturationN2(i);
                     double tempNDL = -N2[i].HalfLife * Math.Log2(numerator / denominator);
 
                     if (tempNDL < minNDL) {
@@ -76,7 +76,7 @@ namespace ETC.Buehlmann {
 
                 for (int i = 0; i < He.Length; i++) {
                     double numerator = pressureInspiratory - He[i].CalculatePressureTolerated(pPressureAmbient);
-                    double denominator = pressureInspiratory - ContinuousData.GetSaturationHe(i);
+                    double denominator = pressureInspiratory - ContinuousData.SaturationHe(i);
                     double tempNDL = -He[i].HalfLife * Math.Log2(numerator / denominator);
 
                     if (tempNDL < minNDL) {
@@ -107,16 +107,20 @@ namespace ETC.Buehlmann {
 
         private void UpdatePressureTissue(double pPressureAmbient, double pTimeExposition) {
             //PTIGTE=PTIGT0+(PIIG-PTIGT0)*(1-2^(-TE/T12))
-            for (int i = 0; i < N2.Length; i++) {
-                double factor = 1 - Math.Pow(2, -pTimeExposition / N2[i].HalfLife);
+            if (pCurrentMixture.N2.Bar > 0) {
+                for (int i = 0; i < N2.Length; i++) {
+                    double factor = 1 - Math.Pow(2, -pTimeExposition / N2[i].HalfLife);
 
-                ContinousData.SaturationN2(i, ContinousData.SaturationN2(i) + (pPressureAmbient - ContinousData.SaturationN2(i)) * factor);
+                    ContinousData.SaturationN2(i, ContinousData.SaturationN2(i) + (pPressureAmbient - ContinousData.SaturationN2(i)) * factor);
+                }
             }
 
-            for (int i = 0; i < He.Length; i++) {
-                double factor = 1 - Math.Pow(2, -pTimeExposition / He[i].HalfLife);
+            if (pCurrentMixture.He.Bar > 0) {
+                for (int i = 0; i < He.Length; i++) {
+                    double factor = 1 - Math.Pow(2, -pTimeExposition / He[i].HalfLife);
 
-                ContinousData.SaturationHe(i, ContinousData.SaturationHe(i) + (pPressureAmbient - ContinousData.SaturationHe(i)) * factor);
+                    ContinousData.SaturationHe(i, ContinousData.SaturationHe(i) + (pPressureAmbient - ContinousData.SaturationHe(i)) * factor);
+                }
             }
         }
     }
