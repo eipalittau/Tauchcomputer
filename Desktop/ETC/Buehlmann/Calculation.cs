@@ -38,10 +38,12 @@ namespace ETC.Buehlmann {
                                                    new TissueData(188.24, 0.5172, 0.9217),
                                                    new TissueData(240.03, 0.5119, 0.9267) ];
         
-        public BuehlmannData Calculate(double pPressureAmbient) {
+        public BuehlmannData Calculate(double pPressureAmbient, double pTimeExposition) {
             BuehlmannData result = new BuehlmannData();
 
-            result.NDL = CalculateNDL(Settings.CurrentMixture, pPressureAmbient);
+            UpdatePressureTissue(pPressureAmbient, pTimeExposition);
+            
+            result.NDL = CalculateNDL(pPressureAmbient);
             result.TTS = CalculateTTS(result.NDL, pPressureAmbient);
 
             return result;
@@ -108,7 +110,13 @@ namespace ETC.Buehlmann {
             for (int i = 0; i < N2.Length; i++) {
                 double factor = 1 - Math.Pow(2, -pTimeExposition / N2[i].HalfLife);
 
-                ContinousData.GetSaturationN2(i) = ContinousData.GetSaturationN2(i) + (pPressureAmbient - ContinousData.GetSaturationN2(i)) * factor;
+                ContinousData.SaturationN2(i, ContinousData.SaturationN2(i) + (pPressureAmbient - ContinousData.SaturationN2(i)) * factor);
+            }
+
+            for (int i = 0; i < He.Length; i++) {
+                double factor = 1 - Math.Pow(2, -pTimeExposition / He[i].HalfLife);
+
+                ContinousData.SaturationHe(i, ContinousData.SaturationHe(i) + (pPressureAmbient - ContinousData.SaturationHe(i)) * factor);
             }
         }
     }
