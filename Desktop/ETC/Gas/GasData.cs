@@ -38,7 +38,9 @@
             #endregion
 
             #region Methoden
-                //Berechnet den aktuellen Partial-Druck.
+            /// <summary>Berechnet den aktuellen Partial-Druck.</summary>
+            /// <param name="pPressureAmbient">Der aktuelle Umgebungsdruck in bar.</param>
+            /// <returns>Der aktuelle Partialdruck</returns>
             public double CalculatePressurePartial(double pPressureAmbient) {
                 return pPressureAmbient * Bar;
             }
