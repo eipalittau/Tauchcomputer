@@ -23,8 +23,10 @@
             ///<summary>Partialdruck in Bar<summary>
             public double Bar { get; private set; }
 
+            /// <summary>Maximaler prozentualer Anteil des Gases in der Mixtur</summary>
             private readonly double _Max;
 
+            /// <summary>Minimaler prozentualer Anteil des Gases in der Mixtur</summary>
             private readonly double _Min;
             #endregion
 
@@ -36,6 +38,7 @@
             #endregion
 
             #region Methoden
+                //Berechnet den aktuellen Partial-Druck.
             public double CalculatePressurePartial(double pPressureAmbient) {
                 return pPressureAmbient * Bar;
             }
